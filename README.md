@@ -1,6 +1,6 @@
 ![image](./assets/imgs/m2x_logo_colored.svg)
 
-# Official M2X Doumentation
+# Official M2X Documentation
 The latest official documentation can be found on the [GitHub page](https://m2x-project.github.io/m2x/)
 
 # M2X
