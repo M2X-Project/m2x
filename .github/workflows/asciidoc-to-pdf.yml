@@ -32,5 +32,6 @@ jobs:
       uses: softprops/action-gh-release@v1
       with:
         files: output/index.pdf
+        tag_name: v0.1.0
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
