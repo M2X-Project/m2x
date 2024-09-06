@@ -1,0 +1,40 @@
+name: Bug Report
+description: File a bug report.
+title: "[Bug]: "
+labels: ["bug"]
+projects: ["M2X-Project/m2x", "M2X-Project/m2x_private"]
+assignees:
+  - SvenFra
+  - DLuensch
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report!
+  - type: textarea
+    id: bug-description
+    attributes:
+      label: Bug description
+      description: Tell us what is wrong or inconsistent.
+      placeholder: Tell us what you see!
+      value: "A bug happened!"
+    validations:
+      required: true
+  - type: dropdown
+    id: version
+    attributes:
+      label: Version
+      description: What version of our software are you running?
+      options:
+        - v0.1.0 (Default)
+      default: 0
+    validations:
+      required: true
+  # - type: checkboxes
+  #   id: terms
+  #   attributes:
+  #     label: Code of Conduct
+  #     description: By submitting this issue, you agree to follow our [Code of Conduct](https://example.com). 
+  #     options:
+  #       - label: I agree to follow this project's Code of Conduct
+  #         required: true

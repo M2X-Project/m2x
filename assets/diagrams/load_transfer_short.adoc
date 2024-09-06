@@ -1,0 +1,31 @@
+ifdef::env-github[]
+[source,mermaid]
+endif::[]
+ifndef::env-github[]
+[mermaid]
+endif::[]
+....
+sequenceDiagram
+  participant I as FM/MR
+  participant S as Load handling station (LHS)
+  I->>S: M2X REQUEST[requestAccess]: MR request for access to the station 
+  S-->>I: [OPTIONAL] M2X STATUS[requestAccess (State: RUNNING)]: If preparation steps are necessary,<br>the station returns running for the request 
+  S->>S: [OPTIONAL]: Prepare for entry (mute safety light curtains,<br>open machine protection gates etc.)
+  S-->>I: M2X STATUS[requestAccess (State: COMPLETED)]: Station is ready to access
+  I->>I: Drive to station load handling point
+  I->>S: M2X REQUEST[requestLoadTransfer]: MR has entered the station, reached the load handling point and requests to hand over the load
+  S-->>I: [OPTIONAL] M2X STATUS[requestLoadTransfer (State: RUNNING)]: If preparation steps are necessary or<br>safety light curtains must be muted etc.,the station returns running for the request
+  S->>S: [OPTIONAL]: Complete MR entry (unmute safety light curtains,<br>close machine protection gates etc.)
+  S->>S: [OPTIONAL]: Prepare for load transfer (engage conveyor etc.)
+  S-->>I: M2X STATUS[requestLoadTransfer (State: COMPLETED)]: Station granted access to load transfer
+  I->>I: Carry out load transfer
+  I->>S: M2X REQUEST[requestExit]: MR has finished load transfer and requests to exit the station
+  S-->>I: [OPTIONAL] M2X STATUS[requestExit (State: RUNNING)]: If control and/or preparation steps are necessary,<br>the station returns running for the request
+  S->>S: [OPTIONAL]: Check the load
+  S->>S: [OPTIONAL]: Prepare for exit (mute safety light curtains,<br>open machine protection gates etc.)
+  S-->>I: M2X STATUS[requestExit (State: COMPLETED)]: Station is ready to exit
+  I->>I: Drive out of station 
+  I->>S: M2X REQUEST[revokeAccess]: MR has left the station and requests to revoke access to the station 
+  S-->>I: M2X STATUS[revokeAccess (State: COMPLETED)]: Station acknowledges the request and is ready for the next access request
+  S-->>S: [OPTIONAL]: Unmute safety light curtains,<br>close machine protection gates etc.
+....

@@ -1,0 +1,396 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Load Handling Station Factsheet",
+  "description": "The factsheet provides basic information about a specific load handling station. This allows the station to describe itself and share information for a handshake for load transfer to a MR.",
+  "required": [
+    "timestamp",
+    "version",
+    "manufacturer",
+    "serialNumber",
+    "stationGeometry",
+    "loadHandlingPoints"
+  ],
+  "subtopic": "/factsheet",
+  "type": "object",
+  "timestamp": {
+    "type": "string",
+    "format": "date-time",
+    "description": "Timestamp in ISO8601 format (YYYY-MM-DDTHH:mm:ss.sssZ).",
+    "examples": [
+      "2024-01-01T11:40:03.12Z"
+    ]
+  },
+  "version": {
+    "type": "string",
+    "description": "Version of the M2X protocol [Major].[Minor].[Patch] (e.g. 1.3.2).",
+    "examples": [
+      "2.0.0"
+    ]
+  },
+  "manufacturer": {
+    "type": "string",
+    "description": "Manufacturer of the station."
+  },
+  "serialNumber": {
+    "type": "string",
+    "description": "Serial number of the station."
+  },
+  "stationGeometry": {
+    "type": "object",
+    "required": [
+      "position",
+      "stationFootprint",
+      "communicationType",
+      "numberLoadHandlingPoints"
+    ],
+    "description": "These parameters generally specify the geometry of the station.",
+    "properties": {
+      "position": {
+        "type": "array",
+        "description":"Position of the station in the factory-coordinate system.",
+        "required": [
+          "x",
+          "y"
+        ],
+        "properties": {
+          "x": {
+            "type": "number",
+            "description": "The x-position in factory-coordinate system.",
+            "unit": "m"
+          },
+          "y": {
+            "type": "number",
+            "description": "The y-position in factory-coordinate system.",
+            "unit": "m"
+          }
+        }
+      },
+      "stationFootprint": {
+        "type": "array",
+        "description":"Describes the footprint and orientation of the station in the factory-coordinate system.",
+        "required": [
+          "width",
+          "length",
+          "theta"
+        ],
+        "properties": {
+          "height": {
+            "type": "number",
+            "description": "Total height of station.",
+            "unit": "m"
+          },
+          "width": {
+            "type": "number",
+            "description": "Total width of station.",
+            "unit": "m"
+          },
+          "length": {
+            "type": "number",
+            "description": "Total length of station.",
+            "unit": "m"
+          },
+          "theta": {
+            "type": "number",
+            "description": "Orientation of station in factory-coordinate system.",
+            "unit": "rad"
+          }
+        }
+      },
+      "communicationType": {
+          "type": "string",
+          "description": "Used communication type at the station.",
+          "enum": [
+            "MQTT",
+            "OPC_UA",
+            "REST_API",
+            "WebSocket"
+          ]
+      },
+      "numberLoadHandlingPoints": {
+          "type": "number",
+          "description": "Total number of load handling points at the station."
+      }
+    }
+  },
+  "loadHandlingPoints": {
+      "type": "array",
+      "required": [
+        "loadHandlingPointId",
+        "isLoadHandlingActive",
+        "doubleCycleRequired",
+        "maxLoadDimensions",
+        "positioningAids",
+        "loadHandlingPoint",
+        "loadHandlingRequest",
+        "physicalParameters",
+        "restrictedInteractions"
+      ],
+      "description": "These parameters generally specify the class and the capabilities of the load handling points.",
+      "properties": {
+        "loadHandlingPointId": {
+          "type": "string",
+          "description": "ID number of the load handling Point."
+        },
+        "stationClass": {
+          "type": "string",
+          "description": "Simplified description of station class.",
+          "enum": [
+            "PALLETDOCK",
+            "CONVEYOR",
+            "GRABBER",
+            "BELT"
+          ]
+        },
+        "isLoadHandlingActive": {
+          "type": "boolean",
+          "description": "True: Load handling point can actively (independently) pick and drop goods from or to the MR."
+        },
+        "doubleCycleRequired": {
+          "type": "boolean",
+          "description": "True: It may be necessary to carry out double cycles at the load handling point."
+        },
+        "loadHandlingUnitTypes": {
+          "type": "array",
+          "description": "List of all loading units that can be handled at the load handling point, for example europallet, industrypallet, GMA-pallet, mesh_box, small_load_carrier, barrel, special_load_carrier. If this parameter does not exist or is empty, the load handling point is valid for all load unit types on this station.",
+          "items": {
+            "required": [
+              "loadHandlingUnitType",
+              "handlingAcceleration"
+            ],
+            "type": "object",
+            "properties": {
+              "loadHandlingUnitType": {
+                "type": "string",
+                "description": "Description of the load handling unit."
+              },
+              "handlingAcceleration": {
+                "type": "number",
+                "unit": "m/s^2",
+                "description": "Maximum allowed acceleration for this load-type and –weight."
+              },
+              "parallelSequence": {
+                "type": "string",
+                "description": "Describes if the load handling point can manage more than on load in the ongoing load transfer."
+              }
+            }
+          }
+        },
+        "maxLoadDimensions": {
+          "type": "array",
+          "required": [
+            "length",
+            "width",
+            "height",
+            "mass"
+          ],
+          "description": "Maximum dimensions that can be processed by the load handling point.",
+          "properties": {
+            "length": {
+              "type": "number",
+              "description": "Maximum loadable length of the good.",
+              "unit": "m",
+              "minimum": 0
+            },
+            "width": {
+              "type": "number",
+              "description": "Maximum loadable width of the good.",
+              "unit": "m",
+              "minimum": 0
+            },
+            "height": {
+              "type": "number",
+              "description": "Maximum loadable height of the good.",
+              "unit": "m",
+              "minimum": 0
+            },
+            "mass": {
+              "type": "number",
+              "description": "Maximum loadable mass of the good.",
+              "unit": "kg",
+              "minimum": 0
+            }
+          }
+        },
+        "positioningAids": {
+          "type": "array",
+          "description": "Simplified description of localization type.",
+          "items": {
+            "type": "string",
+            "enum": [
+              "NATURAL",
+              "LASER-REFLECTOR",
+              "RFID-TAG",
+              "DATA-MATRIX-CODE",
+              "MAGNETIC-SPOT",
+              "MAGNETIC-GRID",
+              "INDUCTION-PLATE"
+            ]
+          }
+        },
+        "loadHandlingPoint": {
+          "type": "object",
+          "required": [
+            "position",
+            "tolerance"
+          ],
+          "description": "Load transfer point at which the load can be picked up or dropped off by a mobile robot. The point describes the geometric center of the load for pick-up or delivery.",
+          "properties": {
+            "position": {
+              "type": "array",
+              "description":"Position for load transfer.",
+              "required": [
+                "x",
+                "y",
+                "rad"
+              ],
+              "properties": {
+                "x": {
+                  "type": "number",
+                  "description": "X-position in factory-coordinate system.",
+                  "unit": "m"
+                },
+                "y": {
+                  "type": "number",
+                  "description": "Y-position in factory-coordinate system.",
+                  "unit": "m"
+                },
+                "rad": {
+                  "type": "number",
+                  "description": "Angle for handover position.",
+                  "unit": "rad"
+                }
+              }
+            },
+            "tolerance": {
+              "type": "array",
+              "description":"Acceptable tolerance for the load transfer.",
+              "required": [
+                "x",
+                "y",
+                "rad"
+              ],
+              "properties": {
+                "x": {
+                  "type": "number",
+                  "description": "X-position in factory-coordinate system.",
+                  "unit": "m"
+                },
+                "y": {
+                  "type": "number",
+                  "description": "Y-position in factory-coordinate system.",
+                  "unit": "m"
+                },
+                "rad": {
+                  "type": "number",
+                  "description": "Deviating tolerance for handover position.",
+                  "unit": "rad"
+                }
+              }
+            }
+          }
+        },
+        "loadHandlingRequest": {
+          "type": "array",
+          "description": "Simplified description of possible load handling requests.",
+          "items": {
+            "type": "string",
+            "enum": [
+              "requestAccess",
+              "requestExit",
+              "requestLoadTransfer",
+              "revokeAccess",
+              "requestFactsheet"
+            ]
+          }
+        },
+        "physicalParameters": {
+          "type": "object",
+          "description": "These parameters specify the basic physical properties of the load handling point.",
+          "required": [
+            "height",
+            "width",
+            "length",
+            "requiredHandoverHeight",
+            "pickTime",
+            "dropTime"
+          ],
+          "properties": {
+            "speedMin": {
+              "type": "number",
+              "description": "Minimal controlled continuous speed of the load handling point.",
+              "unit": "m/s"
+            },
+            "speedMax": {
+              "type": "number",
+              "description": "Maximal controlled continuous speed of the load handling point.",
+              "unit": "m/s"
+            },
+            "accelerationMax": {
+              "type": "number",
+              "description": "Maximum possible acceleration for this load handling point.",
+              "unit": "m/s^2"
+            },
+            "decelerationLimit": {
+              "type": "number",
+              "description": "Maximum possible deceleration for this load handling point.",
+              "unit": "m/s^2"
+            },
+            "height": {
+              "type": "number",
+              "description": "Height of the load handling point.",
+              "unit": "m"
+            },
+            "width": {
+              "type": "number",
+              "description": "Width of the load handling point.",
+              "unit": "m"
+            },
+            "length": {
+              "type": "number",
+              "description": "Length of the load handling point.",
+              "unit": "m"
+            },
+            "requiredHandoverHeight": {
+              "type": "number",
+              "description": "Required height for handing over the load from MR to load handling point.",
+              "unit": "m"
+            },
+            "pickTime": {
+              "type": "number",
+              "unit": "s",
+              "description": "Approx. time for picking up the load."
+            },
+            "dropTime": {
+              "type": "number",
+              "unit": "s",
+              "description": "Approx. time for dropping the load."
+            }
+          }
+        },
+        "restrictedInteractions": {
+          "type": "object",
+          "required": [
+            "restrictedVehiclesTypes",
+            "restrictedLoads"
+          ],
+          "description": "These parameters specify the restricted interactions with the load handling point.",
+          "properties": {
+            "restrictedVehiclesTypes": {
+              "type": "array",
+              "description": "List of all MRs types that are not allowed to interact at the load handling point. If this parameter does not exist or is empty, the load handling point is valid for all MRs on this station.",
+              "items": {
+                "type": "string"
+              }
+            },
+            "restrictedLoads": {
+              "type": "array",
+              "description": "List of all loads that are not allowed to interact at the load handling point. If this parameter does not exist or is empty, the load handling point is valid for all MRs on this station.",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+  }
+}

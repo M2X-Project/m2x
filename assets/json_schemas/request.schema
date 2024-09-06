@@ -1,0 +1,116 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "requests",
+    "description": "JSON Schema for publishing requests that the MR/station is to execute as soon as they arrive.",
+    "subtopic": "/requests",
+    "type": "object",
+    "properties": {
+        "headerId": {
+            "title": "headerId",
+            "type": "integer",
+            "description": "HeaderId of the message. The headerId is defined per topic and incremented by 1 with each sent (but not necessarily received) message."
+        },
+        "timestamp": {
+            "title": "timestamp",
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp in ISO8601 format (YYYY-MM-DDTHH:mm:ss.sssZ).",
+            "examples": [
+                "2024-01-01T11:40:03.12Z"
+            ]
+        },
+        "version": {
+            "title": "Version",
+            "type": "string",
+            "description": "Version of the protocol [Major].[Minor].[Patch] (e.g. 1.3.2).",
+            "examples": [
+                "1.0.0"
+            ]
+        },
+        "requests": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "description": "Describes an request that the entity can perform.",
+                "required": [
+                    "requestId",
+                    "requestType",
+                    "blockingType"
+                ],
+                "properties": {
+                    "requestType": {
+                        "type": "string",
+                        "description": "Name of request as described in the first column of \"Predefined requests\". Identifies the function of the request.",
+                        "enum": [
+                            "requestAccess",
+                            "requestExit",
+                            "requestLoadHandling",
+                            "revokeAccess",
+                            "requestFactsheet"
+                        ]
+                    },
+                    "requestId": {
+                        "type": "string",
+                        "description": "Unique ID to identify the request and map them to the requestState in the state. Suggestion: Use UUIDs."
+                    },
+                    "requestDescription": {
+                        "type": "string",
+                        "description": "Additional information on the request."
+                    },
+                    "blockingType": {
+                        "type": "string",
+                        "description": "Regulates if the request is allowed to be executed during movement and/or parallel to other requests.none: request can happen in parallel with others, including movement.soft: request can happen simultaneously with others, but not while moving. hard: no other requests can be performed while this request is running.",
+                        "enum": [
+                            "NONE",
+                            "SOFT",
+                            "HARD"
+                        ]
+                    },
+                    "requestParameters": {
+                        "type": "array",
+                        "description": "Array of requestParameter-objects for the indicated request e. g. deviceId, loadId, external Triggers.",
+                        "items": {
+                            "title": "requestParameter",
+                            "type": "object",
+                            "required": [
+                                "key",
+                                "value"
+                            ],
+                            "properties": {
+                                "key": {
+                                    "type": "string",
+                                    "description": "The key of the request parameter.",
+                                    "examples": [
+                                        "duration",
+                                        "direction",
+                                        "signal"
+                                    ]
+                                },
+                                "value": {
+                                    "type": [
+                                        "array",
+                                        "boolean",
+                                        "number",
+                                        "string"
+                                    ],
+                                    "description": "The value of the request parameter.",
+                                    "examples": [
+                                        103.2,
+                                        "left",
+                                        true,
+                                        [
+                                            "arrays",
+                                            "are",
+                                            "also",
+                                            "valid"
+                                        ]
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

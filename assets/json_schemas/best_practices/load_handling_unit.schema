@@ -1,0 +1,61 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "loadHandlingUnits",
+  "description": "Description of the load handling unit for the load transfer.",
+  "subtopic": "/loadHandlingUnits",
+  "type": "object",
+  "required": [
+    "version",
+    "loadHandlingUnit"
+  ],
+  "properties": {
+    "version": {
+      "type": "string",
+      "description": "Version of the M2X protocol [Major].[Minor].[Patch] (e.g. 1.3.2)",
+      "examples": [
+        "1.0.0"
+      ]
+    },
+    "loadHandlingUnit":{
+        "type":"object",
+        "description":"Describes all properties of the load handling unit.",
+        "required":[
+            "loadHandlingUnitType"
+        ],
+        "properties": {
+            "loadUnitId":{
+                "type": "string",
+                "description": "ID number of the load handling unit."
+            },
+            "loadHandlingUnitType":{
+                "type":"string",
+                "description":"Describes the handling unit, e.g. small load carrier, pallet, etc. Important for matching of the handling capabilities of the unit, e.g the request startLoadTransfer in the load handling interface of a station or MR."
+            },
+            "mass":{
+                "type":"number",
+                "description":"Weight of the load.",
+                "unit":"kg"
+            },  
+            "height": {
+                "type": "number",
+                "description": "Height of the load handling unit (outer dimensions).",
+                "unit": "m"
+            },
+            "width": {
+                "type": "number",
+                "description": "Width of the load handling unit (outer dimensions).",
+                "unit": "m"
+            },
+            "length": {
+                "type": "number",
+                "description": "Length of the load handling unit (outer dimensions).",
+                "unit": "m"
+            },
+            "outerPackaging":{
+                "type":"string",
+                "description":"Describes the outer packaging of the load handling unit, e.g. wrapping, strapping etc."
+            }
+        }
+    }   
+  }
+}

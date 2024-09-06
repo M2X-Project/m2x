@@ -15,6 +15,9 @@ gem "github-pages", group: :jekyll_plugins
 group :jekyll_plugins do
   gem "jekyll-feed", "~> 0.12"
   gem "jekyll-remote-theme"
+  gem 'asciidoctor-diagram'
+  gem 'jekyll-asciidoc'
+  gem 'jekyll-mermaid'
 end
  
 # Windows and JRuby does not include zoneinfo files, so bundle the tzinfo-data gem
@@ -23,6 +26,8 @@ platforms :mingw, :x64_mingw, :mswin, :jruby do
   gem "tzinfo", ">= 1", "< 3"
   gem "tzinfo-data"
 end
+
+# gem 'asciidoctor-diagram', '~> 1.2', '>= 1.2.1'
  
 # Performance-booster for watching directories on Windows
 gem "wdm", "~> 0.1.1", :platforms => [:mingw, :x64_mingw, :mswin]

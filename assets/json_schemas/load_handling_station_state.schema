@@ -1,0 +1,168 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "state",
+  "description": "All encompassing states of the load transfer station.",
+  "subtopic": "/state",
+  "type": "object",
+  "required": [
+    "timestamp",
+    "version",
+    "serialNumber",
+    "loadHandlingStationAvailable",
+    "loadHandlingPointState"
+  ],
+  "properties": {
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp in ISO8601 Format (YYYY-MM-DDTHH:mm:ss.sssZ).",
+      "examples": [
+        "2024-01-01T11:40:03.12Z"
+      ]
+    },
+    "version": {
+      "type": "string",
+      "description": "Version of the M2X protocol [Major].[Minor].[Patch] (e.g. 1.3.2)",
+      "examples": [
+        "1.0.0"
+      ]
+    },
+    "serialNumber": {
+      "type": "string",
+      "description": "Serial number of the load handling station."
+    },
+    "manufacturer": {
+      "type": "string",
+      "description": "Manufacturer of the load handling station."
+    },
+    "loadHandlingStationAvailable": {
+      "type": "boolean",
+      "description": "Indicates if the load handling station is available for operation."
+    },
+    "loadHandlingPointState": {
+      "type": "object",
+      "required": [
+        "loadHandlingPointId",
+        "operatingMode",
+        "loadHandlingPointAvailable",
+        "loadHandlingSessionId",
+        "requestStates",
+        "errors"
+      ],
+      "properties": {
+        "loadHandlingPointId": {
+          "type": "string",
+          "description": "Unique identifier of the individual load handling point of the load handling station."
+        },
+        "operatingMode": {
+          "type": "string",
+          "description": "Current operating mode of the load handling station.",
+          "enum": [
+            "AUTOMATIC",
+            "MANUAL",
+            "SERVICE"
+          ]
+        },
+        "loadHandlingPointAvailable": {
+          "type": "boolean",
+          "description": "Indicates if the load handling point is available for operation."
+        },
+        "loadHandlingSessionId": {
+          "type": "string",
+          "description": "Unique identifier of the complete request session in a process, e.g. the load handling."
+        },
+        "requestStates": {
+          "type": "array",
+          "description": "Array of upcoming and current requests.",
+          "items": {
+            "type": "object",
+            "title": "requestState",
+            "required": [
+              "requestId",
+              "requestStatus"
+            ],
+            "properties": {
+              "requestId": {
+                  "type": "string",
+                  "description": "Unique requestId",
+                  "examples": [
+                      "requestAccess_1337"
+                  ]
+              },
+              "requestType": {
+                  "type": "string",
+                  "description": "requestType of the request.\nOptional: Only for informational or visualization purposes."
+              },
+              "requestStatus": {
+                "type": "string",
+                "description": "Status of the request.",
+                "enum": [
+                  "RUNNING",
+                  "PAUSED",
+                  "COMPLETED",
+                  "FAILED"
+                ]
+              },
+              "resultDescription": {
+                  "type": "string",
+                  "description": "Description of the result, e.g., the result of a RFID-read. Errors will be transmitted in errors."
+              }
+            }
+          }
+        },
+        "errors": {
+          "type": "array",
+          "description": "Array of error-objects. All active errors of the load handling station should be in the list. An empty array indicates that the load handling station has no active errors.",
+          "items": {
+            "type": "object",
+            "required": [
+              "errorType",
+              "errorLevel"
+            ],
+            "title": "Error",
+            "properties": {
+              "errorType": {
+                "type": "string",
+                "description": "Type of error."
+              },
+              "errorReferences": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "title": "errorReference",
+                  "description": "Object that holds the error reference to requests as key-value pairs.",
+                  "properties": {
+                    "required": [
+                      "referenceKey",
+                      "referenceValue"
+                    ],
+                    "referenceKey": {
+                      "type": "string",
+                      "description": "References the type of reference (e.g., headerId, requestId, etc.)."
+                    },
+                    "referenceValue": {
+                      "type": "string",
+                      "description": "References the value, which belongs to the reference key."
+                    }
+                  }
+                }
+              },
+              "errorDescription": {
+                "type": "string",
+                "description": "Verbose description of error."
+              },
+              "errorLevel": {
+                "type": "string",
+                "description": "Description of the error level, which is warning or fatal. WARNING: Station is ready to start (e.g., maintenance cycle expiration warning). FATAL: Station is not in running condition, user intervention required (e.g., laser scanner is contaminated).",
+                "enum": [
+                  "WARNING",
+                  "FATAL"
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

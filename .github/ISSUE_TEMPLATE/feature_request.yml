@@ -1,0 +1,41 @@
+name: Feature Request
+description: Request a new feature.
+title: "[Feature Request]: "
+labels: ["feature"]
+projects: ["M2X-Project/m2x", "M2X-Project/m2x_private"]
+assignees:
+  - SvenFra
+  - DLuensch
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this feature request!
+  - type: textarea
+    id: feature-request
+    attributes:
+      label: Feature reuqest
+      description: Tell us what you would like to see.
+      placeholder: Tell us about the feature that is missing!
+      value: "My feature request!"
+    validations:
+      required: true
+  - type: dropdown
+    id: version
+    attributes:
+      label: Version
+      description: What version of our software are you running?
+      options:
+        - main (Default)
+        - v0.1.0 
+      default: 0
+    validations:
+      required: false
+  # - type: checkboxes
+  #   id: terms
+  #   attributes:
+  #     label: Code of Conduct
+  #     description: By submitting this issue, you agree to follow our [Code of Conduct](https://example.com). 
+  #     options:
+  #       - label: I agree to follow this project's Code of Conduct
+  #         required: true
