@@ -351,7 +351,7 @@ hard: no other requests can be performed while this request is running. Enum: NO
 |{nbsp}{nbsp}{nbsp}{nbsp} *_requestParameters_* *[requestParameter]* {|array|Array of requestParameter-objects for the indicated request e. g. deviceId, loadId, external Triggers.
 |{nbsp}{nbsp}{nbsp}{nbsp}key|string|The key of the request parameter.
 |{nbsp}{nbsp}{nbsp}{nbsp}value|array, +
- boolean, number, string|The value of the request parameter.
+ boolean, number, string, object|The value of the request parameter.
 |{nbsp}{nbsp}{nbsp}{nbsp}}||
 |}||
 |===
