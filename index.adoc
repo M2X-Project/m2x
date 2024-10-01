@@ -415,7 +415,7 @@ It can also be queried whether the load handling point is available or not.
 |serialNumber|string|Serial number of the load handling station.
 | _manufacturer_ |string|Manufacturer of the load handling station.
 |loadHandlingStationAvailable|boolean|Indicates if the load handling station is available for operation.
-|*loadHandlingPointStates* *[loadHandlingPointState]* {|object|Describes upcoming and current requests.
+|*loadHandlingPointStates* *[loadHandlingPointState]* {|array|Describes upcoming and current requests.
 |{nbsp}{nbsp}{nbsp}{nbsp}loadHandlingPointId|string|Unique identifier of the load handling station.
 |{nbsp}{nbsp}{nbsp}{nbsp}operatingMode|string|Current operating mode of the load handling station. Enum AUTOMATIC, MANUAL, SERVICE.
 |{nbsp}{nbsp}{nbsp}{nbsp}loadHandlingPointAvailable|boolean|SIndicates if the load handling point is available for operation.
