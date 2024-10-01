@@ -15,7 +15,6 @@ gem "github-pages", group: :jekyll_plugins
 group :jekyll_plugins do
   gem "jekyll-feed", "~> 0.12"
   gem "jekyll-remote-theme"
-  gem 'asciidoctor-diagram'
   gem 'jekyll-asciidoc'
   gem 'jekyll-mermaid'
 end
@@ -27,6 +26,8 @@ platforms :mingw, :x64_mingw, :mswin, :jruby do
   gem "tzinfo-data"
 end
 
+gem 'asciidoctor'
+gem 'asciidoctor-diagram'
 # gem 'asciidoctor-diagram', '~> 1.2', '>= 1.2.1'
  
 # Performance-booster for watching directories on Windows
