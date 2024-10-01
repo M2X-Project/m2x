@@ -1,9 +1,4 @@
-ifdef::env-github[]
-[source,mermaid]
-endif::[]
-ifndef::env-github[]
 [mermaid]
-endif::[]
 ....
 sequenceDiagram
   participant I as FM/MR
