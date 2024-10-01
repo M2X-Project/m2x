@@ -1,3 +1,9 @@
+ifdef::env-github[]
+[source,mermaid]
+endif::[]
+ifndef::env-github[]
+[mermaid]
+endif::[]
 [mermaid]
 ....
 sequenceDiagram
