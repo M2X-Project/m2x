@@ -26,6 +26,7 @@ platforms :mingw, :x64_mingw, :mswin, :jruby do
   gem "tzinfo-data"
 end
 
+gem 'mermaid'
 gem 'asciidoctor'
 gem 'asciidoctor-diagram'
 # gem 'asciidoctor-diagram', '~> 1.2', '>= 1.2.1'
