@@ -1,4 +1,5 @@
 ifdef::env-github[]
+:mmdc: ./node_modules/.bin/mmdc
 [source,mermaid]
 endif::[]
 ifndef::env-github[]
