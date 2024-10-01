@@ -12,3 +12,4 @@ asciidoctor:
 remote_theme: pages-themes/cayman@v0.2.0
 title: M2X
 description: An interface definition for communication between peripherals and automated guided vehicles.
+repository: M2X-Project/m2x
