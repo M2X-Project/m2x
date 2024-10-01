@@ -357,7 +357,7 @@ hard: no other requests can be performed while this request is running. Enum: NO
 |{nbsp}{nbsp}{nbsp}{nbsp} *_requestParameters_* *[requestParameter]* {|array|Array of requestParameter-objects for the indicated request e. g. deviceId, loadId, external Triggers.
 |{nbsp}{nbsp}{nbsp}{nbsp}key|string|The key of the request parameter.
 |{nbsp}{nbsp}{nbsp}{nbsp}value|array, +
- boolean, number, string|The value of the request parameter.
+ boolean, number, string, object|The value of the request parameter.
 |{nbsp}{nbsp}{nbsp}{nbsp}}||
 |}||
 |===
@@ -415,7 +415,7 @@ It can also be queried whether the load handling point is available or not.
 |serialNumber|string|Serial number of the load handling station.
 | _manufacturer_ |string|Manufacturer of the load handling station.
 |loadHandlingStationAvailable|boolean|Indicates if the load handling station is available for operation.
-|*loadHandlingPointState* *[loadHandlingPointState]* {|object|Describes upcoming and current requests.
+|*loadHandlingPointStates* *[loadHandlingPointState]* {|object|Describes upcoming and current requests.
 |{nbsp}{nbsp}{nbsp}{nbsp}loadHandlingPointId|string|Unique identifier of the load handling station.
 |{nbsp}{nbsp}{nbsp}{nbsp}operatingMode|string|Current operating mode of the load handling station. Enum AUTOMATIC, MANUAL, SERVICE.
 |{nbsp}{nbsp}{nbsp}{nbsp}loadHandlingPointAvailable|boolean|SIndicates if the load handling point is available for operation.
@@ -477,11 +477,11 @@ This JSON-object describes the geometry of the station.
 |===
 |field|data type|description
 
-|*position* *[position]* {|array|Position of the station in the factory-coordinate system.
+|*position* {|object|Position of the station in the factory-coordinate system.
 |{nbsp}{nbsp}{nbsp}{nbsp}x|number|The x-position in factory-coordinate system.
 |{nbsp}{nbsp}{nbsp}{nbsp}y|number|The y-position in factory-coordinate system.
 |}||
-|*stationFootprint* *[stationFootprint]* {|array|Describes the footprint and orientation of the station in the factory-coordinate system.
+|*stationFootprint* {|object|Describes the footprint and orientation of the station in the factory-coordinate system.
 |{nbsp}{nbsp}{nbsp}{nbsp}height|number|Total height of station.
 |{nbsp}{nbsp}{nbsp}{nbsp}width|number|Total width of station.
 |{nbsp}{nbsp}{nbsp}{nbsp}length|number|Total length of station.
@@ -517,16 +517,16 @@ This JSON-object describes the individual load handling point with all its capab
 |{nbsp}{nbsp}{nbsp}{nbsp} *position* *[position]* {|array|Position for load transfer.
 |{nbsp}{nbsp}{nbsp}{nbsp}x|number|X-position in factory-coordinate system.
 |{nbsp}{nbsp}{nbsp}{nbsp}y|number|Y-position in factory-coordinate system.
-|{nbsp}{nbsp}{nbsp}{nbsp}rad|number|Angle for handover position.
+|{nbsp}{nbsp}{nbsp}{nbsp}theta|number|Angle for handover position.
 |}||
 |*tolerance* {|object|Acceptable tolerance for the load transfer.
 |{nbsp}{nbsp}{nbsp}{nbsp}x|number|X-position in factory-coordinate system.
 |{nbsp}{nbsp}{nbsp}{nbsp}y|number|Y-position in factory-coordinate system.
-|{nbsp}{nbsp}{nbsp}{nbsp}rad|number|Deviating tolerance for handover position.
+|{nbsp}{nbsp}{nbsp}{nbsp}theta|number|Deviating tolerance for handover position.
 |{nbsp}{nbsp}{nbsp}{nbsp}}||
 |}||
 |compatibleVehicles [compatibleVehicle]|array|List of all MRs that can interact at the load handling point. If this parameter does not exist or is empty, the load handling point is valid for all MRs on this station.
-|loadHandlingRequest [loadHandlingRequest]|array|Simplified description of possible load handling actions.
+|loadHandlingRequests [loadHandlingRequest]|array|Simplified description of possible load handling actions.
 |*physicalParameters* {|JSON-object|These parameters specify the basic physical properties of the load handling point.
 |{nbsp}{nbsp}{nbsp}{nbsp} _speedMin_ |number|Minimal controlled continuous speed of the load handling point.
 |{nbsp}{nbsp}{nbsp}{nbsp} _speedMax_ |number|Maximal controlled continuous speed of the load handling point.
@@ -540,8 +540,8 @@ This JSON-object describes the individual load handling point with all its capab
 |{nbsp}{nbsp}{nbsp}{nbsp}dropTime|number|Approx. time for dropping the load.
 |}||
 |*restrictedInteractions* *[restrictedInteraction]* {|array|These parameters specify the restricted interactions with the load handling point.
-|{nbsp}{nbsp}{nbsp}{nbsp}restrictedVehicles|array|List of all MRs that are not allowed to interact at the load handling point. If this parameter does not exist or is empty, the load handling point is valid for all MRs on this station.
-|{nbsp}{nbsp}{nbsp}{nbsp}restrictedLoads|array|List of all loads that are not allowed to interact at the load handling point. If this parameter does not exist or is empty, the load handling point is valid for all MRs on this station.
+|{nbsp}{nbsp}{nbsp}{nbsp}restrictedVehicles [restrictedVehicle]|array|List of all MRs that are not allowed to interact at the load handling point. If this parameter does not exist or is empty, the load handling point is valid for all MRs on this station.
+|{nbsp}{nbsp}{nbsp}{nbsp}restrictedLoads[restrictedLoad]|array|List of all loads that are not allowed to interact at the load handling point. If this parameter does not exist or is empty, the load handling point is valid for all MRs on this station.
 |}||
 |===
 
