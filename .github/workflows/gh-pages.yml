@@ -54,8 +54,8 @@ jobs:
   # Deployment job
   deploy:
     environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      name: M2X
+      url: https://m2x-project.github.io/m2x/
     runs-on: ubuntu-latest
     needs: build
     steps:
