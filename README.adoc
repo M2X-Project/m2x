@@ -1,7 +1,7 @@
 image::./assets/imgs/m2x_logo_colored.svg[width=50%,align="center"]
 
 == M2X - Interface for communication between automated guided vehicles (AGVs) and intralogistics systems in the AGV environment
-Version 0.1.0, May 2024
+Version 0.1.1, October 2024
 
 == Official M2X Documentation
 

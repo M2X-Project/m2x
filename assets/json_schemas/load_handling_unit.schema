@@ -31,7 +31,7 @@
                 "type":"string",
                 "description":"Describes the handling unit, e.g. small load carrier, pallet, etc. Important for matching of the handling capabilities of the unit, e.g the request startLoadTransfer in the load handling interface of a station or MR."
             },
-            "mass":{
+            "weight":{
                 "type":"number",
                 "description":"Weight of the load.",
                 "unit":"kg"
