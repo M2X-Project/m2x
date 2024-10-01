@@ -1,5 +1,6 @@
 :xrefstyle: short
 :sectnums: 
+:imagesdir: assets/figures
 
 // = Table of Contents
 :toc: auto
@@ -83,7 +84,7 @@ Safe communication protocols, e.g. via PROFIsafe, are not considered.
 * The description of the communication is described middleware neutral. 
 Nevertheless, It is assumed that the communication type follows a topic-based publish-subscribe communication.
 
-image::./assets/figures/m2x_overview.png[title="Overview of the M2X Framework, exemplary interfaces which can be considered.", 640,480,align="center", id=m2x_overview]
+image::m2x_overview.png[title="Overview of the M2X Framework, exemplary interfaces which can be considered.", 640,480,align="center", id=m2x_overview]
 
 The scope of M2X is not to operate at the PLC level.
 Described communication is located on a higher level with logic that manages states of the peripheral and communication processes.
@@ -114,9 +115,9 @@ To meet the requirements of Industry 4.0 and its self-management principles, eac
 
 [cols="a,a,a"]
 |===
-| image::./assets/figures/m2x_application_scope_nowadays.svg[title="", id=m2x_application_scope_nowadays,align="center"]
-| image::assets/figures/m2x_application_scope_m2x.svg[title="", id=m2x_application_scope_m2x,align="center"]
-| image::assets/figures/m2x_application_scope_m2x_beyond.svg[title="", id=m2x_application_scope_m2x_beyond,align="center"]
+| image::m2x_application_scope_nowadays.svg[title="", id=m2x_application_scope_nowadays,align="center"]
+| image::m2x_application_scope_m2x.svg[title="", id=m2x_application_scope_m2x,align="center"]
+| image::m2x_application_scope_m2x_beyond.svg[title="", id=m2x_application_scope_m2x_beyond,align="center"]
 |===
 
 
@@ -234,9 +235,10 @@ Which MR approaches the station and how is determined for example by a traffic m
 The second xref:lhs_with_traffic_management[figure] shows a load handling station with a shared traffic management area. The staion has two load handling points. As already mentioned it only manages its own load handling points with the corresponding interaction areas. All other passable routes of an MR, even within the station footprint, are controlled by Traffic Management.
 If two different Load Handling Stations share the same interaction area, it is recommended to configure them as one and follow the procedure described above.
 
-image::assets/figures/lhs_self_managed_area.svg[title="Exemplary use case of a load handling station with two load handling points", 640,480,align="center", id=load_handling_station_view,align="center"]
+image::lhs_self_managed_area.svg[title="Exemplary use case of a load handling station with two load handling points", 640,480,align="center", id=load_handling_station_view,align="center"]
 
-image::assets/figures/lhs_with_traffic_management.svg[title="Exemplary use case of a load handling station with two load handling points and a shared traffic management area", 640,480,align="center", id=lhs_with_traffic_management,align="center"]
+image::lhs_with_traffic_management.svg[title="Exemplary use case of a load handling station with two load handling points and a shared traffic management area", 640,480,align="center", id=lhs_with_traffic_management,align="center"]
+
 
 === Requirements for a M2X load handling station
 This section describes the requirements for a load handling station to use the M2X protocol. 
@@ -287,7 +289,7 @@ This version differs in that alternative loops are displayed for each request, w
 
 === Topics ===
 
-The comminication with a load handling station is done via the following topics:
+The communication with a load handling station is done via the following topics:
 
 [source, adoc]
 |===
@@ -434,8 +436,6 @@ It can also be queried whether the load handling point is available or not.
 |{nbsp}{nbsp}{nbsp}{nbsp} _errorDescription_ |string|Verbose description of error.
 |{nbsp}{nbsp}{nbsp}{nbsp}errorLevel|string|Description of the error level, which is warning or fatal. WARNING: Station is ready to start (e.g., maintenance cycle expiration warning). FATAL: Station is not in running condition, user intervention required (e.g., laser scanner is contaminated).
 |}||
-|loadHandlingStationId|string|Unique identifier of the load handling station from the manufacturer.
-|loadHandlingPointId|string|Unique identifier of the individual load handling point of the load handling station.
 |===
 
 === Load handling station factsheet

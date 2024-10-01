@@ -1,37 +1,37 @@
-name: Build and Deploy PDF
+# name: Build and Deploy PDF
 
-on:
-  push:
-    branches:
-      - main
-    paths:
-      - 'index.adoc'
-      - '.github/workflows/asciidoc-to-pdf.yml'
+# on:
+#   push:
+#     branches:
+#       - main
+#     paths:
+#       - 'index.adoc'
+#       - '.github/workflows/asciidoc-to-pdf.yml'
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
 
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+#     steps:
+#     - name: Checkout repository
+#       uses: actions/checkout@v2
 
-    - name: Build PDF
-      uses: docker://asciidoctor/docker-asciidoctor
-      with:
-        args: asciidoctor -r asciidoctor-diagram -r asciidoctor-pdf -b pdf -D ./output index.adoc
+#     - name: Build PDF
+#       uses: docker://asciidoctor/docker-asciidoctor
+#       with:
+#         args: asciidoctor -r asciidoctor-diagram -r asciidoctor-pdf -b pdf -D ./output index.adoc
 
-    - name: Upload PDF to GitHub Artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: document-pdf
-        path: output/index.pdf
+#     - name: Upload PDF to GitHub Artifacts
+#       uses: actions/upload-artifact@v2
+#       with:
+#         name: document-pdf
+#         path: output/index.pdf
 
-    - name: Deploy PDF to GitHub Releases
-      if: github.ref == 'refs/heads/main'
-      uses: softprops/action-gh-release@v1
-      with:
-        files: output/index.pdf
-        tag_name: v0.1.0
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#     - name: Deploy PDF to GitHub Releases
+#       if: github.ref == 'refs/heads/main'
+#       uses: softprops/action-gh-release@v1
+#       with:
+#         files: output/index.pdf
+#         tag_name: v0.1.0
+#       env:
+#         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
