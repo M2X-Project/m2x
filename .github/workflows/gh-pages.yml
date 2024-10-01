@@ -44,7 +44,7 @@ jobs:
         uses: actions/configure-pages@v5
       - name: Build with Jekyll
         # Outputs to the './_site' directory by default
-        run: bundle exec jekyll build --baseurl "${{ steps.pages.outputs.base_path }}"
+        run: bundle exec jekyll build --baseurl "https://github.com/M2X-Project/m2x/"
         env:
           JEKYLL_ENV: production
       - name: Upload artifact
@@ -55,7 +55,7 @@ jobs:
   deploy:
     environment:
       name: M2X
-      url: https://m2x-project.github.io/m2x/
+      url: https://github.com/M2X-Project/m2x/
     runs-on: ubuntu-latest
     needs: build
     steps:
