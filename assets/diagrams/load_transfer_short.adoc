@@ -4,7 +4,6 @@ endif::[]
 ifndef::env-github[]
 [mermaid]
 endif::[]
-[mermaid]
 ....
 sequenceDiagram
   participant I as FM/MR
