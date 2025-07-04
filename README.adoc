@@ -1,7 +1,7 @@
 image::./assets/imgs/m2x_logo_colored.svg[width=50%,align="center"]
 
 == M2X - Interface for communication between mobile robots and peripherals in industrial environments
-Version 0.1.1, October 2024
+Version 0.2.1, June 2025
 
 == Official M2X Documentation
 
