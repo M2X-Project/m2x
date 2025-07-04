@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Load Handling Station Factsheet",
-  "description": "The factsheet provides basic information about a specific load handling station. This allows the station to describe itself and share information for a handshake for load transfer to a MR.",
+  "description": "The factsheet provides basic information about a specific load handling station (LHS). This allows the station to describe itself and share information for a handshake for load transfer to a MR.",
   "required": [
     "timestamp",
     "version",
@@ -12,107 +12,110 @@
   ],
   "subtopic": "/factsheet",
   "type": "object",
-  "timestamp": {
-    "type": "string",
-    "format": "date-time",
-    "description": "Timestamp in ISO8601 format (YYYY-MM-DDTHH:mm:ss.sssZ).",
-    "examples": [
-      "2024-01-01T11:40:03.12Z"
-    ]
-  },
-  "version": {
-    "type": "string",
-    "description": "Version of the M2X protocol [Major].[Minor].[Patch] (e.g. 1.3.2).",
-    "examples": [
-      "2.0.0"
-    ]
-  },
-  "manufacturer": {
-    "type": "string",
-    "description": "Manufacturer of the station."
-  },
-  "serialNumber": {
-    "type": "string",
-    "description": "Serial number of the station."
-  },
-  "stationGeometry": {
-    "type": "object",
-    "required": [
-      "position",
-      "stationFootprint",
-      "communicationType",
-      "numberLoadHandlingPoints"
-    ],
-    "description": "These parameters generally specify the geometry of the station.",
-    "properties": {
-      "position": {
-        "type": "array",
-        "description":"Position of the station in the factory-coordinate system.",
-        "required": [
-          "x",
-          "y"
-        ],
-        "properties": {
-          "x": {
-            "type": "number",
-            "description": "The x-position in factory-coordinate system.",
-            "unit": "m"
-          },
-          "y": {
-            "type": "number",
-            "description": "The y-position in factory-coordinate system.",
-            "unit": "m"
+  "properties": {
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp in ISO8601 format (YYYY-MM-DDTHH:mm:ss.sssZ). The timestamp defines the point in time at which the message was sent.",
+      "examples": [
+        "2015-10-21T16:29:00.000Z"
+      ]
+    },
+    "version": {
+      "type": "string",
+      "description": "Version of the M2X protocol [Major].[Minor].[Patch] (e.g. 1.3.2).",
+      "examples": [
+        "2.0.0"
+      ]
+    },
+    "manufacturer": {
+      "type": "string",
+      "description": "Manufacturer of the station."
+    },
+    "serialNumber": {
+      "type": "string",
+      "description": "Serial number of the station."
+    },
+    "stationGeometry": {
+      "type": "object",
+      "required": [
+        "position",
+        "stationFootprint",
+        "numberLoadHandlingPoints"
+      ],
+      "description": "These parameters generally specify the geometry of the station.",
+      "properties": {
+        "position": {
+          "type": "array",
+          "description":"Position of the station in the factory-coordinate system.",
+          "required": [
+            "x",
+            "y",
+            "z"
+          ],
+          "properties": {
+            "x": {
+              "type": "number",
+              "description": "The x-position in factory-coordinate system.",
+              "unit": "m"
+            },
+            "y": {
+              "type": "number",
+              "description": "The y-position in factory-coordinate system.",
+              "unit": "m"
+            },
+            "z": {
+              "type": "number",
+              "description": "The z-position in factory-coordinate system.",
+              "unit": "m"
+            }
           }
-        }
-      },
-      "stationFootprint": {
-        "type": "array",
-        "description":"Describes the footprint and orientation of the station in the factory-coordinate system.",
-        "required": [
-          "width",
-          "length",
-          "theta"
-        ],
-        "properties": {
-          "height": {
-            "type": "number",
-            "description": "Total height of station.",
-            "unit": "m"
-          },
-          "width": {
-            "type": "number",
-            "description": "Total width of station.",
-            "unit": "m"
-          },
-          "length": {
-            "type": "number",
-            "description": "Total length of station.",
-            "unit": "m"
-          },
-          "theta": {
-            "type": "number",
-            "description": "Orientation of station in factory-coordinate system.",
-            "unit": "rad"
+        },
+        "stationFootprint": {
+          "type": "array",
+          "description":"Describes the footprint and orientation of the station in the factory-coordinate system.",
+          "required": [
+            "x-left",
+            "x-right",
+            "y-left",
+            "y-right",
+            "theta"
+          ],
+          "properties": {
+            "x-left": {
+              "type": "number",
+              "description": "x-left offset of door.",
+              "unit": "m"
+            },
+            "x-right": {
+              "type": "number",
+              "description": "x-right offset of door.",
+              "unit": "m"
+            },
+            "y-left": {
+              "type": "number",
+              "description": "y-left offset of door.",
+              "unit": "m"
+            },
+            "y-right": {
+              "type": "number",
+              "description": "y-right offset of door.",
+              "unit": "m"
+            },
+            "theta": {
+              "type": "number",
+              "description": "Orientation of the door in factory-coordinate system.",
+              "unit": "rad"
+            }
           }
+        },
+        "numberLoadHandlingPoints": {
+            "type": "number",
+            "description": "Total number of LHPs at the station."
         }
-      },
-      "communicationType": {
-          "type": "string",
-          "description": "Used communication type at the station.",
-          "enum": [
-            "MQTT",
-            "OPC_UA",
-            "REST_API",
-            "WebSocket"
-          ]
-      },
-      "numberLoadHandlingPoints": {
-          "type": "number",
-          "description": "Total number of load handling points at the station."
       }
-    }
-  },
-  "loadHandlingPoints": {
+    },
+    "loadHandlingPoints": {
       "type": "array",
       "required": [
         "loadHandlingPointId",
@@ -125,11 +128,11 @@
         "physicalParameters",
         "restrictedInteractions"
       ],
-      "description": "These parameters generally specify the class and the capabilities of the load handling points.",
+      "description": "These parameters generally specify the class and the capabilities of the loadHandlingPoints. (LHP)",
       "properties": {
         "loadHandlingPointId": {
           "type": "string",
-          "description": "ID number of the load handling Point."
+          "description": "ID number of the LHP."
         },
         "stationClass": {
           "type": "string",
@@ -143,15 +146,15 @@
         },
         "isLoadHandlingActive": {
           "type": "boolean",
-          "description": "True: Load handling point can actively (independently) pick and drop goods from or to the MR."
+          "description": "True: LHP can actively (independently) pick and drop goods from or to the MR."
         },
         "doubleCycleRequired": {
           "type": "boolean",
-          "description": "True: It may be necessary to carry out double cycles at the load handling point."
+          "description": "True: It may be necessary to carry out double cycles at the LHP."
         },
         "loadHandlingUnitTypes": {
           "type": "array",
-          "description": "List of all loading units that can be handled at the load handling point, for example europallet, industrypallet, GMA-pallet, mesh_box, small_load_carrier, barrel, special_load_carrier. If this parameter does not exist or is empty, the load handling point is valid for all load unit types on this station.",
+          "description": "List of all loading units that can be handled at the LHP, for example europallet, industrypallet, GMA-pallet, mesh_box, small_load_carrier, barrel, special_load_carrier. If this parameter does not exist or is empty, the LHP is valid for all load unit types on this station.",
           "items": {
             "required": [
               "loadHandlingUnitType",
@@ -170,7 +173,7 @@
               },
               "parallelSequence": {
                 "type": "string",
-                "description": "Describes if the load handling point can manage more than on load in the ongoing load transfer."
+                "description": "Describes if the LHP can manage more than on load in the ongoing load transfer."
               }
             }
           }
@@ -183,7 +186,7 @@
             "height",
             "mass"
           ],
-          "description": "Maximum dimensions that can be processed by the load handling point.",
+          "description": "Maximum dimensions that can be processed by the LHP.",
           "properties": {
             "length": {
               "type": "number",
@@ -230,18 +233,18 @@
         "loadHandlingPoint": {
           "type": "object",
           "required": [
-            "position",
+            "pose",
             "tolerance"
           ],
-          "description": "Load transfer point at which the load can be picked up or dropped off by a mobile robot. The point describes the geometric center of the load for pick-up or delivery.",
+          "description": "Load handling point (LHP) at which the load can be picked up or dropped off by a mobile robot. The point describes the geometric center of the load for pick-up or delivery.",
           "properties": {
-            "position": {
+            "pose": {
               "type": "array",
-              "description":"Position for load transfer.",
+              "description":"Pose for load handling.",
               "required": [
                 "x",
                 "y",
-                "rad"
+                "z"
               ],
               "properties": {
                 "x": {
@@ -254,10 +257,10 @@
                   "description": "Y-position in factory-coordinate system.",
                   "unit": "m"
                 },
-                "rad": {
+                "z": {
                   "type": "number",
-                  "description": "Angle for handover position.",
-                  "unit": "rad"
+                  "description": "Z-position in factory-coordinate system.",
+                  "unit": "m"
                 }
               }
             },
@@ -265,24 +268,36 @@
               "type": "array",
               "description":"Acceptable tolerance for the load transfer.",
               "required": [
-                "x",
-                "y",
-                "rad"
+                "x-left",
+                "x-right",
+                "y-left",
+                "y-right",
+                "theta"
               ],
               "properties": {
-                "x": {
+                "x-left": {
                   "type": "number",
-                  "description": "X-position in factory-coordinate system.",
+                  "description": "x-left offset of door.",
                   "unit": "m"
                 },
-                "y": {
+                "x-right": {
                   "type": "number",
-                  "description": "Y-position in factory-coordinate system.",
+                  "description": "x-right offset of door.",
                   "unit": "m"
                 },
-                "rad": {
+                "y-left": {
                   "type": "number",
-                  "description": "Deviating tolerance for handover position.",
+                  "description": "y-left offset of door.",
+                  "unit": "m"
+                },
+                "y-right": {
+                  "type": "number",
+                  "description": "y-right offset of door.",
+                  "unit": "m"
+                },
+                "theta": {
+                  "type": "number",
+                  "description": "Orientation of the door in factory-coordinate system.",
                   "unit": "rad"
                 }
               }
@@ -298,14 +313,16 @@
               "requestAccess",
               "requestExit",
               "requestLoadTransfer",
-              "revokeAccess",
-              "requestFactsheet"
+              "requestRelease",
+              "requestFactsheet",
+              "requestContinueLoadTransfer",
+              "requestCancel"
             ]
           }
         },
         "physicalParameters": {
           "type": "object",
-          "description": "These parameters specify the basic physical properties of the load handling point.",
+          "description": "These parameters specify the basic physical properties of the LHP.",
           "required": [
             "height",
             "width",
@@ -317,42 +334,42 @@
           "properties": {
             "speedMin": {
               "type": "number",
-              "description": "Minimal controlled continuous speed of the load handling point.",
+              "description": "Minimal controlled continuous speed of the LHP.",
               "unit": "m/s"
             },
             "speedMax": {
               "type": "number",
-              "description": "Maximal controlled continuous speed of the load handling point.",
+              "description": "Maximal controlled continuous speed of the LHP.",
               "unit": "m/s"
             },
             "accelerationMax": {
               "type": "number",
-              "description": "Maximum possible acceleration for this load handling point.",
+              "description": "Maximum possible acceleration for this LHP.",
               "unit": "m/s^2"
             },
             "decelerationLimit": {
               "type": "number",
-              "description": "Maximum possible deceleration for this load handling point.",
+              "description": "Maximum possible deceleration for this LHP.",
               "unit": "m/s^2"
             },
             "height": {
               "type": "number",
-              "description": "Height of the load handling point.",
+              "description": "Height of the LHP.",
               "unit": "m"
             },
             "width": {
               "type": "number",
-              "description": "Width of the load handling point.",
+              "description": "Width of the LHP.",
               "unit": "m"
             },
             "length": {
               "type": "number",
-              "description": "Length of the load handling point.",
+              "description": "Length of the LHP.",
               "unit": "m"
             },
             "requiredHandoverHeight": {
               "type": "number",
-              "description": "Required height for handing over the load from MR to load handling point.",
+              "description": "Required height for handing over the load from MR to LHP.",
               "unit": "m"
             },
             "pickTime": {
@@ -373,18 +390,18 @@
             "restrictedVehiclesTypes",
             "restrictedLoads"
           ],
-          "description": "These parameters specify the restricted interactions with the load handling point.",
+          "description": "These parameters specify the restricted interactions with the LHP.",
           "properties": {
             "restrictedVehiclesTypes": {
               "type": "array",
-              "description": "List of all MRs types that are not allowed to interact at the load handling point. If this parameter does not exist or is empty, the load handling point is valid for all MRs on this station.",
+              "description": "List of all MRs types that are not allowed to interact at the LHP. If this parameter does not exist or is empty, the LHP is valid for all MRs on this station.",
               "items": {
                 "type": "string"
               }
             },
             "restrictedLoads": {
               "type": "array",
-              "description": "List of all loads that are not allowed to interact at the load handling point. If this parameter does not exist or is empty, the load handling point is valid for all MRs on this station.",
+              "description": "List of all loads that are not allowed to interact at the LHP. If this parameter does not exist or is empty, the LHP is valid for all MRs on this station.",
               "items": {
                 "type": "string"
               }
@@ -392,5 +409,6 @@
           }
         }
       }
+    }
   }
 }

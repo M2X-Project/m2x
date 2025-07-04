@@ -1,0 +1,12 @@
+ifdef::env-github[]
+[source,mermaid]
+endif::[]
+ifndef::env-github[]
+[mermaid]
+endif::[]
+....
+sequenceDiagram
+System X->>FM/MR: Order
+Note over FM/MR: Order processing
+FM/MR->>System X: Order confirmation
+....

@@ -1,6 +1,6 @@
 image::./assets/imgs/m2x_logo_colored.svg[width=50%,align="center"]
 
-== M2X - Interface for communication between automated guided vehicles (AGVs) and intralogistics systems in the AGV environment
+== M2X - Interface for communication between mobile robots and peripherals in industrial environments
 Version 0.1.1, October 2024
 
 == Official M2X Documentation
@@ -8,13 +8,11 @@ Version 0.1.1, October 2024
 The latest official documentation can be found on the https://m2x-project.github.io/m2x/[GitHub page]
 
 == Introduction
-The M2X project is being developed as part of Industrial Collective Research between the Chair of Material Handling and Warehousing at TU Dortmund University and the Fraunhofer Institute for Material Flow and Logistics IML (associated partner). The VDMA (German, Verband Deutscher Maschinen- und Anlagenbau e. V.) and various partners from industry support the project. The aim is to design universally applicable interfaces for communication between the master control (MC) via automated guided vehicles (AGVs) or autonomous mobile robots (AMRs) and industrial environment (load handling stations, order generation, peripherals, AGV to X).  Proposed changes to the interface are to be posted in the GitHub repository (https://github.com/M2X-Project/m2x). They will be jointly evaluated by the working group and, if the decision is positive, adopted in a new version.
-Warehousing is increasingly relying on AGVs and AMRs. However, the implementation of such automated guided vehicle systems (AGVS) is both time-consuming and cost-intensive and poses a challenge for both large companies and SMEs (small and medium sized companies). Interface definitions such as VDA 5050 standardize the connection between a master controller and AGVs and enable the cost-efficient use of heterogeneous fleets through interoperability. The M2X project, aims to reduce integration costs through further standardization in the AGVS context. Further necessary interfaces are identified and described using easily applicable, generally valid models. M2X enables companies to integrate automation quickly and cost-effectively. This gives companies a sustainable competitive advantage and secures their future on the market.
-The project and the associated requirements are defined and iteratively adapted in close communication with our partners. The interfaces identified so far for M2X are as follows:
-* Load handling station,
-* Order generation,
-* Peripherals (doors, elevators, (signal) lamps and traffic lights),
-* AGV to AGV or attachment.
+The M2X project is being developed as part of Industrial Collective Research between the Chair of Material Handling and Warehousing at TU Dortmund University and the Fraunhofer Institute for Material Flow and Logistics IML (associated partner). 
+The VDMA (German, Verband Deutscher Maschinen- und Anlagenbau e. V.) and various partners from industry support the project. 
+The aim is to design universally applicable interfaces for communication between the fleet management (FM)/mobile robots (MR) (such as automated guided vehicles (AGVs) or autonomous mobile robots (AMRs)) and other participants in an industrial environment like load handling stations, order generation, peripherals etc. 
+Proposed changes to the interface are to be posted in the GitHub repository (https://github.com/M2X-Project/m2x). 
+The project is work in progress.
 
 === Current status and participating at M2X
 The next steps, will deal with the load handling and order generation interfaces. The working group meets at regular meetings to discuss the new content and publish it.

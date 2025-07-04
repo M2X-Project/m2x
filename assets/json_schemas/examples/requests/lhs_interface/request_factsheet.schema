@@ -1,7 +1,7 @@
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "title": "requests",
-    "description": "JSON Schema for publishing requests that the MR/station is to execute as soon as they arrive.",
+    "description": "JSON Schema for the requestFactsheet.",
     "subtopic": "/requests",
     "type": "object",
     "properties": {

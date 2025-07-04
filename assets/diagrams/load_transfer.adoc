@@ -53,16 +53,16 @@ alt
   end
   I->>I: Drive out of station 
 
-  I->>S: M2X REQUEST[revokeAccess]: MR has left the station and requests to revoke access to the station 
+  I->>S: M2X REQUEST[requestRelease]: MR has left the station and requests to revoke access to the station 
   alt
   else Station status error
-    S-->>I: M2X STATUS[revokeAccess (State: FAILED)]: Access can not be revoked
+    S-->>I: M2X STATUS[requestRelease (State: FAILED)]: Access can not be revoked
     I->>I: handle error
   else Station busy
-    S-->>I: M2X STATUS[revokeAccess (State: PAUSED)]: Request for access revoke is paused
+    S-->>I: M2X STATUS[requestRelease (State: PAUSED)]: Request for access revoke is paused
     I->>I: wait for finish
      else Station ready
-  S-->>I: M2X STATUS[revokeAccess (State: COMPLETED)]: Station acknowledges the request and is ready for the next access request
+  S-->>I: M2X STATUS[requestRelease (State: COMPLETED)]: Station acknowledges the request and is ready for the next access request
   S-->>S: [OPTIONAL]: Unmute safety light curtains,<br>close machine protection gates etc.
   end
 ....

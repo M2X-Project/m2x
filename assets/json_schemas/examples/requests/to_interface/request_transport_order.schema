@@ -1,0 +1,208 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "requests",
+  "description": "JSON Schema for publishing requests that the MR/station is to execute as soon as they arrive.",
+  "subtopic": "/requests",
+  "type": "object",
+  "properties": {
+    "headerId": {
+      "type": "integer",
+      "description": "HeaderId of the message. The headerId is defined per topic and incremented by 1 with each sent (but not necessarily received) message."
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp in ISO8601 format (YYYY-MM-DDTHH:mm:ss.sssZ). The timestamp defines the point in time at which the message was sent.",
+      "examples": [
+        "2015-10-21T16:29:00.000Z"
+      ]
+    },
+    "version": {
+      "type": "string",
+      "description": "Version of the protocol [Major].[Minor].[Patch] (e.g. 1.3.2).",
+      "examples": [
+        "1.0.0"
+      ]
+    },
+    "requests": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "Describes an request that the entity can perform.",
+        "required": [
+          "requestId",
+          "requestType",
+          "blockingType"
+        ],
+        "properties": {
+          "requestType": {
+            "type": "string",
+            "description": "Name of request as described in the first column of \"Predefined requests\". Identifies the function of the request.",
+            "enum": [
+              "requestAccess",
+              "requestExit",
+              "requestLoadHandling",
+              "requestRelease",
+              "requestFactsheet",
+              "requestContinueLoadTransfer",
+              "requestCancel",
+              "requestTransportOrder"
+            ]
+          },
+          "requestId": {
+            "type": "string",
+            "description": "Unique ID to identify the request and map them to the requestState in the state. Suggestion: Use UUIDs."
+          },
+          "requestDescription": {
+            "type": "string",
+            "description": "Additional information on the request."
+          },
+          "blockingType": {
+            "type": "string",
+            "description": "Regulates if the request is allowed to be executed during movement and/or parallel to other requests.none: request can happen in parallel with others, including movement.soft: request can happen simultaneously with others, but not while moving. hard: no other requests can be performed while this request is running.",
+            "enum": [
+              "NONE",
+              "SOFT",
+              "HARD"
+            ]
+          },
+          "requestParameters": {
+            "type": "array",
+            "description": "Array of requestParameter-objects for the indicated request e. g. deviceId, loadId, external Triggers.",
+            "items": {
+              "type": "object",
+              "required": [
+                "key",
+                "value"
+              ],
+              "properties": {
+                "key": {
+                  "type": "string",
+                  "description": "transport_order"
+                },
+                "value": {
+                  "type": [
+                    "object"
+                  ],
+                  "description": "The value of the request parameter.",
+                  "transport_order": {
+                    "description": "JSON Schema for transport order description. The transport order contains of a collection of objectives that can be extend during the execution of a transport order. A transport order shall contain at least one objective. An objective is a description of an atomic transport step (WHAT and WHERE), e.g. transport 'Pallet 1' to 'storage location 5'.",
+                    "required": [
+                      "version",
+                      "timestamp",
+                      "transportOrderId",
+                      "transportOrderUpdateId",
+                      "isObjectiveListComplete",
+                      "objectives"
+                    ],
+                    "type": "object",
+                    "properties": {
+                      "version": {
+                        "type": "string",
+                        "description": "Version of the M2X protocol [Major].[Minor].[Patch] (e.g. 1.3.2)",
+                        "examples": [
+                          "1.0.0"
+                        ]
+                      },
+                      "timestamp": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp in ISO8601 Format (YYYY-MM-DDTHH:mm:ss.sssZ). The timestamp defines the point in time at which the message was sent.",
+                        "examples": [
+                          "2015-10-21T16:29:00.000Z"
+                        ]
+                      },
+                      "transportOrderId": {
+                        "type": "string",
+                        "description": "Transport order (TO) identification. This is to be used to identify multiple transport order messages that belong to the same transport order. The orderId is kept until a new order is received."
+                      },
+                      "transportOrderUpdateId": {
+                        "type": "integer",
+                        "description": "transportOrderUpdate identification. Is unique per transportOrderId. If an transport order update is rejected, this field is to be passed in the rejection message. '0' is the initial transport order. The transportOrderUpdateId is increased by one for each transport order update for the same transportOrderId. If a gap is identified by the TO receiving system in the sequence of transportOrderUpdateIds, the transport order update with the highest id shall be considered as the valid and. In case an transport order update with a lower or equal transportOrderUpdateId is received from the TO receiving system, the transport order update shall be reject.",
+                        "minimum": 0
+                      },
+                      "isObjectiveListComplete": {
+                        "type": "boolean",
+                        "description": "Indicates if the list of objectives is complete. If set to true, the list of objectives is complete and no further objectives or updates will be added to the transport order.",
+                        "default": false
+                      },
+                      "resourceId": {
+                        "type": "string",
+                        "description": "Unique identifier of the resource, e.g. ID of the mobile robot, that shall execute the transport order. In case the resourceId is set, the transport order is only valid for the specified resource. If the resourceId is unknown the order receiving system shall decline the transport order. If the resourceId is not set, the transport order is valid for all resources."
+                      },
+                      "priority": {
+                        "type": "string",
+                        "description": "Priority of the TO.",
+                        "enum": [
+                          "VERY_LOW",
+                          "LOW",
+                          "MEDIUM",
+                          "HIGH",
+                          "VERY_HIGH"
+                        ]
+                      },
+                      "objectives": {
+                        "type": "array",
+                        "description": "Defines a location where an action is to be performed by the transporting MR. The array has to contain at least one objective.",
+                        "items": {
+                          "type": "object",
+                          "title": "objective",
+                          "required": [
+                            "objectiveId",
+                            "sequenceId",
+                            "destination",
+                            "action"
+                          ],
+                          "properties": {
+                            "objectiveId": {
+                              "type": "string",
+                              "description": "Unique objective identification."
+                            },
+                            "sequenceId": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "description": "Number to track the sequence of objectives in an transport order and to simplify order updates. The main purpose is to distinguish between an objective which is passed more than once within one TO (same transportOrderId). The variable sequenceId runs across all objectives of the same transport order and is reset when a new transportOrderId is issued. To update an objective, the sequenceId of the objective to be updated has to be provided. The objective update replaces all following objectives starting from the sequenceId. The sequenceId shall be strictly sequential increasing."
+                            },
+                            "destination": {
+                              "type": "string",
+                              "description": "Defines the position (WHERE) a defined action is to be performed. Uniquely point of interest (POI) id (e.g. of an LHP or a LHS)."
+                            },
+                            "action": {
+                              "type": "string",
+                              "description": "Action to be performed at the destination (WHAT).",
+                              "enum": [
+                                "PICK",
+                                "DROP",
+                                "VIA"
+                              ]
+                            },
+                            "displayName": {
+                              "type": "string",
+                              "description": "Human readable name of the objective."
+                            },
+                            "loadHandlingUnit": {
+                              "type": "object",
+                              "description": "Description of the load, e.g. id, dimensions, weight etc. For further information see load_handling_unit.schema"
+                            },
+                            "earliestCompletionTime": {
+                              "type": "string",
+                              "description": "Earliest completion time of the objective in ISO8601 format (YYYY-MM-DDTHH:mm:ss.sssZ). Describes when the objective can be completed at the earliest."
+                            },
+                            "latestCompletionTime": {
+                              "type": "string",
+                              "description": "Latest completion time of the objective in ISO8601 format (YYYY-MM-DDTHH:mm:ss.sssZ). Describes when the objective has to be completed at the latest."
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

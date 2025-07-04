@@ -1,0 +1,47 @@
+ifdef::env-github[]
+[source,mermaid]
+endif::[]
+ifndef::env-github[]
+[mermaid]
+endif::[]
+....
+flowchart LR
+    start((Start)):::start_end
+    
+    request[request]:::request
+
+    
+
+    lhs_err{LHS error?}
+    mr_err{MR error?}
+    request_revoke{request is requestRelease?}
+    ContinueLoadTransfer[requestContinueLoadTransfer]:::request
+    manual_interaction[manual Interaction with MR]
+
+
+
+
+    end_error((End)):::start_end
+
+
+    classDef request fill:#c1121f,color:#fff
+    classDef start_end fill:#03071e,color:#fff
+    start-->request
+    -->lhs_err--No (COMPLETED) -->
+    mr_err--No (COMPLETED) --->
+    request_revoke--No (COMPLETED) -->request
+
+    mr_err--Yes (FAILED) -->manual_interaction
+    manual_interaction-->ContinueLoadTransfer
+    ContinueLoadTransfer-->lhs_err
+
+    lhs_err--Yes (FAILED) -->end_error
+    request_revoke--Yes (FAILED) -->end_error
+
+    
+    
+
+
+   
+    
+....

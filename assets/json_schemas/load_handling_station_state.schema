@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "state",
-  "description": "All encompassing states of the load transfer station.",
+  "description": "All encompassing states of the load handling station (LHS).",
   "subtopic": "/state",
   "type": "object",
   "required": [
@@ -15,9 +15,9 @@
     "timestamp": {
       "type": "string",
       "format": "date-time",
-      "description": "Timestamp in ISO8601 Format (YYYY-MM-DDTHH:mm:ss.sssZ).",
+      "description": "Timestamp in ISO8601 Format (YYYY-MM-DDTHH:mm:ss.sssZ). The timestamp defines the point in time at which the message was sent.",
       "examples": [
-        "2024-01-01T11:40:03.12Z"
+        "2015-10-21T16:29:00.000Z"
       ]
     },
     "version": {
@@ -29,15 +29,15 @@
     },
     "serialNumber": {
       "type": "string",
-      "description": "Serial number of the load handling station."
+      "description": "Serial number of the LHS."
     },
     "manufacturer": {
       "type": "string",
-      "description": "Manufacturer of the load handling station."
+      "description": "Manufacturer of the LHS."
     },
     "loadHandlingStationAvailable": {
       "type": "boolean",
-      "description": "Indicates if the load handling station is available for operation."
+      "description": "Indicates if the LHS is available for operation."
     },
     "loadHandlingPointState": {
       "type": "object",
@@ -52,11 +52,11 @@
       "properties": {
         "loadHandlingPointId": {
           "type": "string",
-          "description": "Unique identifier of the individual load handling point of the load handling station."
+          "description": "Unique identifier of the individual LHP of the LHS."
         },
         "operatingMode": {
           "type": "string",
-          "description": "Current operating mode of the load handling station.",
+          "description": "Current operating mode of the LHS.",
           "enum": [
             "AUTOMATIC",
             "MANUAL",
@@ -65,7 +65,7 @@
         },
         "loadHandlingPointAvailable": {
           "type": "boolean",
-          "description": "Indicates if the load handling point is available for operation."
+          "description": "Indicates if the LHP is available for operation."
         },
         "loadHandlingSessionId": {
           "type": "string",
@@ -76,7 +76,6 @@
           "description": "Array of upcoming and current requests.",
           "items": {
             "type": "object",
-            "title": "requestState",
             "required": [
               "requestId",
               "requestStatus"
@@ -84,7 +83,7 @@
             "properties": {
               "requestId": {
                   "type": "string",
-                  "description": "Unique requestId",
+                  "description": "Id of a request to be referred to in this state.",
                   "examples": [
                       "requestAccess_1337"
                   ]
@@ -97,6 +96,7 @@
                 "type": "string",
                 "description": "Status of the request.",
                 "enum": [
+                  "PENDING",
                   "RUNNING",
                   "PAUSED",
                   "COMPLETED",
@@ -112,14 +112,13 @@
         },
         "errors": {
           "type": "array",
-          "description": "Array of error-objects. All active errors of the load handling station should be in the list. An empty array indicates that the load handling station has no active errors.",
+          "description": "Array of error-objects. All active errors of the LHS should be in the list. An empty array indicates that the LHS has no active errors.",
           "items": {
             "type": "object",
             "required": [
               "errorType",
               "errorLevel"
             ],
-            "title": "Error",
             "properties": {
               "errorType": {
                 "type": "string",
@@ -129,7 +128,6 @@
                 "type": "array",
                 "items": {
                   "type": "object",
-                  "title": "errorReference",
                   "description": "Object that holds the error reference to requests as key-value pairs.",
                   "properties": {
                     "required": [

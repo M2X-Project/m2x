@@ -1,0 +1,167 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Transport order state",
+  "description": "JSON Schema for state of a transport order.",
+  "required": [
+    "version",
+    "timestamp",
+    "transportOrderId",
+    "transportOrderUpdateId",
+    "lastObjectiveId",
+    "objectiveStates",
+    "errors"
+  ],
+  "type": "object",
+  "properties": {      
+    "version": {
+      "type": "string",
+      "description": "Version of the M2X protocol [Major].[Minor].[Patch] (e.g. 1.3.2)",
+      "examples": [
+        "1.0.0"
+      ]
+    },
+    "timestamp": {
+        "type": "string",
+        "format": "date-time",
+        "description": "Timestamp in ISO8601 Format (YYYY-MM-DDTHH:mm:ss.sssZ). The timestamp defines the point in time at which the message was sent.",
+        "examples": [
+          "2015-10-21T16:29:00.000Z"
+        ]
+      },
+    "transportOrderId": {
+        "type": "string",
+        "description": "Unique transport order identification of the current transport order or the previous finished transport order. The transportOrderId is kept until a new transport order is received. Empty string (\"\") if no previous transportOrderId is available."
+    },
+    "transportOrderUpdateId": {
+        "type": "integer",
+        "description": "Transport order update identification to identify that an transport order update has been accepted by the FM or MR. \"0\" if no previous transportOrderUpdateId is available."
+    },
+    "lastObjectiveId": {
+      "type": "string",
+      "description": "lastObjectiveId of last reached objective or, if MR is currently on an objective, current objective (e.g., \"objective\"). Empty string (\"\") if no lastObjectiveId is available."
+    },
+    "resourceId": {
+      "type": "string",
+      "description": "Unique identifier of the resource, e.g. ID of the mobile robot, that executes the transport order."
+    },
+    "priority": {
+      "type": "string",
+      "description": "Priority of the objective.",
+      "enum": [
+        "VERY_LOW",
+        "LOW",
+        "MEDIUM",
+        "HIGH",
+        "VERY_HIGH"
+      ]
+    },
+    "isCancelled": {
+      "type": "boolean",
+      "description": "Indicates whether the transport order is cancelled or not. If true, the transport order is cancelled and no further objectives are to be executed."
+    },
+    "objectiveStates": {
+      "type": "array",
+      "description": "Array of objectiveStates, that need to be traversed for fulfilling the transport order. Empty list if idle.",
+      "items": {
+        "type": "object",
+        "title": "objectiveState",
+        "required": [
+            "objectiveId",
+            "sequenceId"
+        ],
+        "properties": {
+          "objectiveId": {
+              "type": "string",
+              "description": "Unique objective identification."
+          },
+          "sequenceId": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Number to track the sequence of objectives in an transport order and to simplify order updates. The main purpose is to distinguish between an objective which is passed more than once within one TO (same transportOrderId). The variable sequenceId runs across all objectives of the same transport order and is reset when a new transportOrderId is issued. To update an objective, the sequenceId of the objective to be updated has to be provided. The objective update replaces all following objectives starting from the sequenceId. The sequenceId shall be strictly sequential increasing."
+          },
+          "destination": {
+              "type": "string",
+              "description": "Defines the position (WHERE) a defined action is to be performed. Uniquely point of interest (POI) id (e.g. of an LHP or a LHS)."
+          },
+          "action": {
+              "type": "string",
+              "description": "Action to be performed at the destination (WHAT).",
+              "enum": [
+                "PICK",
+                "DROP",
+                "VIA"
+              ]
+          },
+          "displayName": {
+              "type": "string",
+              "description": "Human readable name of the objective."
+          },
+          "loadHandlingUnit": {
+              "type": "object",
+              "description": "Description of the load, e.g. id, dimensions, weight etc. For further information see load_handling_unit.schema"
+          },
+          "estimatedCompletionTime": {
+              "type": "string",
+              "description": "Estimated completion time of the objective in ISO8601 format (YYYY-MM-DDTHH:mm:ss.sssZ)."
+          }
+        } 
+      }
+    },
+    "errors": {
+      "type": "array",
+      "description": "Array of error-objects. All active errors of the TO should be in the list. An empty array indicates that the TO has no active errors.",
+      "items": {
+        "type": "object",
+        "required": [
+          "errorType",
+          "errorLevel"
+        ],
+        "properties": {
+          "errorType": {
+            "type": "string",
+            "description": "Type of error.",
+            "enum": [
+              "OBJECTIVE_ALREADY_COMPLETED",
+              "OBJECTIVE_IN_EXECUTION",
+              "SEQUENCE_ID_NON_CONTIGUOUS",
+              "ERROR_DURING_EXECUTION"
+            ]
+          },
+          "errorReferences": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "description": "Object that holds the error reference to requests as key-value pairs.",
+              "properties": {
+                "required": [
+                  "referenceKey",
+                  "referenceValue"
+                ],
+                "referenceKey": {
+                  "type": "string",
+                  "description": "References cause of the error (e.g. objectiveId and sequenceId of the TO)."
+                },
+                "referenceValue": {
+                  "type": "string",
+                  "description": "References the value, which belongs to the reference key."
+                }
+              }
+            }
+          },
+          "errorDescription": {
+            "type": "string",
+            "description": "Verbose description of error."
+          },
+          "errorLevel": {
+            "type": "string",
+            "description": "Description of the error level, which is WARNING or FATAL.",
+            "enum": [
+              "WARNING",
+              "FATAL"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,7 +1,7 @@
 {
  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "loadHandlingUnits",
-  "description": "Description of the load handling unit for the load transfer.",
+  "title": "loadHandlingUnit",
+  "description": "Description of the load handling unit (LHU) for the load transfer.",
   "subtopic": "/loadHandlingUnits",
   "type": "object",
   "required": [
@@ -18,14 +18,14 @@
     },
     "loadHandlingUnit":{
         "type":"object",
-        "description":"Describes all properties of the load handling unit.",
+        "description":"Describes all properties of the LHU.",
         "required":[
             "loadHandlingUnitType"
         ],
         "properties": {
             "loadUnitId":{
                 "type": "string",
-                "description": "ID number of the load handling unit."
+                "description": "ID number of the LHU."
             },
             "loadHandlingUnitType":{
                 "type":"string",
@@ -38,22 +38,26 @@
             },  
             "height": {
                 "type": "number",
-                "description": "Height of the load handling unit (outer dimensions).",
+                "description": "Height of the LHU (outer dimensions).",
                 "unit": "m"
             },
             "width": {
                 "type": "number",
-                "description": "Width of the load handling unit (outer dimensions).",
+                "description": "Width of the LHU (outer dimensions).",
                 "unit": "m"
             },
             "length": {
                 "type": "number",
-                "description": "Length of the load handling unit (outer dimensions).",
+                "description": "Length of the LHU (outer dimensions).",
                 "unit": "m"
             },
             "outerPackaging":{
                 "type":"string",
-                "description":"Describes the outer packaging of the load handling unit, e.g. wrapping, strapping etc."
+                "description":"Describes the outer packaging of the LHU, e.g. wrapping, strapping etc."
+            },
+            "symmetrical":{
+                "type":"boolean",
+                "description":"Describes if the orientation of the LHU is symmetrical."
             }
         }
     }   

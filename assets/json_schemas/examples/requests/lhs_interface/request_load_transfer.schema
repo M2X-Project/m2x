@@ -1,7 +1,7 @@
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "title": "requests",
-    "description": "JSON Schema for publishing requests that the MR/station is to execute as soon as they arrive.",
+    "description": "JSON Schema for the requestLoadTransfer.",
     "subtopic": "/requests",
     "type": "object",
     "properties": {
@@ -39,14 +39,7 @@
                         "type": "string",
                         "description": "Name of request as described in the first column of \"Predefined requests\". Identifies the function of the request.",
                         "enum": [
-                            "requestAccess",
-                            "requestExit",
-                            "requestLoadHandling",
-                            "requestRelease",
-                            "requestFactsheet",
-                            "requestContinueLoadTransfer",
-                            "requestCancel",
-                            "requestTransportOrder"
+                            "requestLoadTransfer"
                         ]
                     },
                     "requestId": {
@@ -78,33 +71,17 @@
                             "properties": {
                                 "key": {
                                     "type": "string",
-                                    "description": "The key of the request parameter.",
-                                    "examples": [
-                                        "duration",
-                                        "direction",
-                                        "signal"
-                                    ]
+                                    "description": "requestLoadTransfer"
                                 },
                                 "value": {
                                     "type": [
-                                        "array",
-                                        "boolean",
-                                        "number",
-                                        "string",
                                         "object"
                                     ],
                                     "description": "The value of the request parameter.",
-                                    "examples": [
-                                        103.2,
-                                        "left",
-                                        true,
-                                        [
-                                            "arrays",
-                                            "are",
-                                            "also",
-                                            "valid"
-                                        ]
-                                    ]
+                                            "loadHandlingSessionId": {
+                                                "type": "string",
+                                                "description": "Unique identifier of the complete request session in a process, e.g. the load handling."
+                                    }
                                 }
                             }
                         }

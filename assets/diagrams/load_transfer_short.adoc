@@ -25,7 +25,7 @@ sequenceDiagram
   S->>S: [OPTIONAL]: Prepare for exit (mute safety light curtains,<br>open machine protection gates etc.)
   S-->>I: M2X STATUS[requestExit (State: COMPLETED)]: Station is ready to exit
   I->>I: Drive out of station 
-  I->>S: M2X REQUEST[revokeAccess]: MR has left the station and requests to revoke access to the station 
-  S-->>I: M2X STATUS[revokeAccess (State: COMPLETED)]: Station acknowledges the request and is ready for the next access request
+  I->>S: M2X REQUEST[requestRelease]: MR has left the station and requests to revoke access to the station 
+  S-->>I: M2X STATUS[requestRelease (State: COMPLETED)]: Station acknowledges the request and is ready for the next access request
   S-->>S: [OPTIONAL]: Unmute safety light curtains,<br>close machine protection gates etc.
 ....

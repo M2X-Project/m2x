@@ -1,0 +1,26 @@
+ifdef::env-github[]
+[source,mermaid]
+endif::[]
+ifndef::env-github[]
+[mermaid]
+endif::[]
+....
+flowchart TD
+    id1[ERP]
+    id2[WMS]
+    id3[Manual order generation]
+    id4{{Order assignment to FM or MR}}
+    id1-- M2X transport order -->id4
+    id2-- M2X transport order -->id4
+    id3-- M2X transport order -->id4
+    id5[FM]
+    id6[1-n MR]
+    id4-->id5
+    id4-->id6
+    id7[MR 1]
+    id8[MR 2]
+    id9[MR X]
+    id5-->id7
+    id5-->id8
+    id5-->id9
+....

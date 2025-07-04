@@ -7,12 +7,15 @@
 // :toc-title:
 
 == M2X - Interface for communication between mobile robots and peripherals in industrial environments
-Version 0.1.1, October 2024
+Version 0.2.1, June 2025
 
-=== Brief information
-The aim is to design universally applicable interfaces for communication between the fleet management (FM)/mobile robots (MR) (such as automated guided vehicles (AGVs) or autonomous mobile robots (AMRs)) and other participants in an industrial environment like load handling stations, order generation, peripherals etc. 
-The project is supported by the VDMA and various partners from industry. 
-For comments, desired content or bug fixes, an issue or pull request should be submitted to GitHub. 
+M2X (Machine to X) is a research project developed by the Chair of Material Handling and Warehousing at TU Dortmund University and the Fraunhofer Institute for Material Flow and Logistics IML (associated partner). 
+The project gets support by the VDMA (German, Verband Deutscher Maschinen- und Anlagenbau e. V.) and various partners from industry. 
+Content is developed jointly between the research partners and the industry and the result is made publicly available in the form of the M2X interface definition.
+The aim is to design universally applicable interfaces for communication between the fleet management (FM)/mobile robots (MR) (such as automated guided vehicles (AGVs) or autonomous mobile robots (AMRs)) and other participants in an industrial environment like load handling stations, transport orders, peripherals etc.  
+Proposed changes, bug fixes, issues or pull requests to the interface are to be posted in the https://github.com/M2X-Project/m2x[GitHub repository]. 
+The latest official documentation can be found on the https://m2x-project.github.io/m2x/[GitHub page].
+They will be jointly evaluated by the working group and, if the decision is positive, adopted in a new version.
 *The project is work in progress.*
 
 === Disclaimer
@@ -23,22 +26,10 @@ M2X also requires that the data quality of an implementation is sufficiently goo
 
 If you encounter any inaccuracies in the application of the proposals or the possibility of an incorrect interpretation, please report them in the official https://github.com/M2X-Project/m2x/issues[issues] of the M2X GitHub repository.
 
-=== Official M2X Documentation
-
-The latest official documentation can be found on the https://m2x-project.github.io/m2x/[GitHub page].
-
-== Introduction
-M2X (Machine to X) is a research project developed by the Chair of Material Handling and Warehousing at TU Dortmund University and the Fraunhofer Institute for Material Flow and Logistics IML (associated partner). 
-The project gets support by the VDMA (German, Verband Deutscher Maschinen- und Anlagenbau e. V.) and various partners from industry. 
-Content is developed jointly between the research partners and the industry and the result is made publicly available in the form of the M2X interface definition.
-The aim of the project is to design a universally applicable interfaces for communication between a FM or/and MRs (such as automated guided vehicles (AGVs) or autonomous mobile robots (AMRs)) and a industrial environment (load handling stations, order generation, peripherals, MR to X).  
-Proposed changes to the interface are to be posted in the https://github.com/M2X-Project/m2x[GitHub repository]. 
-They will be jointly evaluated by the working group and, if the decision is positive, adopted in a new version.
-
 === Background and motivation
 
 Warehousing is increasingly relying on MRs. 
-However, the implementation of MR systems is both time-consuming and cost-intensive and poses a challenge for both large companies and SMEs (small and medium sized companies). 
+However, the implementation of MR systems is both time-consuming and cost-intensive and is a challenge for both large companies and SMEs (small and medium sized companies). 
 Interface definitions such as VDA 5050 standardize the connection between a FM and MRs and enable the cost-efficient use of heterogeneous fleets through interoperability. 
 The M2X project, aims to reduce integration costs through further standardization in the MR context. 
 Further necessary interfaces are identified and described using easily applicable, generally valid models. 
@@ -47,8 +38,8 @@ This gives companies a sustainable competitive advantage and secures their futur
 The project and the associated requirements are defined and iteratively adapted in close communication with our partners. 
 The interfaces identified so far for M2X are as follows:
 
-* Load handling station,
-* Order generation,
+* Load handling,
+* Transport orders,
 * Peripherals (doors, elevators, (signal) lamps and traffic lights),
 * MR to MR or attachment.
 
@@ -66,7 +57,7 @@ For a direct contact via mail please refer to sven.franke@tu-dortmund.de and den
 
 [#objective_and_scope_of_m2x, reftext="Section: Objective and Scope of M2X"]
 == Objective and scope of M2X
-The aim of the interface is to simplify the commissioning of MR systems in an existing industrial environment (peripherals, load handling stations, order generation, MR to MR or attachment) when used in industry. 
+The aim of the interface is to simplify the commissioning of MR systems in an existing industrial environment (peripherals, load handling stations, transport orders, MR to MR or attachment) when used in industry. 
 The interface should enable the seamless operation of different peripherals from different manufacturers and conventional systems (existing systems).
 xref:m2x_overview[] shows the idea of the M2X framework.
 In detail, this is to be achieved through the following points:
@@ -83,6 +74,13 @@ Safe communication protocols, e.g. via PROFIsafe, are not considered.
 * M2X will be fully compatible with the VDA 5050 but it is not a requirement to use M2X.
 * The description of the communication is described middleware neutral. 
 Nevertheless, It is assumed that the communication type follows a topic-based publish-subscribe communication.
+* FM describes the management, planning, control and monitoring of vehicle fleets. This involves coordinating, evaluating and optimizing vehicle routes, taking into account certain influencing parameters. A FM Service is available for every MR. It can be either centralized or decentralized. Centralized in terms of coordinating the underlying MRs, e.g. VDA 5050. In terms of decentralized planning the MR has an own FM-Service included locally.
+* Every M2X interface follows the same structure and is described in the same way:
+  ** Participants describe themselves with a factsheet.
+  ** Communication is request-based, meaning that the participant is asked to respond to a request.
+  ** Requests are communicated with the states: PENDING, RUNNING, PAUSED, COMPLETED, FAILED.
+  ** There can only be one active request per participant with a peripheral device. This applies to every peripheral device and must be actively monitored by FM. Old requests are deleted by request_cancel. Old open requests can be read from the states after failure.
+  ** JSON schemas are provided for the factsheets, states and requests.
 
 image::m2x_overview.png[title="Overview of the M2X Framework, exemplary interfaces which can be considered.", 640,480,align="center", id=m2x_overview]
 
@@ -138,8 +136,11 @@ The protocol specifies the communication between the MR/FM and the environment.
 
 The different messages are presented in tables describing the contents of the fields of the JSON that is sent as an request, state, etc. 
 
-In addition, JSON schemas are available for validation in the https://github.com/M2X-Project/m2x/tree/main/json_schemas[corresponding GitHub repository]. 
+In addition, JSON schemas are available for validation in the corresponding https://github.com/M2X-Project/m2x/tree/main/assets/json_schemas[ GitHub repository]. 
 The JSON schemas are updated with every release of M2X.
+
+The recommended message protocol is Message Queuing Telemetry Transport (MQTT), which is to be used in conjunction with a JSON structure. MQTT is TCP (Transmission Control Protocol) based and allows the distribution of messages to subchannels, which are called "topics". Participants in the MQTT network subscribe to these topics and receive information that concerns or interests them.
+Other message protocols can also be used, for example, OPC UA (Open Platform Communications Unified Architecture) or other who are real-time capable over UDP (User Datagram Protocol).
 
 === Symbols of the tables and meaning of formatting
 The table contains the name of the identifier, its unit, its data type, and a description, if any.
@@ -166,26 +167,14 @@ The matching of maximum field lengths, string lengths or value ranges is up to t
 For ease of integration, vendors must supply a factsheet that is detailed in the corresponfing section.
 
 === Notation of enumerations
-Enumerations must be written in uppercase. 
-This includes keywords such as the states of the actions and requests (RUNNING, COMPLETED, etc...) or values of the "direction" field (LEFT, RIGHT, 443MHZ, etc...).
+Enumerations must be written in upper snake case. 
+This includes keywords such as the states of the actions and requests (RUNNING, COMPLETED, REQUEST_ACCESS, etc...).
 
-=== JSON Datatypes
+=== JSON datatypes
 Where possible, JSON data types must be used. 
 A Boolean value is thus encoded by "true / false", NOT with an enumeration (TRUE, FALSE) or magic numbers.
 
-=== Protocol header
-Each JSON starts with a header. 
-In the following sections, the following fields will be referenced as header for readability. 
-The header consists of the following individual elements. 
-The header is not a JSON object.
-|===
-|object structure / identifier|data type|description
-
-|timestamp|string|Timestamp (ISO 8601, UTC); YYYY-MM-DDTHH:mm:ss.fffZ (e.g. 2017-04-15T11:40:03.123Z).
-|version|string|Version of the protocol [Major].[Minor].[Patch] (e.g. 1.3.2).
-|===
-
-== General Topic Structure ==
+== General topic structure ==
 
 Since M2X assumes a publish-subscribe communication, the following topic structure is used:
 
@@ -204,66 +193,87 @@ Communication during load handling can take place between FM and station or MR a
 The MR actively transfers or receives a load to a load handling station. 
 The transfer or receipt of a load is called PICK or DROP, which only refers to the physical process and not an action as in VDA 5050.
 
-*Definition of _load handling_:* _Load handling_ refers to the handover of a load at a transfer point or point of interest. 
+*Definition of _load handling_:* _Load handling_ refers to the handover of a load at a transfer point or point of interest (PoI). 
+A PoI uses a unique identifier.
 This includes the entry, the physical handover/manipulation and the exit of an MR at a station. 
 Once the physical load transfer of a MR is in progress, it should not be paused.
 
-*Definition _load handling station_:* A _load handling station_ (LHS) serves as a point of interest at which the load is transferred or changed/manipulated. 
+*Definition _load handling station_:* A _load handling station_ (LHS) serves as a PoI at which the load is transferred or changed/manipulated. 
 The station can have multiple _load handling points_ which are comparable to a VDA 5050 “node”. 
 To avoid confusions regarding the VDA 5050 it is called _load handling point_.
-The _load handling station_ will provide no traffic management.
+The _LHS_ will provide no traffic management.
 It is assumed that there is a traffic management that takes care of the coordination of the MRs. 
 Hence, the coordination and deadlock avoidance of the MRs at the different _load handling points_ is managed by the traffic management. Meaning that the station will only manage the interaction areas of the _load handling points_.
-The station will only manage itself.
 The station can decide if a MR can approach a _load handling point_ or not.
-The _load handling station_ factsheet includes the geometry of the physical station (footprint of the station). 
+The _LHS_ factsheet includes the geometry of the physical station (footprint of the station). 
 The area around is managed by the FM.
 
 
-*Definition _load handling point_:* A _load handling point_ is a physical point of a _load handling station_ where the load is transferred or changed/manipulated. 
-Only one MR can interact with a _load handling point_ at the same time. 
-The _load handling point_ can be approached from different directions (list of polygons) (cf. xref:load_handling_station_view[]).
-If there are two or more load handling points which share the same interaction area in one station, the interaction area is managed by the corresponding load handling station.
+*Definition _load handling point_:* A _load handling point_ _(LHP)_ is a physical point of a _LHS_ where the load is transferred or changed/manipulated. 
+Only one MR can interact with a _LHP_ at the same time. 
+The _LHP_ can be approached from different directions (list of polygons) (cf. xref:load_handling_station_view[]).
+A load can be picked up or dropped off by a mobile robot at a _LHP_. 
+The _LHP_ describes the geometric center of the load for pick-up or delivery.
+The geometric center of a load is explained in the section xref:load_handling_unit[].
+The _LHP_ can be considered as reached when the MR is within the interaction area of the _LHP_.
+This can be due to the fact that a _LHP_ is physically not reachable by the MR, e.g. 
 
-The xref:load_handling_station_view[figure] below shows an exemplary use case in which two load handling points occur. One station has two load handling points. 
+* the load handling device, e.g. fork, of the MR is responsible to hand over the load, meaning that the load reaches the _LHP_ but the MR does not.
+* the load is mechanically stripped from the MR to the LHP, meaning that the MR drives through the _LHP_ and the load is stripped off by the movement.
+
+If there are two or more LHPs which share the same interaction area in one station, the interaction area is managed by the corresponding LHS.
+Maneuvering is only permitted in the interaction area. 
+This area must therefore be planned to be large enough.
+
+The xref:load_handling_station_view[figure] below shows an exemplary use case in which two LHPs occur. One station has two LHPs. 
 The outer rectangular frame indicates the station footprint. 
-The black frames represent the two physical load handling points in the environment. 
-The black dots indicate the geometric handover point (see link:assets/json_schemas/load_handling_station_factsheet.schema[Load Handling Station Factsheet] .loadHandlingPoints.handoverArea). 
+The black frames represent the two physical LHPs in the environment. 
+The black dots indicate the geometric handover point (see link:assets/json_schemas/load_handling_station_factsheet.schema[LHS Factsheet] .loadHandlingPoints.handoverArea). 
 The red interaction area of the MRs, which can approach the station from both sides (indicated by the arrows). 
 The station only manages itself and blocks the interaction area if necessary (state .loadHandlingPointAvailable). 
 Which MR approaches the station and how is determined for example by a traffic management or another management system.
-The second xref:lhs_with_traffic_management[figure] shows a load handling station with a shared traffic management area. The staion has two load handling points. As already mentioned it only manages its own load handling points with the corresponding interaction areas. All other passable routes of an MR, even within the station footprint, are controlled by Traffic Management.
-If two different Load Handling Stations share the same interaction area, it is recommended to configure them as one and follow the procedure described above.
+The second xref:lhs_with_traffic_management[figure] shows a LHS with a shared traffic management area. The station has two LHPs. As already mentioned it only manages its own LHPs with the corresponding interaction areas. All other passable routes of an MR, even within the station footprint, are controlled by Traffic Management.
+If two different LHSs share the same interaction area, it is recommended to configure them as one and follow the procedure described above.
 
-image::lhs_self_managed_area.svg[title="Exemplary use case of a load handling station with two load handling points", 640,480,align="center", id=load_handling_station_view,align="center"]
+image::lhs_self_managed_area.svg[title="Exemplary use case of a LHS with two LHPs", 640,480,align="center", id=load_handling_station_view,align="center"]
 
-image::lhs_with_traffic_management.svg[title="Exemplary use case of a load handling station with two load handling points and a shared traffic management area", 640,480,align="center", id=lhs_with_traffic_management,align="center"]
-
+image::lhs_with_traffic_management.svg[title="Exemplary use case of a LHS with two LHPs and a shared traffic management area", 640,480,align="center", id=lhs_with_traffic_management,align="center"]
+ 
 
 === Requirements for a M2X load handling station
-This section describes the requirements for a load handling station to use the M2X protocol. 
-It is assumed that a load handling station is an active participant that can actively communicate and manage its status. 
+This section describes the requirements for a LHS to use the M2X protocol. 
+It is assumed that a LHS is an active participant that can actively communicate and manage its status. 
 The following points are requirements that a station must fulfill:
 
-* A load handling station is at least represented by a physical area and a software that can handle the status of this area and can communicate with other participants.
-* The software of the load handling station manages the process and states described in xref:load_handling_sequence_diagram[xrefstyle=short] (e.g. requestAccess, requestExit, requestLoadTransfer, revokeAccess ...).
+* A LHS is at least represented by a physical area and a software that can handle the status of this area and can communicate with other participants.
+* The software of the LHS manages the process and states described in xref:load_handling_sequence_diagram[xrefstyle=short] (e.g. requestAccess, requestExit, requestLoadTransfer, requestRelease ...).
 * It has an unique ID and can describe itself via a factsheet.
 * Is assigned to an unique position and represents an area in the industrial environment.
-* The load handling station shall be represented in a global map in the factory coordinate system with its position and dimensions.
+* The LHS shall be represented in a global map in the factory coordinate system with its position and dimensions. M2X uses a right-handed coordinate system (z-Axis pointing up).
 
 === Safety considerations for load handling
 As already mentioned in the xref:objective_and_scope_of_m2x[] there will be no further safety considerations in the protocol. 
 The purpose of the interface is to provide a functional plug & play approach. 
-Safety regarding entries and exits can be abstracted/indirectly set via requirements for the accuracy of the position to be taken (see link:assets/json_schemas/load_handling_station_factsheet.schema[Load Handling Station Factsheet] .loadHandlingPoints.handoverArea). 
+Safety regarding entries and exits can be abstracted/indirectly set via requirements for the accuracy of the position to be taken (see link:assets/json_schemas/load_handling_station_factsheet.schema[LHS Factsheet] .loadHandlingPoints.handoverArea). 
 Considerations in the communication process for mutings at stations are included and can be taken into account.
 
 === Errors
-If an error occurs the station reports errors via the errors array. 
+An error should only be reported if it can no longer be solved by the participant (machine or MR) and needs human intervention.
+If an error occurs the participant reports errors via the errors array. 
 Errors have two levels: WARNING and FATAL. 
-A WARNING is a self-resolving error, e.g., a field violation. A FATAL error needs human intervention. 
+A WARNING is a self-resolving error, e.g., a field violation.
+A FATAL error needs human intervention. 
 Errors can pass references that help with finding the cause of the error via the errorReferences array. 
-Errors occuring on the MR side are not resolved by M2X. 
-The implementation is described in the relevant JSON schemas. 
+The implementation is described in the relevant JSON schemas.
+Any error on the station's side that cannot be resolved results in a "State Failed" report on the request. The decision lies with the station to determine when an error is fatal and must be reported as failed. Errors that can be resolved, and where the station itself possesses this knowledge, require the station to return the "State RUNNING".
+Every explicit state response to a request with a "Failed State" from an LHS terminates the process.
+General state messages with an "ERROR" that do not relate to a state response serve merely as information that interaction with the station is not possible. An already triggered response is not affected by this. Only the direct response triggers a termination.
+
+The sequence of an error during load handling is shown in the following diagram:
+include::assets/diagrams/load_transfer_error.adoc[Error load handling diagram]
+
+In the event of an error, the diagram runs as follows. The first decision point is the LHS. As soon as the error occurs here, human interaction is required or the error correction is not part of M2X. If the error occurs at the MR, human interaction is required. The actual process can then be resumed with the requestContinueLoadTransfer if the states can be saved. If the error then occurs, the system queries whether the error occurs in the requestRelease. The process only ends when this request is reached.
+
 A error message can include the following information:
 
 * headerId,
@@ -272,8 +282,48 @@ A error message can include the following information:
 * List of parameters if error was caused by erroneous request parameters.
 If an request cannot be completed because of external factors (e.g. no load at expected position), the requestId should be referenced.
 
+[#load_handling_unit, reftext="Section: Load Handling Unit"]
+=== Load handling unit 
+
+The load handling unit (LHU) is the object that is transferred between the MR and the LHS.
+The LHU is described in the JSON schema link:assets/json_schemas/load_handling_unit.schema[Load handling unit].
+The following assumptions are made for the definition of the coordinate system of the LHU:
+
+* M2X uses a right-handed coordinate system (z-Axis pointing up).
+* The origin is in the center of the LHU.
+* The X-axis points along the longest side of the LHU.
+* The orientation of an LHU is described relative to the coordinate system in which it is currently located, e.g. on an MR or an LHP of an LHS.
+* The pose of the LHU is always in the local coordinate system, e.g. MR or LHS. With the transfer requestLoadTransfer, the station is informed that the LHU has been transferred to the station with the following orientation in the coordinate system. The FM, MR or another system is responsible for carrying out a transformation to the station's target coordinate system.
+* The load pose should always have X,Y,Z and theta.
+
+The FM or a comparable system is responsible for creating the necessary transformation chain for transferring an LHU from an MR to an LHS or vice versa. xref:load_orientation[] shows an exemplary visualisation of different load orientations. 
+In this example a MR is transferring a LHU to a LHS respectively the LHP. 
+The LHU, LHS and MR are oriented in different ways. 
+The handover of the LHU must take place in a different orientation relatively to the LHP.
+As soon as the orientation has to be taken into account, the transformation must be performed by an appropriate system.
+
+image::load_orientation.svg[title="Exemplary visualisation of different load orientations", 320,480,align="center", id=load_orientation,align="center"]
+
+link:assets/json_schemas/load_handling_unit.schema[Load handling unit] describes which parameters the individual unit has and which action is carried out with it.
+
+|===
+|field|data type|description
+
+|version|string|Version of the M2X protocol [Major].[Minor].[Patch] (e.g. 1.3.2).
+|*loadHandlingUnit* {|object|Describes all properties of the load handling unit (LHU).
+|{nbsp}{nbsp}{nbsp}{nbsp} _loadUnitId_ |string|ID number of the LHU.
+|{nbsp}{nbsp}{nbsp}{nbsp} loadHandlingUnitType |string|Describes the handling unit, e.g. small load carrier, pallet, etc. Important for matching of the handling capabilities of the unit, e.g the request requestLoadTransfer in the load handling interface of a station or MR.
+|{nbsp}{nbsp}{nbsp}{nbsp} _weight_ |number|Weight of the load.
+|{nbsp}{nbsp}{nbsp}{nbsp} _height_ |number|Height of the LHU (outer dimensions).
+|{nbsp}{nbsp}{nbsp}{nbsp} _width_ |number|Width of the LHU (outer dimensions).
+|{nbsp}{nbsp}{nbsp}{nbsp} _length_ |number|Length of the LHU (outer dimensions).
+|{nbsp}{nbsp}{nbsp}{nbsp} _outerPackaging_ |string|Describes the outer packaging of the LHU, e.g. wrapping, strapping etc.
+|{nbsp}{nbsp}{nbsp}{nbsp} _symmetrical_ |boolean|Describes if the orientation of the LHU is symmetrical.
+|}||
+|===
+
 [#load_handling_sequence_diagram, reftext="Section: Load Handling Sequence Diagram"]
-=== Load Handling Sequence Diagram
+=== Load handling sequence diagram
 The sequence diagram is shown below to describe the load handling process. 
 It is assumed that the MR is the “active” part by leading through the communication sequence with request messages. 
 The station answers accordingly by sending status messages. 
@@ -289,15 +339,14 @@ This version differs in that alternative loops are displayed for each request, w
 
 === Topics ===
 
-The communication with a load handling station is done via the following topics:
+The communication with a LHS is done via the following topics:
 
 [source, adoc]
 |===
 |Type|Topic schema|Description
-|Factsheet |/lhs/v1.0.0/lhs_example/factsheet | Used for requesting the factsheet of the load handling station.
-|Request | /lhs/v1.0.0/lhs_example/request* | Used for communication of requests for different load transfer stages: requestAccess, requestLoadTransfer, requestExit, revokeAccess, requestFactsheet
-
-|State | /lhs/v1.0.0/lhs_example/state | Topic for communicating the current state of the load handling station and information about received request messages.
+|Factsheet |lhs/v1.0.0/lhs_example/factsheet | Used for requesting the factsheet of the LHS.
+|Request | lhs/v1.0.0/lhs_example/request_* | Used for communication of requests for different load transfer stages: requestAccess, requestLoadTransfer, requestExit, requestRelease, requestFactsheet, requestContinueLoadTransfer, requestCancel
+|State | lhs/v1.0.0/lhs_example/state | Topic for communicating the current state of the LHS and information about received request messages.
 |===
 
 
@@ -306,23 +355,31 @@ The M2X load handling protocol uses the following JSON schemas and subtopics for
 |===
 |type |used for|schema (link)
 
-|load handling station factsheet|Self-description of the station, the load handling points and the capabilities.|link:assets/json_schemas/load_handling_station_factsheet.schema[Schema Link]
+|load handling station factsheet|Self-description of the station, the LHPs and the capabilities.|link:assets/json_schemas/load_handling_station_factsheet.schema[Schema Link]
 |request|Communication of the requests for the load transfer.|link:assets/json_schemas/request.schema[Schema Link]
 |load handling station state|Communication of the state of the load handling station itself.|link:assets/json_schemas/load_handling_station_state.schema[Schema Link]
 
 |===
 
 === Requests
-The requests that the station or MR executes for load handling are described below. 
+The requests that the FM or MR executes for load handling are described below. 
 All requests, associated parameters and their states are predefined in the respective JSON schemas or tables. 
 If actions, requests or parameters are missing, these can be added after discussion (workshop or git issue) in the current or future version of the standard with non-breaking or breaking changes in the standard.
+There can only be one active request per participant with a peripheral device. This applies to every peripheral device and must be actively monitored by FM. Old requests are deleted by request_cancel. Old open requests can be read from the states after failure.
 The following requests are required for complete load handling:
 
 * requestAccess,
 * requestLoadTransfer,
 * requestExit,
-* revokeAccess,
-* requestFactsheet.
+* requestRelease,
+* requestFactsheet,
+* requestContinueLoadTransfer,
+* requestCancel.
+
+For a transport order, the following requests are required:
+
+* requestTransportOrder,
+* requestCancel.
 
 The requests cannot be executed multiple times in succession (also known as idempotent). 
 The sequence in the sequence diagram must be taken into account.
@@ -330,8 +387,9 @@ The requests run through the following states:
 |===
 |state|description
 
+|PENDING|The request is pending and has not yet been executed.
 |RUNNING|The request is currently being executed.
-|PAUSED|The request is paused. This can be either physical (safety light curtains are not yet released) or management-related (queues or not yet released).
+|PAUSED|The request is paused. This can be either physical (safety light curtains are not yet released) or management-related.
 |COMPLETED|The request has been successfully completed.
 |FAILED|The request could not be completed.
 |===
@@ -344,7 +402,7 @@ The elements of the corresponding JSON schema are explained in the following tab
 |timestamp|string|Timestamp in ISO8601 format (YYYY-MM-DDTHH:mm:ss.sssZ).
 |version|string|Version of the M2X protocol [Major].[Minor].[Patch] (e.g. 1.3.2).
 |*requests* *[request]* {|array|Describes an request that the entity can perform.
-|{nbsp}{nbsp}{nbsp}{nbsp}requestType|string|Name of the request as described in the first column of xref:lhs_predefined_requests[]. Identifies the function of the request. Enum: requestAccess, requestExit, startLoadHandling, requestFactsheet.
+|{nbsp}{nbsp}{nbsp}{nbsp}requestType|string|Name of the request as described in the first column of xref:lhs_predefined_requests[]. Identifies the function of the request. Enum: requestAccess, requestExit, startLoadHandling, requestFactsheet, requestContinueLoadTransfer, requestCancel, requestTransportOrder.
 |{nbsp}{nbsp}{nbsp}{nbsp}requestId|string|Unique ID to identify the request and map them to the requestState in the state. Suggestion: Use UUIDs.
 |{nbsp}{nbsp}{nbsp}{nbsp} _requestDescription_ |string|Additional information on the request.
 |{nbsp}{nbsp}{nbsp}{nbsp} blockingType |string|Regulates if the request is allowed to be executed during movement and/or parallel to other requests.
@@ -366,59 +424,59 @@ hard: no other requests can be performed while this request is running. Enum: NO
 ==== Predefined requests
 The next following two tables describe the predefined requests for the load handling in their parameters and states from RUNNING to COMPLETED.
 |===
-|request|description|parameter
+|request|description|parameter|blocking type
 
-|requestAccess|MR requests the permission to enter the load handling point of the station.|loadHandlingSessionId (string), +
-  requestId (string), +
+|requestAccess|MR requests the permission to enter the LHP of the station.|loadHandlingSessionId (string), +
   loadHandlingPointId (string), +
   vehicleType (string), +
   loadAction (enum: PICK, DROP), +
-  link:assets/json_schemas/load_handling_unit.schema[loadHandlingUnit] (object) 
-|requestLoadTransfer|MR requests to exchange (pick or drop) the load with the station.| loadHandlingSessionId (string), +
-  requestId (string)
-|requestExit|MR requests the permission to exit the load handling point.|loadHandlingSessionId (string), +
-  requestId (string) 
-|revokeAccess|MR confirms that the station has been left.|loadHandlingSessionId (string), +
-  requestId (string) 
-|requestFactsheet|Request factsheet from a station.|-
+  link:assets/json_schemas/load_handling_unit.schema[loadHandlingUnit] (object) | HARD
+|requestLoadTransfer|MR requests to exchange (pick or drop) the load with the station.| loadHandlingSessionId (string) | HARD
+|requestExit|MR requests the permission to exit the LHP.|loadHandlingSessionId (string) | HARD
+|requestRelease|MR confirms that the station has been left.|loadHandlingSessionId (string) | HARD
+|requestFactsheet|Request factsheet from a station.|- | NONE
+|requestContinueLoadTransfer|MR/Station/FM requests to continue the load transfer.|loadHandlingSessionId (string) | NONE
+|requestCancel|MR/Station/FM requests to cancel the current request.|loadHandlingSessionId (string) | NONE
 |===
 
 |===
-|request|RUNNING|PAUSED|COMPLETED|FAILED
+|request|RUNNING|PAUSED|COMPLETED|FAILED|PENDING
 
-|requestAccess|MR/FM requests to enter the load handling point of the station, e.g. the station has to mute the safety light curtains, station opens machine protection gates etc.|Request is paused e.g., if a safety light curtain is violated.
-After removing the violation, the process continues.|Station is ready for load transfer and has carried out all the safety relevant preparatory steps. MR is in the correct position and ready for the load transfer.|Entry can not be granted, e.g. failure during the preparation steps. Failed entry requests should correspond with an error.
-|requestLoadTransfer|MR requests to transfer or receives a load.|-|Load transfer is done. Load has been successfully transferred or received and station reports new load state.|Load transfer can not be done. Failed load transfers should correspond with an error.
+|requestAccess|MR/FM requests to enter the LHP of the station, e.g. the station has to mute the safety light curtains, station opens machine protection gates etc.|Request is paused e.g., if a safety light curtain is violated.
+After removing the violation, the process continues.|Station is ready for load transfer and has carried out all the safety relevant preparatory steps. MR is in the correct position and ready for the load transfer.|Entry can not be granted, e.g. failure during the preparation steps. Failed entry requests should correspond with an error.|Request is waiting to get executed.
+|requestLoadTransfer|MR requests to transfer or receives a load.|-|Load transfer is done. Load has been successfully transferred or received and station reports new load state.|Load transfer can not be done. Failed load transfers should correspond with an error.|-
 |requestExit|MR/FM requests to exit the station, e.g. the station has to mute the safety light curtains.|Request is paused e.g., if a safety light curtain is violated.
-After removing the violation, the process continues.|The station authorizes the exit once all load transfer steps have been completed from the station's perspective.|Exit can not be granted, e.g. failure during load transfer. Failed exit requests should correspond with an error.
-|revokeAccess|MR/FM revokes the occupancy of the station. MR has left the station.|-|Station confirms the revoke of the access and is ready for the next access.|Revoke can not be done. Failed revoke requests should correspond with an error.
-|requestFactsheet|-|-|-|-
+After removing the violation, the process continues.|The station authorizes the exit once all load transfer steps have been completed from the station's perspective.|Exit can not be granted, e.g. failure during load transfer. Failed exit requests should correspond with an error.|-
+|requestRelease|MR/FM revokes the occupancy of the station. MR has left the station.|-|Station confirms the revoke of the access and is ready for the next access.|Revoke can not be done. Failed revoke requests should correspond with an error.|-
+|requestFactsheet|-|-|-|-|-
+|requestContinueLoadTransfer|MR/Station/FM requests to continue the load transfer.|-|Load transfer is continued.|Load transfer can not continued. Failed continues should be repeated until the sequence is at request requestRelease. After that the error is ended.|-
+|requestCancel|MR/FM requests to cancel the current request.|-|Request can not be canceled.|Request can not be canceled.|-
 |===
 
 === Load handling station state
-The following section describes the states of the load transfer between the load handling station and the MR. 
-The status messages for running, paused, completed and failed are specified here for the requests (requestAccess, requestExit, requestLoadTransfer, revokeAccess and requestFactsheet). 
+The following section describes the states of the load transfer between the LHS and the MR. 
+The status messages for running, paused, completed and failed are specified here for the requests (requestAccess, requestExit, requestLoadTransfer, requestRelease and requestFactsheet, requestContinueLoadTransfer, requestCancel). 
 For the definitions of the content, see xref:lhs_predefined_requests[]. 
 The sequences for the load handling are described in the section load handling sequence diagram. 
 The upcoming table describes the JSON file and its contents.
-It is assumed that the load handling station sends a new state message at least every 30 seconds. 
+It is assumed that the LHS sends a new state message at least every 30 seconds. 
 A state message has to be sent on every internal state change, e.g. changing an operation state of a request from RUNNING to PAUSED.
 After sending a new state message, the message timer is reset to 30 seconds.
 The status depends on the request performed. 
-It can also be queried whether the load handling point is available or not.
+It can also be queried whether the LHP is available or not.
 
 |===
 |field|data type|description
 
 |timestamp|string|Timestamp in ISO8601 format (YYYY-MM-DDTHH:mm:ss.sssZ).
 |version|string|Version of the M2X protocol [Major].[Minor].[Patch] (e.g. 1.3.2).
-|serialNumber|string|Serial number of the load handling station.
-| _manufacturer_ |string|Manufacturer of the load handling station.
-|loadHandlingStationAvailable|boolean|Indicates if the load handling station is available for operation.
+|serialNumber|string|Serial number of the LHS.
+| _manufacturer_ |string|Manufacturer of the LHS.
+|loadHandlingStationAvailable|boolean|Indicates if the LHS is available for operation.
 |*loadHandlingPointStates* *[loadHandlingPointState]* {|array|Describes upcoming and current requests.
-|{nbsp}{nbsp}{nbsp}{nbsp}loadHandlingPointId|string|Unique identifier of the load handling station.
-|{nbsp}{nbsp}{nbsp}{nbsp}operatingMode|string|Current operating mode of the load handling station. Enum AUTOMATIC, MANUAL, SERVICE.
-|{nbsp}{nbsp}{nbsp}{nbsp}loadHandlingPointAvailable|boolean|SIndicates if the load handling point is available for operation.
+|{nbsp}{nbsp}{nbsp}{nbsp}loadHandlingPointId|string|Unique identifier of the LHS.
+|{nbsp}{nbsp}{nbsp}{nbsp}operatingMode|string|Current operating mode of the LHS. Enum AUTOMATIC, MANUAL, SERVICE.
+|{nbsp}{nbsp}{nbsp}{nbsp}loadHandlingPointAvailable|boolean|SIndicates if the LHP is available for operation.
 |{nbsp}{nbsp}{nbsp}{nbsp}loadHandlingSessionId|string|Unique identifier of the complete request session in a process, e.g. the load handling.
 |{nbsp}{nbsp}{nbsp}{nbsp} *requestStates* *[requestState]* {|array|Array of upcoming and current requests.
 |{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}requestId|string|Unique requestId.
@@ -427,9 +485,9 @@ It can also be queried whether the load handling point is available or not.
 |{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} _requestDescription_ |string|Description of the result, e.g., the result of a RFID-read. Errors will be transmitted in errors.
 |{nbsp}{nbsp}{nbsp}{nbsp}}||
 |}||
-|*errors* *[error]* {|array|Array of error-objects. All active errors of the load handling station should be in the list. An empty array indicates that the load handling station has no active errors.
+|*errors* *[error]* {|array|Array of error-objects. All active errors of the LHS should be in the list. An empty array indicates that the LHS has no active errors.
 |{nbsp}{nbsp}{nbsp}{nbsp}errorType|string|Type of error.
-|{nbsp}{nbsp}{nbsp}{nbsp} *_errorReferences_* *[errorReference]* {|array|Object that holds the error reference to requests as key-value pairs.
+|{nbsp}{nbsp}{nbsp}{nbsp} *_errorReferences_* *_[errorReference]_* {|array|Object that holds the error reference to requests as key-value pairs.
 |{nbsp}{nbsp}{nbsp}{nbsp}referenceKey|string|References the type of reference (e.g., headerId, requestId, etc.).
 |{nbsp}{nbsp}{nbsp}{nbsp}referenceValue|string|References the value, which belongs to the reference key.
 |{nbsp}{nbsp}{nbsp}{nbsp}}||
@@ -442,33 +500,30 @@ It can also be queried whether the load handling point is available or not.
 A factsheet is provided for the self-description of the load handling station. 
 The factsheet provides basic information about the station. 
 Whoever configures and edits the factsheet must be documented within the project.
-It describes the station overall as well as the different load handling points and their capabilities. 
+It describes the station overall as well as the different LHPs and their capabilities. 
 This enables self-configuration in the system context. 
-Each load handling station has one factsheet. 
-The factsheet includes at least one load handling point.
+Each LHS has one factsheet. 
+The factsheet includes at least one LHP.
 The factsheet is intended both as a human-readable document and for machine processing and is therefore specified as a JSON document. 
 The FM or the MR can request the factsheet from the station at any time. 
 The corresponding request is described in the xref:lhs_predefined_requests[].
 
-Topic for the request: /lhs/v1/stationId/requestFactsheet
-Topic for the response: /lhs/v1/stationId/factsheet
+Topic for the request: lhs/v1/stationId/requestFactsheet
+Topic for the response: lhs/v1/stationId/factsheet
 
-It is also to be noted that a MR has to request all available factsheets from the stations in order to navigate without colliding or interfere with any station geometry (exclusive managed area of a load handling station) of a load handling station.
+It is also to be noted that a MR has to request all available factsheets from the stations in order to navigate without colliding or interfere with any station geometry (exclusive managed area of a LHS) of a LHS.
 
 ==== Factsheet JSON structure
 The factsheet consists of the JSON-objects listed in the following table.
 |===
 |field|data type|description
 
-|_headerID_|uint32|Header ID of the message. The headerId is defined per topic and incremented by 1 with each sent (but not necessarily received) message.
 |timestamp|string|Timestamp in ISO8601 format (YYYY-MM-DDTHH:mm:ss.sssZ).
 |version|string|Version of the M2X protocol [Major].[Minor].[Patch] (e.g. 1.3.2).
 |_manufacturer_|string|Manufacturer of the station.
 |_serialNumber_|string|Serial number of the station.
-|*protocolFeatures*|JSON-object|Supported features of M2X protocol.
-|*protocolLimits*|JSON-object|Limits for length of identifiers, arrays, strings and similar in communication.
 |*stationGeometry*|JSON-object|These parameters generally specify the geometry of the station.
-|*loadHandlingPoints*|JSON-object|These parameters generally specify the class and the capabilities of the load handling points.
+|*loadHandlingPoints[loadHandlingPoint]*|array|These parameters generally specify the class and the capabilities of the load handling points (LHPs) of a load handling station.
 |===
 
 ===== stationGeometry
@@ -480,112 +535,287 @@ This JSON-object describes the geometry of the station.
 |*position* {|object|Position of the station in the factory-coordinate system.
 |{nbsp}{nbsp}{nbsp}{nbsp}x|number|The x-position in factory-coordinate system.
 |{nbsp}{nbsp}{nbsp}{nbsp}y|number|The y-position in factory-coordinate system.
+|{nbsp}{nbsp}{nbsp}{nbsp}z|number|Z-position in factory-coordinate system.
 |}||
 |*stationFootprint* {|object|Describes the footprint and orientation of the station in the factory-coordinate system.
-|{nbsp}{nbsp}{nbsp}{nbsp}height|number|Total height of station.
-|{nbsp}{nbsp}{nbsp}{nbsp}width|number|Total width of station.
-|{nbsp}{nbsp}{nbsp}{nbsp}length|number|Total length of station.
-|{nbsp}{nbsp}{nbsp}{nbsp}theta|rad|Orientation of station in factory-coordinate system.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} x-left|number|x-left offset of the door.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} x-right|number|x-right offset of the door.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} y-left|number|y-left offset of the door.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} y-right|number|y-right offset of the door.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} theta|number|Orientation of the door in the factory coordinate system.
 |}||
-|communicationType|string|Used communication type at the station.
-|numberLoadHandlingPoints|number|Total number of load handling points at the station.
+|numberLoadHandlingPoints|number|Total number of LHPs at the station.
 |===
 
-===== loadHandlingPoints
+===== loadHandlingPoint
 
-This JSON-object describes the individual load handling point with all its capabilities.
+This JSON-object describes the individual load handling point (LHP) with all its capabilities.
 |===
 |field|data type|description
 
-|loadHandlingPointId|string|ID number of the load handling Point.
+|loadHandlingPointId|string|ID number of the LHP.
 |_stationClass_|string|Simplified description of station class.
-|isLoadHandlingActive|boolean|True: Load handling point can actively (independently) pick and drop goods from or to the MR.
-|doubleCycleAbility|boolean|True: It may be necessary to carry out double cycles at the load handling point.
-|*loadUnitTypes* *[loadUnitType]* {|array|List of all loading units that can be handled at the load handling point, for example europallet, industrypallet, GMA-pallet, mesh_box, small_load_carrier, barrel, special_load_carrier. If this parameter does not exist or is empty, the load handling point is valid for all load unit types on this station.
+|isLoadHandlingActive|boolean|True: LHP can actively (independently) pick and drop goods from or to the MR.
+|doubleCycleAbility|boolean|True: It may be necessary to carry out double cycles at the LHP.
+|*loadUnitTypes* *[loadUnitType]* {|array|List of all loading units that can be handled at the LHP, for example europallet, industrypallet, GMA-pallet, mesh_box, small_load_carrier, barrel, special_load_carrier. If this parameter does not exist or is empty, the LHP is valid for all load unit types on this station.
 |{nbsp}{nbsp}{nbsp}{nbsp} unitType|string|List of all load units.
 |{nbsp}{nbsp}{nbsp}{nbsp} handlingAcceleration|number|Maximum allowed acceleration for this load-type and –weight.
-|{nbsp}{nbsp}{nbsp}{nbsp} _parallelSequence_ |string|Describes if the load handling point can manage more than on load in the ongoing load transfer.
+|{nbsp}{nbsp}{nbsp}{nbsp} _parallelSequence_ |string|Describes if the LHP can manage more than on load in the ongoing load transfer.
 |}||
-|*maxLoadDimensions* *[maxLoadDimension]* {|array|Maximum dimensions that can be processed by the load handling point.
+|*maxLoadDimensions* *[maxLoadDimension]* {|array|Maximum dimensions that can be processed by the LHP.
 |{nbsp}{nbsp}{nbsp}{nbsp} length|number|Maximum loadable length of the good.
 |{nbsp}{nbsp}{nbsp}{nbsp} width|number|Maximum loadable width of the good.
 |{nbsp}{nbsp}{nbsp}{nbsp} height|number|Maximum loadable height of the good.
 |{nbsp}{nbsp}{nbsp}{nbsp} mass|number|Maximum loadable mass of the good.
 |}||
 |positioningAids [positioningAid]|array|Simplified description of localization type.
-|*loadHandlingPoint* {|JSON-object|Load transfer point at which the load can be picked up or dropped off by a mobile robot. The point describes the geometric center of the load for pick-up or delivery.
-|{nbsp}{nbsp}{nbsp}{nbsp} *position* *[position]* {|array|Position for load transfer.
+|*pose* {|JSON-object|Pose of the load handling point (LHP) for load handling.
 |{nbsp}{nbsp}{nbsp}{nbsp}x|number|X-position in factory-coordinate system.
 |{nbsp}{nbsp}{nbsp}{nbsp}y|number|Y-position in factory-coordinate system.
-|{nbsp}{nbsp}{nbsp}{nbsp}theta|number|Angle for handover position.
+|{nbsp}{nbsp}{nbsp}{nbsp}z|number|Z-position in factory-coordinate system.
+|{nbsp}{nbsp}{nbsp}{nbsp}theta|number|Angle for handover pose.
 |}||
-|*tolerance* {|object|Acceptable tolerance for the load transfer.
-|{nbsp}{nbsp}{nbsp}{nbsp}x|number|X-position in factory-coordinate system.
-|{nbsp}{nbsp}{nbsp}{nbsp}y|number|Y-position in factory-coordinate system.
-|{nbsp}{nbsp}{nbsp}{nbsp}theta|number|Deviating tolerance for handover position.
+|*tolerance* {|object|Acceptable tolerance for the load handling.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} x-left|number|x-left offset of the door.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} x-right|number|x-right offset of the door.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} y-left|number|y-left offset of the door.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} y-right|number|y-right offset of the door.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}theta|number|Orientation of the door in the factory coordinate system.
 |{nbsp}{nbsp}{nbsp}{nbsp}}||
 |}||
-|compatibleVehicles [compatibleVehicle]|array|List of all MRs that can interact at the load handling point. If this parameter does not exist or is empty, the load handling point is valid for all MRs on this station.
 |loadHandlingRequests [loadHandlingRequest]|array|Simplified description of possible load handling actions.
-|*physicalParameters* {|JSON-object|These parameters specify the basic physical properties of the load handling point.
-|{nbsp}{nbsp}{nbsp}{nbsp} _speedMin_ |number|Minimal controlled continuous speed of the load handling point.
-|{nbsp}{nbsp}{nbsp}{nbsp} _speedMax_ |number|Maximal controlled continuous speed of the load handling point.
-|{nbsp}{nbsp}{nbsp}{nbsp} _accelerationMax_ |number|Maximum possible acceleration for this load handling point.
-|{nbsp}{nbsp}{nbsp}{nbsp} _decelerationLimit_ |number|Maximum possible deceleration for this load handling point.
-|{nbsp}{nbsp}{nbsp}{nbsp}height|number|Height of the load handling point.
-|{nbsp}{nbsp}{nbsp}{nbsp}width|number|Width of the load handling point.
-|{nbsp}{nbsp}{nbsp}{nbsp}length|number|Length of the load handling point.
-|{nbsp}{nbsp}{nbsp}{nbsp}requiredHandoverHeight|number|Required height for handing over the load from MR to load handling point.
+|*physicalParameters* {|JSON-object|These parameters specify the basic physical properties of the LHP.
+|{nbsp}{nbsp}{nbsp}{nbsp} _speedMin_ |number|Minimal controlled continuous speed of the LHP.
+|{nbsp}{nbsp}{nbsp}{nbsp} _speedMax_ |number|Maximal controlled continuous speed of the LHP.
+|{nbsp}{nbsp}{nbsp}{nbsp} _accelerationMax_ |number|Maximum possible acceleration for this LHP.
+|{nbsp}{nbsp}{nbsp}{nbsp} _decelerationLimit_ |number|Maximum possible deceleration for this LHP.
+|{nbsp}{nbsp}{nbsp}{nbsp}height|number|Height of the LHP.
+|{nbsp}{nbsp}{nbsp}{nbsp}width|number|Width of the LHP.
+|{nbsp}{nbsp}{nbsp}{nbsp}length|number|Length of the LHP.
+|{nbsp}{nbsp}{nbsp}{nbsp}requiredHandoverHeight|number|Required height for handing over the load from MR to LHP.
 |{nbsp}{nbsp}{nbsp}{nbsp}pickTime|number|Approx. time for picking up the load.
 |{nbsp}{nbsp}{nbsp}{nbsp}dropTime|number|Approx. time for dropping the load.
 |}||
-|*restrictedInteractions* *[restrictedInteraction]* {|array|These parameters specify the restricted interactions with the load handling point.
-|{nbsp}{nbsp}{nbsp}{nbsp}restrictedVehicles [restrictedVehicle]|array|List of all MRs that are not allowed to interact at the load handling point. If this parameter does not exist or is empty, the load handling point is valid for all MRs on this station.
-|{nbsp}{nbsp}{nbsp}{nbsp}restrictedLoads[restrictedLoad]|array|List of all loads that are not allowed to interact at the load handling point. If this parameter does not exist or is empty, the load handling point is valid for all MRs on this station.
+|*restrictedInteractions* *[restrictedInteraction]* {|array|These parameters specify the restricted interactions with the LHP.
+|{nbsp}{nbsp}{nbsp}{nbsp}restrictedVehicles [restrictedVehicle]|array|List of all MRs that are not allowed to interact at the LHP. If this parameter does not exist or is empty, the LHP is valid for all MRs on this station.
+|{nbsp}{nbsp}{nbsp}{nbsp}restrictedLoads[restrictedLoad]|array|List of all loads that are not allowed to interact at the LHP. If this parameter does not exist or is empty, the LHP is valid for all MRs on this station.
 |}||
 |===
 
-== Best practices and implementation examples
-The following section shows the best practice and possible implementation examples to implement the protocol. 
-These examples are provided here as they are not mandatory for implementation, but may be necessary for a plug and play approach.
+== Transport order interface 
+M2X provides communication content and communication processes for the description of transport orders (TOs).
 
-=== Load handling interface
-The JSON schema link:assets/json_schemas/load_handling_unit.schema[load_handling_unit] is described below for seamless implementation. 
-Load handling unit describes which parameters the individual unit has and which action is carried out with it.
+*Definition _transport order_:*
+The TO enables a MR to move goods from a designated source location to a specified destination location. 
+With the TO a MR can perform the following actions: PICK, DROP, VIA.
+PICK and DROP is the physical transfer of goods. 
+VIA is a PoI that the MR passes through to reach a desired PoI location or to wait there.
+The TO contains of a collection of objectives that can be extend during the execution of a TO. 
+An objective is a description of an atomic transport step (WHAT and WHERE), e.g. PICK 'Pallet 1' and DROP it at 'storage location 5'.
+A TO shall contain at least one objective.
+The example above shows a transport order with two objectives.
+Orders are defined with the JSON schemas link:assets/json_schemas/examples/requests/request_transport_order.schema[request transport order].
+State changes to the transport order are communicated via the JSON schema link:assets/json_schemas/transport_order_state.schema[transport order state].
+A TO has a unique transportOrderId and can be updated using the transportOrderUpdateId of the transport order messages. 
+With isObjectiveListComplete, the end of the TO can be marked.
+
+The following figure shows the context in which layer the M2X protocol is used:
+The M2X TO interface communicates with the upper layer system.
+This can be an ERP, a WMS, a manual order generation (for example with a button push at a station) etc.
+include::assets/diagrams/order_generation_scope.adoc[]
+
+=== Requirements for a M2X transport order 
+This section describes the requirements for the TO interface in the M2X protocol:
+
+* The TO shall be composed of objectives.
+* The TO shall have at least one objective.
+* The TO shall only support single carrier transportation.
+* An objective shall be a combination of WHAT and WHERE.
+* The WHERE shall be uniquely identifiable.
+* The WHERE identifier shall be a string identifier.
+* The FM shall allow for the WHERE to be a PoI or group of PoIs.
+* The WHERE identifiers shall be agreed on by the upper layer system and FM.
+* The WHERE shall be resolved to the corresponding resource by the FM.
+* The objective shall support the WHATs PICK, DROP and VIA.
+* The TO shall support delayed decisions (VIA point) for PICK and DROP.
+* The TO shall be closed by the upper layer system, indicated by parameter isObjectiveListComplete in TO update.
+* The FM shall determine when an objective is finished.
+* The upper layer system shall be allowed to attempt to modify the WHAT and WHERE of an objective by TO updates.
+* The upper layer system shall be allowed to attempt to cancel an objective.
+* The FM shall be allowed to reject updates or cancellations to objectives.
+* The upper layer system shall be able to cancel a TO.
+* A cancelled TO shall be marked as isCancelled in the transport order state.
+* The request pattern shall be used for the interaction between upper layer system and FM.
+* The FM shall decide whether to accept or decline a request.
+* The LHU shall be defined for the WHAT when PICK action has to be performed.
+* The order shall be marked as finished if the WHAT is transported to the WHERE or an alternative process in the TO receiving system was executed successfully. In case an alternative process was used, a WARNING can be added in the error array, e.g. referencing/reporting the alternative WHERE.
+* Every objective shall have a unique sequenceId that defines the order of execution of all objectives. The sequenceId shall be strictly sequential increasing.
+
+=== Errors
+If an error occurs within the TO it shall be reported via the errors array. Errors have two levels: WARNING and FATAL. A WARNING is a self-resolving error during TO execution, e.g., a field violation at the load handling. A FATAL error needs human intervention. Errors can pass references that help with finding the cause of the error via the errorReferences array. For TO errors, the predefined enums should be used for the errors types. 
+
+==== Predefined Errors
+
+|===
+|error type|error level|description|parameter
+|OBJECTIVE_ALREADY_COMPLETED|WARNING|The objective is already completed. The objectiveId was already used beforehand and is not valid for updates anymore.| objectiveId (string)
+|OBJECTIVE_IN_EXECUTION|WARNING|The objective is already in execution and cannot be updated anymore.| objectiveId (string)
+|SEQUENCE_ID_NON_CONTIGUOUS|WARNING|The sequenceId is non-contiguous. A sequenceId shall be used which links directly to the previous objective or updates an already used sequenceId.| sequenceId (integer)
+|ERROR_DURING_EXECUTION|WARNING or FATAL|The objective is not executed correctly. The error can be a WARNING or FATAL. The error can be caused e.g. by the MR or the LHS. It can be caused by an external factor (e.g. no load at expected position). The error can also be caused by an error on FM site e.g. given WHAT and WHERE are unknown. In this case, its up to the FM that these changes are not allowed which results in throwing an error. The selection of the error type is up to the system and can e.g. be forwarded from previous errors.| action (string), objectiveId (string)
+|ERROR_IN_VALIDATION|WARNING or FATAL|When validating the data in the TO, inconsistent information can cause an error. The validation of information is not part of M2X, so the decision on the logic throwing an error lies with the FM. The error can e.g. be used to indicate changing resourceIds / priorities during transport order updates or different LHU Ids between a PICK and DROP action. In case this error occurs its recommended to cancel the TO with a requestCancel.| action (string), objectiveId (string)
+|===
+
+=== Topics
+The communication for TOs is done via the following topics:
+
+[source, adoc]
+|===
+|type|topic schema|description
+|Transport order |order/v1.0.0/fm_or_mr_example/request_transport_order | Used for describing the order.
+|Transport order state | order/v1.0.0/fm_or_mr_example/request_transport_order_state | Topic for communicating the current state of the order and information about received order messages.
+|===
+
+=== Transport order JSON schemas and subtopics
+The M2X TO interface uses the following JSON schemas and subtopics for the communication.
+|===
+|type |used for|schema (link)
+
+|transport_order|JSON Schema for transport order description.|link:assets/json_schemas/examples/requests/request_transport_order.schema[Schema Link]
+|transport_order_state|JSON Schema for state of a transport order.|link:assets/json_schemas/transport_order_state.schema[Schema Link]
+
+|===
+
+=== Requests
+The requests that upper layer system executes for creating transport orders are described below. 
+All requests, associated parameters and their states are predefined in the respective JSON schemas or tables. 
+There can only be one active request per participant with a peripheral device. This applies to every peripheral device and must be actively monitored by FM. Old requests are deleted by request_cancel. Old open requests can be read from the states after failure.
+
+The following request are required for creating and updating transport orders:
+
+* requestTransportOrder,
+* requestCancel.
+
+==== Predefined requests
+The next following two tables describe the predefined requests for the load handling in their parameters and states from RUNNING to COMPLETED.
+|===
+|request|description|parameter|blocking type
+|requestTransportOrder|Upper layer system creates or updates a transport order.|  | NONE
+|requestCancel|MR/Station/FM requests to cancel the current request. A request is cancelled if isCancelled (in transport_order_state.schema) is set to true.|transportOrderId (string), isCancelled (boolean) | NONE
+|===
+
+|===
+|request|RUNNING|PAUSED|COMPLETED|FAILED|PENDING
+|requestTransportOrder|Upper layer system requests a transport order.|-|Transport order is completely and successfully executed.|Transport order can not be executed.|-
+|requestCancel|MR/FM requests to cancel the current request.|-|Request can not be canceled.|Request can not be canceled.|-
+|===
+
+===== requestTransportOrder JSON structure
+The TO contains of a collection of objectives that can be extend during the execution of a TO. A TO shall contain at least one objective. An objective is a description of an atomic transport step (WHAT and WHERE), e.g. transport 'Pallet 1' to 'storage location 5'.
+
+
+Example of the transport order schema: 
 
 |===
 |field|data type|description
 
 |version|string|Version of the M2X protocol [Major].[Minor].[Patch] (e.g. 1.3.2).
-|*loadHandlingUnit* {|object|Describes all properties of the load handling unit.
-|{nbsp}{nbsp}{nbsp}{nbsp} _loadUnitId_ |string|ID number of the load handling unit.
-|{nbsp}{nbsp}{nbsp}{nbsp} loadHandlingUnitType |string|Describes the handling unit, e.g. small load carrier, pallet, etc. Important for matching of the handling capabilities of the unit, e.g the request requestLoadTransfer in the load handling interface of a station or MR.
-|{nbsp}{nbsp}{nbsp}{nbsp} _weight_ |number|Weight of the load.
-|{nbsp}{nbsp}{nbsp}{nbsp} _height_ |number|Height of the load handling unit (outer dimensions).
-|{nbsp}{nbsp}{nbsp}{nbsp} _width_ |number|Width of the load handling unit (outer dimensions).
-|{nbsp}{nbsp}{nbsp}{nbsp} _length_ |number|Length of the load handling unit (outer dimensions).
-|{nbsp}{nbsp}{nbsp}{nbsp} _outerPackaging_ |string|Describes the outer packaging of the load handling unit, e.g. wrapping, strapping etc.
+|timestamp|string|Timestamp in ISO8601 format (YYYY-MM-DDTHH:mm:ss.sssZ). The timestamp defines the point in time at which the message was sent.
+|transportOrderId|string|Transport order (TO) identification. This is to be used to identify multiple transport order messages that belong to the same transport order. The orderId is kept until a new order is received.
+|transportOrderUpdateId|integer|transportOrderUpdate identification. Is unique per transportOrderId. If an transport order update is rejected, this field is to be passed in the rejection message. '0' is the initial transport order. The transportOrderUpdateId is increased by one for each transport order update for the same transportOrderId. If a gap is identified by the TO receiving system in the sequence of transportOrderUpdateIds, the transport order update with the highest id shall be considered as the valid and. In case an transport order update with a lower or equal transportOrderUpdateId is received from the TO receiving system, the transport order update shall be reject. minimum: 0.
+|isObjectiveListComplete|boolean|Indicates if the list of objectives is complete. If set to true, the list of objectives is complete and no further objectives or updates will be added to the transport order. default: false.
+|_resourceId_ |string|Unique identifier of the resource, e.g. ID of the mobile robot, that shall execute the transport order. In case the resourceId is set, the transport order is only valid for the specified resource. If the resourceId is unknown the order receiving system shall decline the transport order. If the resourceId is not set, the transport order is valid for all resources.
+|_priority_ |string|Priority of the TO. Enum: VERY_LOW, LOW, MEDIUM, HIGH, VERY_HIGH.
+|*objectives [objective]* {|array|Defines a location where an action is to be performed by the transporting MR. The array has to contain at least one objective.
+|{nbsp}{nbsp}{nbsp}{nbsp}objectiveId|string|Unique objective identification.
+|{nbsp}{nbsp}{nbsp}{nbsp}sequenceId|integer|Number to track the sequence of objectives in an transport order and to simplify order updates. The main purpose is to distinguish between an objective which is passed more than once within one TO (same transportOrderId). The variable sequenceId runs across all objectives of the same transport order and is reset when a new transportOrderId is issued. To update an objective, the sequenceId of the objective to be updated has to be provided. The objective update replaces all following objectives starting from the sequenceId. The sequenceId shall be strictly sequential increasing. minimum: 0.
+|{nbsp}{nbsp}{nbsp}{nbsp}destination|string|Defines the position (WHERE) a defined action is to be performed. Uniquely point of interest (POI) id (e.g. of an LHP or a LHS).
+|{nbsp}{nbsp}{nbsp}{nbsp}action|string|Action to be performed at the destination (WHAT). Enum: PICK, DROP, VIA.
+|{nbsp}{nbsp}{nbsp}{nbsp} _displayName_ |string|Human readable name of the objective.
+|{nbsp}{nbsp}{nbsp}{nbsp} *_loadHandlingUnit_* |object|Description of the load, e.g. id, dimensions, weight etc. For further information see load_handling_unit.schema
+|{nbsp}{nbsp}{nbsp}{nbsp} _earliestCompletionTime_ |string|Earliest completion time of the objective in ISO8601 format (YYYY-MM-DDTHH:mm:ss.sssZ). Describes when the objective can be completed at the earliest.
+|{nbsp}{nbsp}{nbsp}{nbsp} _latestCompletionTime_ |string|Latest completion time of the objective in ISO8601 format (YYYY-MM-DDTHH:mm:ss.sssZ). Describes when the objective has to be completed at the latest.
 |}||
+|===
+
+=== Transport order state
+The following section describes the states of the TO. 
+It defines the status messages for the transportOrder, their updates and the end of the TO.
+
+==== Transport order state JSON structure
+The TO state consists of the JSON-objects listed in the following table.
+|===
+|field|data type|description
+
+|version|string|Version of the M2X protocol [Major].[Minor].[Patch] (e.g. 1.3.2).
+|timestamp|string|Timestamp in ISO8601 Format (YYYY-MM-DDTHH:mm:ss.sssZ). The timestamp defines the point in time at which the message was sent.
+|transportOrderId|string|Unique transport order identification of the current transport order or the previous finished transport order. The transportOrderId is kept until a new transport order is received. Empty string (\"\") if no previous transportOrderId is available.
+|transportOrderUpdateId|integer|Transport order update identification to identify that an transport order update has been accepted by the FM or MR. \"0\" if no previous transportOrderUpdateId is available.
+|lastObjectiveId|string|lastObjectiveId of last reached objective or, if MR is currently on an objective, current objective (e.g., \"objective\"). Empty string (\"\") if no lastObjectiveId is available.
+|_resourceId_ |string|Unique identifier of the resource, e.g. ID of the mobile robot, that shall execute the transport order. In case the resourceId is set, the transport order is only valid for the specified resource. If the resourceId is unknown the order receiving system shall decline the transport order. If the resourceId is not set, the transport order is valid for all resources.
+|_priority_ |string|Priority of the TO. Enum: VERY_LOW, LOW, MEDIUM, HIGH, VERY_HIGH.
+|isCancelled|boolean|Indicates whether the transport order is cancelled or not. If true, the transport order is cancelled and no further objectives are to be executed.
+|*objectiveStates [objectiveState]* {|array|Array of objectiveStates, that need to be traversed for fulfilling the TO. Empty list if idle.
+|{nbsp}{nbsp}{nbsp}{nbsp}objectiveId|string|Unique objective identification.
+|{nbsp}{nbsp}{nbsp}{nbsp}sequenceId|integer|Number to track the sequence of objectives in an transport order and to simplify order updates. The main purpose is to distinguish between an objective which is passed more than once within one TO (same transportOrderId). The variable sequenceId runs across all objectives of the same transport order and is reset when a new transportOrderId is issued. To update an objective, the sequenceId of the objective to be updated has to be provided. The objective update replaces all following objectives starting from the sequenceId. The sequenceId shall be strictly sequential increasing.
+|{nbsp}{nbsp}{nbsp}{nbsp}destination|string|Defines the position (WHERE) a defined action is to be performed. Uniquely point of interest (POI) id (e.g. of an LHP or a LHS).
+|{nbsp}{nbsp}{nbsp}{nbsp}action|string|Action to be performed at the destination (WHAT). Enum: PICK, DROP, VIA.
+|{nbsp}{nbsp}{nbsp}{nbsp} _displayName_ |string|Human readable name of the objective.
+|{nbsp}{nbsp}{nbsp}{nbsp} *_loadHandlingUnit_* |object|Description of the load, e.g. id, dimensions, weight etc. For further information see load_handling_unit.schema
+|{nbsp}{nbsp}{nbsp}{nbsp} _estimatedCompletionTime_ |string|Estimated completion time of the objective in ISO8601 format (YYYY-MM-DDTHH:mm:ss.sssZ).
+|}||
+|*errors* *[error]* {|array|Array of error-objects. All active errors of the order should be in the list. An empty array indicates that the LHS has no active errors.
+|{nbsp}{nbsp}{nbsp}{nbsp}errorType|string|Type of error. Enum: OBJECTIVE_ALREADY_COMPLETED, OBJECTIVE_IN_EXECUTION, SEQUENCE_ID_NON_CONTIGUOUS, ERROR_DURING_EXECUTION.
+|{nbsp}{nbsp}{nbsp}{nbsp} *_errorReferences_* *_[errorReference]_* {|array|Object that holds the error reference to requests as key-value pairs.
+|{nbsp}{nbsp}{nbsp}{nbsp}referenceKey|string|References cause of the error (e.g. objectiveId and sequenceId of the TO).
+|{nbsp}{nbsp}{nbsp}{nbsp}referenceValue|string|References the value, which belongs to the reference key.
+|{nbsp}{nbsp}{nbsp}{nbsp}}||
+|{nbsp}{nbsp}{nbsp}{nbsp} _errorDescription_ |string|Verbose description of error.
+|{nbsp}{nbsp}{nbsp}{nbsp}errorLevel|string|Description of the error level, which is WARNING or FATAL.
+|}||
+|===
+
+== List of abbreviations
+|===
+|abbreviation|description
+
+|AGV|Automated guided vehicle
+|AMR|Autonomous mobile robot
+|FM|Fleet management
+|LHP|Load handling point
+|LHS|Load handling station
+|LHU|Load handling unit
+|M2X|Machine to X
+|MC|Master control
+|MR|Mobile robot
+|PoI|Point of interest
+|TO|Transport order
+|VDA|Verband der Automobilindustrie (Association of the Automotive Industry)
+|VDI|Verein Deutscher Ingenieure (Association of German Engineers)
+|VDMA|Verband Deutscher Maschinen- und Anlagenbau e. V. (German Association of Mechanical and Plant Engineering e. V.)
 |===
 
 == Glossary
 |===
 |term|description
 
-|Fleet management (FM)|Also known as master control (MC). FM describes the management, planning, control and monitoring of vehicle fleets. This involves coordinating, evaluating and optimizing vehicle routes, taking into account certain influencing parameters.
+|Fleet management (FM)|Also known as master control (MC). FM describes the management, planning, control and monitoring of vehicle fleets. This involves coordinating, evaluating and optimizing vehicle routes, taking into account certain influencing parameters. A FM Service is available for every MR. It can be either centralized or decentralized. Centralized in terms of coordinating the underlying MRs, e.g. VDA 5050. In terms of decentralized planning the MR has an own FM-Service included locally.
 |Load handling|Load handling refers to the handover of a load at a transfer point or point of interest. 
 This includes the entry, the physical handover/manipulation and the exit of an MR at a station. 
 Once the physical load transfer of a MR is in progress, it should not be paused.
-|Load handling station|A load handling station serves as a point of interest at which the load is transferred or changed/manipulated. 
-The station can have multiple load handling points which are comparable to a VDA 5050 “node”. 
-To avoid confusions regarding the VDA 5050 it is called load handling point.
-The load handling station will provide no traffic management. 
+|Load handling point (LHP)|A load handling point is a physical point of a LHS where the load is transferred or changed/manipulated. 
+Only one MR can interact with a LHP at the same time. 
+The LHP can be approached from different directions.
+|Load handling station (LHS)|A load handling station serves as a point of interest at which the load is transferred or changed/manipulated. 
+The station can have multiple LHPs which are comparable to a VDA 5050 “node”. 
+To avoid confusions regarding the VDA 5050 it is called LHP.
+The LHS will provide no traffic management. 
 The station will only manage itself.
-The load handling station factsheet includes the geometry of the physical station (footprint of the station). 
+The LHS factsheet includes the geometry of the physical station (footprint of the station). 
 The area around is managed by the FM or traffic management.
-|Load handling point|A load handling point is a physical point of a load handling station where the load is transferred or changed/manipulated. 
-Only one MR can interact with a load handling point at the same time. 
-The load handling point can be approached from different directions.
+|Load handling unit (LHU)|The load handling unit (LHU) is the object that is transferred between the MR and the LHS.
 |Mobile robot (MR)|Uniform collective term in the context of M2X for all types of vehicles/robots that use the protocol. This includes for example automated guided vehicles (AGVs) or autonomous mobile robots (AMRs).
+|Point of interest (PoI)|A point of interest is a virtual or physical space in the environment. A unique identifier is used. At the PoI, the MR can perform actions such as PICK, DROP or VIA. A PoI can also be used to provide coordinates of the location, for example. A LHS or LHP can also be a PoI. A PoI can also be a group of PoIs.
+|Transport order (TO)|The TO contains of a collection of objectives that can be extend during the execution of a TO. A TO shall contain at least one objective. An objective is a description of an atomic transport step (WHAT and WHERE), e.g. transport 'Pallet 1' to 'storage location 5'.
+|Upper layer system| The upper layer system is the next higher system to M2X in communication. This can be an ERP, a WMS, a manual order generation (for example with a button push at a station) etc.
 |===
 
