@@ -1,6 +1,6 @@
 {
  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "loadHandlingUnit",
+  "title": "loadHandlingUnit schema",
   "description": "Description of the load handling unit (LHU) for the load transfer.",
   "subtopic": "/loadHandlingUnits",
   "type": "object",
@@ -29,7 +29,7 @@
             },
             "loadHandlingUnitType":{
                 "type":"string",
-                "description":"Describes the handling unit, e.g. small load carrier, pallet, etc. Important for matching of the handling capabilities of the unit, e.g the request startLoadTransfer in the load handling interface of a station or MR."
+                "description":"Describes the handling unit, e.g. small load carrier, pallet, etc. Important for matching of the handling capabilities of the unit, e.g the request requestLoadTransfer in the load handling interface of a station or MR."
             },
             "weight":{
                 "type":"number",

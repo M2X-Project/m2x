@@ -1,0 +1,159 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Door factsheet",
+  "description": "The factsheet provides basic information about a specific door. This allows the door to describe itself.",
+  "required": [
+    "timestamp",
+    "version",
+    "manufacturer",
+    "serialNumber"
+  ],
+  "subtopic": "/factsheet",
+  "type": "object",
+  "properties": {
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp in ISO8601 format (YYYY-MM-DDTHH:mm:ss.sssZ). The timestamp defines the point in time at which the message was sent.",
+      "examples": [
+        "2015-10-21T16:29:00.000Z"
+      ]
+    },
+    "version": {
+      "type": "string",
+      "description": "Version of the M2X protocol [Major].[Minor].[Patch] (e.g. 1.3.2).",
+      "examples": [
+        "2.0.0"
+      ]
+    },
+    "manufacturer": {
+      "type": "string",
+      "description": "Manufacturer of the door."
+    },
+    "serialNumber": {
+      "type": "string",
+      "description": "Serial number of the door."
+    },
+    "doorGeometry": {
+      "type": "object",
+      "required": [
+        "position",
+        "doorFootprint",
+        "communicationType"
+      ],
+      "description": "These parameters generally specify the geometry of the door.",
+      "properties": {
+        "position": {
+          "type": "object",
+          "description": "Position of the door in the factory coordinate system.",
+          "required": [
+            "x",
+            "y"
+          ],
+          "properties": {
+            "x": {
+              "type": "number",
+              "description": "The x-position in factory coordinate system.",
+              "unit": "m"
+            },
+            "y": {
+              "type": "number",
+              "description": "The y-position in factory coordinate system.",
+              "unit": "m"
+            },
+            "z": {
+              "type": "number",
+              "description": "The z-position in factory coordinate system.",
+              "unit": "m"
+            }
+          }
+        },
+        "doorFootprint": {
+          "type": "array",
+          "description": "Describes the footprint of the door as a polygon in the factory coordinate system. The footprint includes the transition area of the door.",
+          "items": {
+            "type": "object",
+            "required": [
+              "x",
+              "y"
+            ],
+            "properties": {
+              "x": {
+                "type": "number",
+                "description": "The x-position in factory coordinate system.",
+                "unit": "m"
+              },
+              "y": {
+                "type": "number",
+                "description": "The y-position in factory coordinate system.",
+                "unit": "m"
+              },
+              "z": {
+                "type": "number",
+                "description": "The z-position in factory coordinate system.",
+                "unit": "m"
+              }
+            }
+          }
+        },
+        "communicationType": {
+          "type": "string",
+          "description": "Used communication type at the door.",
+          "enum": [
+            "MQTT",
+            "OPC_UA",
+            "REST_API",
+            "WEB_SOCKET"
+          ]
+        },
+        "restrictedVehiclesTypes": {
+          "type": "array",
+          "description": "List of all MRs types that are not allowed to interact with the door. If this parameter does not exist or is empty, the door is valid for all MRs.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "doorDescriptor": {
+          "type": "string",
+          "description": "Describes the type of the door for human readability."
+        }
+      }
+    },
+    "doorRequests": {
+      "type": "array",
+      "description": "Simplified description of possible door requests.",
+      "items": {
+        "type": "string",
+        "enum": [
+          "requestTransit",
+          "requestRelease",
+          "requestFactsheet",
+          "requestCancel"
+        ]
+      }
+    },
+    "door": {
+      "type": "object",
+      "required": [
+        "doorId"
+      ],
+      "description": "These parameters generally specify the door",
+      "properties": {
+        "doorId": {
+          "type": "string",
+          "description": "ID number of the door."
+        },
+        "clearanceWidth": {
+          "type": "number",
+          "description": "Width of the clearance in the door.",
+          "unit": "m"
+        },
+        "clearanceHeight": {
+          "type": "number",
+          "description": "Height of the clearance in the door.",
+          "unit": "m"
+        }
+      }
+    }
+  }
+}

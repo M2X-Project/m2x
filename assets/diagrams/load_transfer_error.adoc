@@ -27,9 +27,9 @@ flowchart LR
     classDef request fill:#c1121f,color:#fff
     classDef start_end fill:#03071e,color:#fff
     start-->request
-    -->lhs_err--No (COMPLETED) -->
-    mr_err--No (COMPLETED) --->
-    request_revoke--No (COMPLETED) -->request
+    -->lhs_err--No (FINISHED) -->
+    mr_err--No (FINISHED) --->
+    request_revoke--No (FINISHED) -->request
 
     mr_err--Yes (FAILED) -->manual_interaction
     manual_interaction-->ContinueLoadTransfer

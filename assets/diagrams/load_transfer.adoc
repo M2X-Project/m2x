@@ -19,7 +19,7 @@ sequenceDiagram
     S-->>I:  M2X STATUS: [requestAccess(State: PAUSED)]: Access is paused
     I->>I: Wait for finish
   else Station ready
-S-->>I: M2X STATUS[requestAccess (State: COMPLETED)]: Station is ready to access
+S-->>I: M2X STATUS[requestAccess (State: FINISHED)]: Station is ready to access
   end
   I->>I: Drive to station load handling point
   I->>S: M2X REQUEST[requestLoadTransfer]: MR has entered the station, reached the load handling point and requests to hand over the load
@@ -34,7 +34,7 @@ S-->>I: M2X STATUS[requestAccess (State: COMPLETED)]: Station is ready to access
     S-->>I: M2X STATUS: [requestLoadTransfer(State: PAUSED)]: Request for load transfer is paused
     I->>I: wait for finish
   else Station ready
-  S-->>I: M2X STATUS[requestLoadTransfer (State: COMPLETED)]: Station granted access to load transfer
+  S-->>I: M2X STATUS[requestLoadTransfer (State: FINISHED)]: Station granted access to load transfer
   end
   I->>I: Carry out load transfer
 I->>S: M2X REQUEST[requestExit]: MR has finished load transfer and requests to exit the station
@@ -49,7 +49,7 @@ alt
     S-->>I: M2X STATUS[requestExit (State: PAUSED)]: Request for exit is paused
     I->>I: wait for finish
      else Station ready
-  S-->>I: M2X STATUS[requestExit (State: COMPLETED)]: Station is ready to exit
+  S-->>I: M2X STATUS[requestExit (State: FINISHED)]: Station is ready to exit
   end
   I->>I: Drive out of station 
 
@@ -62,7 +62,7 @@ alt
     S-->>I: M2X STATUS[requestRelease (State: PAUSED)]: Request for access revoke is paused
     I->>I: wait for finish
      else Station ready
-  S-->>I: M2X STATUS[requestRelease (State: COMPLETED)]: Station acknowledges the request and is ready for the next access request
+  S-->>I: M2X STATUS[requestRelease (State: FINISHED)]: Station acknowledges the request and is ready for the next access request
   S-->>S: [OPTIONAL]: Unmute safety light curtains,<br>close machine protection gates etc.
   end
 ....

@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "state",
+  "title": "Load handling station state",
   "description": "All encompassing states of the load handling station (LHS).",
   "subtopic": "/state",
   "type": "object",
@@ -8,8 +8,8 @@
     "timestamp",
     "version",
     "serialNumber",
-    "loadHandlingStationAvailable",
-    "loadHandlingPointState"
+    "connectionStateLHS",
+    "loadHandlingPointStates"
   ],
   "properties": {
     "timestamp": {
@@ -35,127 +35,123 @@
       "type": "string",
       "description": "Manufacturer of the LHS."
     },
-    "loadHandlingStationAvailable": {
-      "type": "boolean",
-      "description": "Indicates if the LHS is available for operation."
-    },
-    "loadHandlingPointState": {
-      "type": "object",
-      "required": [
-        "loadHandlingPointId",
-        "operatingMode",
-        "loadHandlingPointAvailable",
-        "loadHandlingSessionId",
-        "requestStates",
-        "errors"
+    "connectionStateLHS": {
+      "type": "string",
+      "enum": [
+        "ONLINE",
+        "OFFLINE",
+        "CONNECTION_BROKEN"
       ],
-      "properties": {
-        "loadHandlingPointId": {
-          "type": "string",
-          "description": "Unique identifier of the individual LHP of the LHS."
-        },
-        "operatingMode": {
-          "type": "string",
-          "description": "Current operating mode of the LHS.",
-          "enum": [
-            "AUTOMATIC",
-            "MANUAL",
-            "SERVICE"
-          ]
-        },
-        "loadHandlingPointAvailable": {
-          "type": "boolean",
-          "description": "Indicates if the LHP is available for operation."
-        },
-        "loadHandlingSessionId": {
-          "type": "string",
-          "description": "Unique identifier of the complete request session in a process, e.g. the load handling."
-        },
-        "requestStates": {
-          "type": "array",
-          "description": "Array of upcoming and current requests.",
-          "items": {
-            "type": "object",
-            "required": [
-              "requestId",
-              "requestStatus"
+      "description": "ONLINE: connection between load handling station and broker is active. OFFLINE: connection between load handling station and broker has gone offline in a coordinated way. CONNECTION_BROKEN: The connection between load handling station and broker has unexpectedly ended."
+    },
+    "loadHandlingPointStates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "loadHandlingPointId",
+          "operationMode",
+          "connectionStateLHP",
+          "loadHandlingSessionId",
+          "requestStates",
+          "errors"
+        ],
+        "properties": {
+          "loadHandlingPointId": {
+            "type": "string",
+            "description": "Unique identifier of the individual LHP of the LHS."
+          },
+          "operationMode": {
+            "type": "string",
+            "description": "Current operation mode of the LHS.",
+            "enum": [
+              "AUTOMATIC",
+              "MANUAL",
+              "SERVICE"
+            ]
+          },
+          "connectionStateLHP": {
+            "type": "string",
+            "enum": [
+              "ONLINE",
+              "OFFLINE",
+              "CONNECTION_BROKEN"
             ],
-            "properties": {
-              "requestId": {
+            "description": "ONLINE: connection between load handling point and broker is active. OFFLINE: connection between load handling point and broker has gone offline in a coordinated way. CONNECTION_BROKEN: The connection between load handling point and broker has unexpectedly ended."
+          },
+          "loadHandlingSessionId": {
+            "type": "string",
+            "description": "Unique identifier of the complete request session in a process, e.g. the load handling."
+          },
+          "requestStates": {
+            "type": "array",
+            "description": "Array of upcoming and current requests.",
+            "items": {
+              "type": "object",
+              "required": [
+                "requestId",
+                "requestStatus"
+              ],
+              "properties": {
+                "requestId": {
                   "type": "string",
                   "description": "Id of a request to be referred to in this state.",
                   "examples": [
-                      "requestAccess_1337"
+                    "requestAccess_1337"
                   ]
-              },
-              "requestType": {
+                },
+                "requestType": {
                   "type": "string",
                   "description": "requestType of the request.\nOptional: Only for informational or visualization purposes."
-              },
-              "requestStatus": {
-                "type": "string",
-                "description": "Status of the request.",
-                "enum": [
-                  "PENDING",
-                  "RUNNING",
-                  "PAUSED",
-                  "COMPLETED",
-                  "FAILED"
-                ]
-              },
-              "resultDescription": {
+                },
+                "requestStatus": {
+                  "type": "string",
+                  "description": "Status of the request.",
+                  "enum": [
+                    "PENDING",
+                    "RUNNING",
+                    "PAUSED",
+                    "FINISHED",
+                    "FAILED"
+                  ]
+                },
+                "resultDescription": {
                   "type": "string",
                   "description": "Description of the result, e.g., the result of a RFID-read. Errors will be transmitted in errors."
+                }
               }
             }
-          }
-        },
-        "errors": {
-          "type": "array",
-          "description": "Array of error-objects. All active errors of the LHS should be in the list. An empty array indicates that the LHS has no active errors.",
-          "items": {
-            "type": "object",
-            "required": [
-              "errorType",
-              "errorLevel"
-            ],
-            "properties": {
-              "errorType": {
-                "type": "string",
-                "description": "Type of error."
-              },
-              "errorReferences": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "description": "Object that holds the error reference to requests as key-value pairs.",
-                  "properties": {
-                    "required": [
-                      "referenceKey",
-                      "referenceValue"
-                    ],
-                    "referenceKey": {
-                      "type": "string",
-                      "description": "References the type of reference (e.g., headerId, requestId, etc.)."
-                    },
-                    "referenceValue": {
-                      "type": "string",
-                      "description": "References the value, which belongs to the reference key."
-                    }
-                  }
+          },
+          "errors": {
+            "type": "array",
+            "description": "Array of error-objects. All active errors of the load handling station should be in the list. An empty array indicates that the load handling station has no active errors.",
+            "items": {
+              "type": "object",
+              "required": [
+                "errorType",
+                "errorLevel"
+              ],
+              "properties": {
+                "errorType": {
+                  "type": "string",
+                  "description": "Type of error."
+                },
+                "requestId": {
+                  "type": "string",
+                  "description": "Id of the request that is caused by or related to the error."
+                },
+                "errorDescription": {
+                  "type": "string",
+                  "description": "Verbose description of error."
+                },
+                "errorLevel": {
+                  "type": "string",
+                  "description": "Description of the error level, which is warning or fatal. WARNING: load handling station is ready to start (e.g., maintenance cycle expiration warning). FATAL: load handling station is not in running condition, user intervention required.",
+                  "enum": [
+                    "WARNING",
+                    "FATAL"
+                  ]
                 }
-              },
-              "errorDescription": {
-                "type": "string",
-                "description": "Verbose description of error."
-              },
-              "errorLevel": {
-                "type": "string",
-                "description": "Description of the error level, which is warning or fatal. WARNING: Station is ready to start (e.g., maintenance cycle expiration warning). FATAL: Station is not in running condition, user intervention required (e.g., laser scanner is contaminated).",
-                "enum": [
-                  "WARNING",
-                  "FATAL"
-                ]
               }
             }
           }

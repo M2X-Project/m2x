@@ -1,0 +1,133 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Signaling device factsheet",
+  "description": "The factsheet provides basic information about a signaling device. This allows the signaling device to describe itself.",
+  "required": [
+    "timestamp",
+    "version",
+    "manufacturer",
+    "serialNumber",
+    "signalType",
+    "signalingDeviceRequests",
+    "signals"
+  ],
+  "subtopic": "/factsheet",
+  "type": "object",
+  "properties": {
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp in ISO8601 format (YYYY-MM-DDTHH:mm:ss.sssZ). The timestamp defines the point in time at which the message was sent.",
+      "examples": [
+        "2015-10-21T16:29:00.000Z"
+      ]
+    },
+    "version": {
+      "type": "string",
+      "description": "Version of the M2X protocol [Major].[Minor].[Patch] (e.g. 1.3.2).",
+      "examples": [
+        "2.0.0"
+      ]
+    },
+    "manufacturer": {
+      "type": "string",
+      "description": "Manufacturer of the signaling device."
+    },
+    "serialNumber": {
+      "type": "string",
+      "description": "Serial number of the signaling device."
+    },
+    "signalingDeviceDescriptor": {
+      "type": "string",
+      "description": "Describes the signaling device for human readability, e. g. traffic light, flashing light."
+    },
+    "signalType": {
+      "type": "string",
+      "description": "Specifies whether the device can process individual states for multiple requesters or one state for all requesters.",
+      "enum": [
+        "SINGLE",
+        "MULTI"
+      ]
+    },
+    "signalingDeviceRequests": {
+      "type": "array",
+      "description": "Simplified description of possible signaling device requests.",
+      "items": {
+        "type": "string",
+        "enum": [
+          "requestSignal",
+          "requestFactsheet",
+          "requestCancel"
+        ]
+      }
+    },
+    "signals": {
+      "type": "array",
+      "description": "List of signals.",
+      "items": {
+        "type": "object",
+        "required": [
+          "signalId",
+          "isRequestable"
+        ],
+        "properties": {
+          "signalId": {
+            "type": "string",
+            "description": "Unique identifier of the signal.",
+            "examples": [
+              "red",
+              "green",
+              "on",
+              "off",
+              "flashing",
+              "honking"
+            ]
+          },
+          "isRequestable": {
+            "type": "boolean",
+            "description": "Indicates if the signal can be requested."
+          },
+          "descriptor": {
+            "type": "string",
+            "description": "Human readable description of the signal."
+          }
+        }
+      }
+    },
+    "position": {
+      "type": "object",
+      "description": "Position of the signaling device in the factory coordinate system.",
+      "required": [
+        "x",
+        "y"
+      ],
+      "properties": {
+        "x": {
+          "type": "number",
+          "description": "The x-position in factory coordinate system.",
+          "unit": "m"
+        },
+        "y": {
+          "type": "number",
+          "description": "The y-position in factory coordinate system.",
+          "unit": "m"
+        },
+        "z": {
+          "type": "number",
+          "description": "The z-position in factory coordinate system.",
+          "unit": "m"
+        }
+      }
+    },
+    "communicationType": {
+      "type": "string",
+      "description": "Used communication type at the signaling device.",
+      "enum": [
+        "MQTT",
+        "OPC_UA",
+        "REST_API",
+        "WEB_SOCKET"
+      ]
+    }
+  }
+}

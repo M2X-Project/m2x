@@ -1,0 +1,33 @@
+ifdef::env-github[]
+[source,mermaid]
+endif::[]
+ifndef::env-github[]
+[mermaid]
+endif::[]
+....
+sequenceDiagram
+  participant I as FM/MR
+  participant E as Elevator
+  I->>E: M2X REQUEST[requestElevator]: MR requests the elevator to the current floor (with requestedFloor and intendedTargetFloor)
+  E->>E: [OPTIONAL]: Elevator moves to floor
+  E->>E: [OPTIONAL]: Elevator opens doors
+   E-->>I: M2X STATUS[requestElevator (State: FINISHED)]: Elevator is on the requested floor and doors are open
+  I->>E: M2X REQUEST[requestAccess]: MR request for access to the elevator 
+  E-->>I: [OPTIONAL] M2X STATUS[requestAccess (State: RUNNING)]: If the elevator is moving to the requested floor or has to open the doors the elevator returns running for the request
+  E->>E: [OPTIONAL]: Elevator opens doors
+  E-->>I: M2X STATUS[requestAccess (State: FINISHED)]: Elevator is on the requested floor and doors are open
+  I->>I: Drive into the elevator
+  I->>E: M2X REQUEST[requestFloorChange]: MR has entered the elevator completely with the contour and requests to change the floor
+  E-->>I: [OPTIONAL] M2X STATUS[requestFloorChange (State: RUNNING)]: If preparation steps are necessary before changing the floor (e.g. closing the doors), the elevator returns running for the request
+  E->>E: [OPTIONAL]: Complete MR entry (e.g. closing the doors)
+  E->>E: Elevator moves to the requested floor
+  E-->>I: M2X STATUS[requestFloorChange (State: FINISHED)]: Elevator has reached the requested floor
+  I->>E: M2X REQUEST[requestExit]: MR requests to exit the elevator
+  E-->>I: [OPTIONAL] M2X STATUS[requestExit (State: RUNNING)]: Elevator opens the doors and prepares for MR exit
+  E->>E: [OPTIONAL]: Opens doors and/or keeps them open
+  E-->>I: M2X STATUS[requestExit (State: FINISHED)]: Elevator doors are open and MR can exit
+  I->>I: Drive out of elevator 
+  I->>E: M2X REQUEST[requestRelease]: MR has left the elevator and requests to revoke access to the elevator 
+  E-->>I: M2X STATUS[requestRelease (State: FINISHED)]: Elevator acknowledges the request and is ready for the next access request
+  E-->>E: [OPTIONAL]: Elevator closes doors or keep them open for other MR requestExit requests 
+....

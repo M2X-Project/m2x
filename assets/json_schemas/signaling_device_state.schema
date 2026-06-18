@@ -1,0 +1,234 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Signaling device state",
+  "description": "All encompassing states of a signaling device.",
+  "subtopic": "/state",
+  "type": "object",
+  "required": [
+    "timestamp",
+    "version",
+    "serialNumber",
+    "connectionState",
+    "signalingDeviceState"
+  ],
+  "properties": {
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp in ISO8601 Format (YYYY-MM-DDTHH:mm:ss.sssZ). The timestamp defines the point in time at which the message was sent.",
+      "examples": [
+        "2015-10-21T16:29:00.000Z"
+      ]
+    },
+    "version": {
+      "type": "string",
+      "description": "Version of the M2X protocol [Major].[Minor].[Patch] (e.g. 1.3.2)",
+      "examples": [
+        "1.0.0"
+      ]
+    },
+    "serialNumber": {
+      "type": "string",
+      "description": "Serial number of the signaling device."
+    },
+    "manufacturer": {
+      "type": "string",
+      "description": "Manufacturer of the signaling device."
+    },
+    "connectionState": {
+      "type": "string",
+      "enum": [
+        "ONLINE",
+        "OFFLINE",
+        "CONNECTION_BROKEN"
+      ],
+      "description": "ONLINE: connection between signaling device and broker is active. OFFLINE: connection between signaling device and broker has gone offline in a coordinated way. CONNECTION_BROKEN: The connection between signaling device and broker has unexpectedly ended."
+    },
+    "signalingDeviceState": {
+      "type": "object",
+      "description": "The signaling device state contains the current status of the signaling device, including its requests.",
+      "required": [
+        "signalingDeviceId",
+        "globalSignal",
+        "individualSignals",
+        "requestStates"
+      ],
+      "properties": {
+        "signalingDeviceId": {
+          "type": "string",
+          "description": "Unique identifier of the individual signaling device."
+        },
+        "globalSignal": {
+          "description": "Current signal state for all participants who have not requested individual signal.",
+          "type": "object",
+          "required": [
+            "signalId"
+          ],
+          "properties": {
+            "signalId": {
+              "type": "string",
+              "description": "Unique identifier of the signal."
+            },
+            "descriptor": {
+              "type": "string",
+              "description": "Description of the signal."
+            }
+          }
+        },
+        "individualSignals": {
+          "description": "Requested individual signals. If the request is FINISHED, the individual signal is listed here as long as it is active. The signaling device may have multiple individual signals active at the same time and can reject individual signals at any time. If the signal is not listed with the requestId, the globalSignal applies.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "requestId",
+              "signalId"
+            ],
+            "properties": {
+              "requestId": {
+                "type": "string",
+                "description": "Id of a request to be referred to in this state."
+              },
+              "signalId": {
+                "type": "string",
+                "description": "Unique identifier of the signal."
+              },
+              "descriptor": {
+                "type": "string",
+                "description": "Description of the signal."
+              }
+            }
+          }
+        },
+        "plannedSignals": {
+          "type": "array",
+          "description": "Ordered list of planned signals. Be aware that planned signals are not guaranteed to be executed.",
+          "items": {
+            "type": "object",
+            "required": [
+              "signalId",
+              "plannedStart",
+              "plannedEnd"
+            ],
+            "properties": {
+              "signalId": {
+                "type": "string",
+                "description": "Unique identifier of the signal."
+              },
+              "plannedStart": {
+                "type": "string",
+                "format": "date-time",
+                "description": "Timestamp in ISO8601 Format (YYYY-MM-DDTHH:mm:ss.sssZ). The timestamp defines the point in time at when the signal is planned to be executed.",
+                "examples": [
+                  "2015-10-21T16:29:00.000Z"
+                ]
+              },
+              "plannedEnd": {
+                "type": "string",
+                "format": "date-time",
+                "description": "Timestamp in ISO8601 Format (YYYY-MM-DDTHH:mm:ss.sssZ). The timestamp defines the point in time until the signal is planned to be executed.",
+                "examples": [
+                  "2015-10-21T16:29:00.000Z"
+                ]
+              }
+            }
+          }
+        },
+        "requestStates": {
+          "type": "array",
+          "description": "Array of upcoming and current requests.",
+          "items": {
+            "type": "object",
+            "required": [
+              "requestId",
+              "requestStatus"
+            ],
+            "properties": {
+              "requestId": {
+                "type": "string",
+                "description": "Id of a request to be referred to in this state."
+              },
+              "requestedSignal": {
+                "description": "Signal.",
+                "type": "object",
+                "required": [
+                  "signalId"
+                ],
+                "properties": {
+                  "signalId": {
+                    "type": "string",
+                    "description": "Unique identifier of the signal.",
+                    "examples": [
+                      "red",
+                      "green",
+                      "on",
+                      "off",
+                      "flashing",
+                      "honking"
+                    ]
+                  },
+                  "descriptor": {
+                    "type": "string",
+                    "description": "Description of the signal."
+                  }
+                }
+              },
+              "requestType": {
+                "type": "string",
+                "description": "requestType of the request. Optional: Only for informational or visualization purposes."
+              },
+              "requestStatus": {
+                "type": "string",
+                "description": "Status of the request.",
+                "enum": [
+                  "PENDING",
+                  "RUNNING",
+                  "PAUSED",
+                  "FINISHED",
+                  "FAILED"
+                ]
+              },
+              "resultDescription": {
+                "type": "string",
+                "description": "Description of the result. Errors will be transmitted in errors."
+              }
+            }
+          }
+        },
+        "errors": {
+          "type": "array",
+          "description": "Array of error-objects. All active errors of the signaling device should be in the list. An empty array indicates that the signaling device has no active errors.",
+          "items": {
+            "type": "object",
+            "required": [
+              "errorType",
+              "errorLevel"
+            ],
+            "properties": {
+              "errorType": {
+                "type": "string",
+                "description": "Type of error."
+              },
+              "requestId": {
+                "type": "string",
+                "description": "Id of the request that is caused by or related to the error."
+              },
+              "errorDescription": {
+                "type": "string",
+                "description": "Verbose description of error."
+              },
+              "errorLevel": {
+                "type": "string",
+                "description": "Description of the error level, which is warning or fatal. WARNING: signaling device is ready to start (e.g., maintenance cycle expiration warning). FATAL: signaling device is not in running condition, user intervention required.",
+                "enum": [
+                  "WARNING",
+                  "FATAL"
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

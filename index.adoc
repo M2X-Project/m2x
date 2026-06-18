@@ -7,26 +7,31 @@
 // :toc-title:
 
 == M2X - Interface for communication between mobile robots and peripherals in industrial environments
-Version 0.2.1, June 2025
-
-M2X (Machine to X) is a research project developed by the Chair of Material Handling and Warehousing at TU Dortmund University and the Fraunhofer Institute for Material Flow and Logistics IML (associated partner). 
-The project gets support by the VDMA (German, Verband Deutscher Maschinen- und Anlagenbau e. V.) and various partners from industry. 
-Content is developed jointly between the research partners and the industry and the result is made publicly available in the form of the M2X interface definition.
-The aim is to design universally applicable interfaces for communication between the fleet management (FM)/mobile robots (MR) (such as automated guided vehicles (AGVs) or autonomous mobile robots (AMRs)) and other participants in an industrial environment like load handling stations, transport orders, peripherals etc.  
-Proposed changes, bug fixes, issues or pull requests to the interface are to be posted in the https://github.com/M2X-Project/m2x[GitHub repository]. 
-The latest official documentation can be found on the https://m2x-project.github.io/m2x/[GitHub page].
-They will be jointly evaluated by the working group and, if the decision is positive, adopted in a new version.
-*The project is work in progress.*
+Version 0.9.0, June 2026
 
 === Disclaimer
-The following explanations serve as a definition of interfaces and execution of communication between MRs, FM and peripherals.
-Those who use them must ensure that they are applied correctly in specific cases.
-Responsibilities regarding implementation and adaptation in practice must be documented among the project participants. 
-M2X also requires that the data quality of an implementation is sufficiently good and that there is a consensus among the parties involved on terminology, for example.
+The following explanations are intended to provide guidance for defining interfaces and executing communication between mobile robots, fleet management systems, and other participants in an industrial environment, such as load handling stations, transport order systems, and peripherals. They are intended to be freely accessible to all users and are non-binding.
+Any party choosing to apply the M2X interface definition is responsible for ensuring its correct and appropriate use in each specific case. Users must consider the applicable state of the art at the time the interface definition is applied. The use of M2X does not relieve any party of responsibility for its own actions, implementation, integration, operation, or adaptation in practice.
+These explanations do not claim to be exhaustive, nor do they constitute an authoritative interpretation of existing laws. They do not replace the need to review and comply with relevant policies, legislation, or regulations. In addition, the specific characteristics of the respective products, systems, and their various potential applications must be considered.
+Responsibilities regarding implementation and adaptation in practice must be documented among the involved parties. M2X also requires that the data quality of an implementation is sufficiently good and that there is consensus among the parties involved on terminology and the interpretation of the interface.
+All users apply M2X at their own responsibility and risk. Any liability on the part of the project partners, contributors, or any individuals involved in the development or application of M2X is excluded.
+If you identify any inaccuracies in the application of the proposals or the possibility of an incorrect interpretation, please report them in the official https://github.com/M2X-Project/m2x/issues[issues] of the M2X GitHub repository so that any necessary corrections can be made.
 
-If you encounter any inaccuracies in the application of the proposals or the possibility of an incorrect interpretation, please report them in the official https://github.com/M2X-Project/m2x/issues[issues] of the M2X GitHub repository.
 
-=== Background and motivation
+=== Foreword
+M2X (Machine to X) is a research project developed by the Chair of Material Handling and Warehousing at TU Dortmund University and the Fraunhofer Institute for Material Flow and Logistics IML (associated partner). 
+The project is supported by the VDMA (German, Verband Deutscher Maschinen- und Anlagenbau e. V.) and various partners from industry.
+The content is developed jointly between the research partners and industry, and the result is made publicly available in the form of the M2X interface definition.
+The aim is to design universally applicable interfaces for communication between the fleet management (FM)/mobile robots (MR) (such as automated guided vehicles (AGVs) or autonomous mobile robots (AMRs)) and other participants in an industrial environment like load handling stations, transport orders, peripherals etc.  
+Proposed changes, bug fixes, issues, or pull requests to the interface are to be posted in the https://github.com/M2X-Project/m2x[GitHub repository]. 
+The latest official documentation can be found on the https://m2x-project.github.io/m2x/[GitHub page].
+They will be jointly evaluated by the working group and, if the decision is positive, adopted in a new version.
+New content will be pre-released in the private repository.
+News updates on content or meetings can be found at the https://www.linkedin.com/showcase/m2x-project[LinkedIn page].
+For direct contact via email, please refer to sven.franke@tu-dortmund.de and dennis.luensch@iml.fraunhofer.de
+*The project is a work in progress.*
+
+=== Introduction
 
 Warehousing is increasingly relying on MRs. 
 However, the implementation of MR systems is both time-consuming and cost-intensive and is a challenge for both large companies and SMEs (small and medium sized companies). 
@@ -40,24 +45,13 @@ The interfaces identified so far for M2X are as follows:
 
 * Load handling,
 * Transport orders,
-* Peripherals (doors, elevators, (signal) lamps and traffic lights),
-* MR to MR or attachment.
+* Peripherals (doors, elevators, signaling devices, charging devices)
 
 The project is funded by the Federal Ministry for Economic Affairs and Climate Protection (BMWK) as part of the Industrial Collective Research (IGF).
 
-=== Current status and participating at M2X
-The next steps, will deal with the load handling interface. 
-The working group meets at regular intervals to discuss and publish the new content to the M2X project.
-New content will be pre-released in the private repository.
-News updates on content or meetings can be found at the https://www.linkedin.com/showcase/m2x-project[LinkedIn page].
-
-The project has the status work in progress. 
-For comments, desired content or bug fixes, an issue or pull request should be submitted to https://github.com/M2X-Project/m2x/issues[GitHub issues].
-For a direct contact via mail please refer to sven.franke@tu-dortmund.de and dennis.luensch@iml.fraunhofer.de
-
 [#objective_and_scope_of_m2x, reftext="Section: Objective and Scope of M2X"]
-== Objective and scope of M2X
-The aim of the interface is to simplify the commissioning of MR systems in an existing industrial environment (peripherals, load handling stations, transport orders, MR to MR or attachment) when used in industry. 
+== Scope
+The aim of the interface is to simplify the commissioning of MR systems in an existing industrial environment (peripherals, load handling stations, transport orders) when used in industry. 
 The interface should enable the seamless operation of different peripherals from different manufacturers and conventional systems (existing systems).
 xref:m2x_overview[] shows the idea of the M2X framework.
 In detail, this is to be achieved through the following points:
@@ -67,26 +61,27 @@ In detail, this is to be achieved through the following points:
 * M2X provides communication processes and -content of the participants. 
 Sequence diagrams and JSON schemas are provided for this purpose. 
 The technical implementation is not prescribed and can take place at various levels, such as MR or FM and the environment itself. Implementation examples and best practices are provided.
-* The interfaces presented should come as close as possible to plug & play solutions.
+* The interfaces presented should come as close as possible to plug-and-play solutions.
 * The interfaces are developed from simple to complex contents or use cases. 
 * M2X will provide no safety considerations in the JSON schemas in a detailed level, but there can be use cases or examples on how to deal with the most occurring safety issues. 
 Safe communication protocols, e.g. via PROFIsafe, are not considered.
 * M2X will be fully compatible with the VDA 5050 but it is not a requirement to use M2X.
-* The description of the communication is described middleware neutral. 
-Nevertheless, It is assumed that the communication type follows a topic-based publish-subscribe communication.
-* FM describes the management, planning, control and monitoring of vehicle fleets. This involves coordinating, evaluating and optimizing vehicle routes, taking into account certain influencing parameters. A FM Service is available for every MR. It can be either centralized or decentralized. Centralized in terms of coordinating the underlying MRs, e.g. VDA 5050. In terms of decentralized planning the MR has an own FM-Service included locally.
+* The description of the communication is described middleware-neutral.
+Nevertheless, it is assumed that the communication type follows a topic-based publish-subscribe pattern.
+* FM describes the management, planning, control and monitoring of vehicle fleets. This involves coordinating, evaluating and optimizing vehicle routes, taking into account certain influencing parameters. An FM service is available for every MR. It can be either centralized or decentralized. Centralized in terms of coordinating the underlying MRs (e.g., VDA 5050). In terms of decentralized planning, the MR includes its own local FM service.
 * Every M2X interface follows the same structure and is described in the same way:
-  ** Participants describe themselves with a factsheet.
+  ** Participants describe themselves with a factsheet, which contains all necessary information about the participant.
   ** Communication is request-based, meaning that the participant is asked to respond to a request.
-  ** Requests are communicated with the states: PENDING, RUNNING, PAUSED, COMPLETED, FAILED.
-  ** There can only be one active request per participant with a peripheral device. This applies to every peripheral device and must be actively monitored by FM. Old requests are deleted by request_cancel. Old open requests can be read from the states after failure.
+  ** Requests are communicated with the states: PENDING, RUNNING, PAUSED, FINISHED, FAILED.
+  ** Requests shall be canceled via requestCancel.
+  ** There can only be one active request per participant with a peripheral device. This applies to every peripheral device and must be actively monitored by FM. Old requests are deleted by requestCancel. Old open requests can be read from the states after failure. Exception: The door interface can keep doors open over multiple requestTransit interactions.
   ** JSON schemas are provided for the factsheets, states and requests.
 
 image::m2x_overview.png[title="Overview of the M2X Framework, exemplary interfaces which can be considered.", 640,480,align="center", id=m2x_overview]
 
 The scope of M2X is not to operate at the PLC level.
 Described communication is located on a higher level with logic that manages states of the peripheral and communication processes.
-Besides that more complex communication protocols with a publish subscribe pattern are used.
+Besides that, more complex communication protocols with a publish-subscribe pattern are used.
 Hence, M2X assumes that the communication and state management is done by a specialized software, within this document called "Proxy".
 Depending on the M2X support of the peripheral, several different software solutions for legacy and future peripherals are possible.
 The following figures show the various solutions for setting up peripheral devices in an MR system with M2X.
@@ -94,21 +89,21 @@ The following figures show the various solutions for setting up peripheral devic
 
 xref:m2x_application_scope_nowadays[] illustrates the current status of integrating peripherals into a MR system. 
 Peripherals are typically integrated and controlled by the FM. 
-Hence, the proprietary interface of the peripheral is used and tailored to the costumer. 
+Hence, the proprietary interface of the peripheral is used and tailored to the customer.
 
-To overcome this monolithic FM approaches, M2X provides a standardized interface to interact with the peripheral.
-Thus the FM don't need to handle and control the peripheral directly.
-Consequently, the responsibility of the FM is reduced, making the software leaner and more flexible in the event of changes to the system due to the connection of standardized interfaces . 
+To overcome this monolithic FM approach, M2X provides a standardized interface to interact with the peripheral.
+Thus, the FM does not need to handle and control the peripheral directly.
+Consequently, the responsibility of the FM is reduced, making the software leaner and more flexible in the event of changes to the system due to the connection of standardized interfaces.
 xref:m2x_application_scope_m2x[] shows the implementation for current and legacy systems.
-Here, logic and the proprietary interface of the peripheral is managed by a proxy. 
+Here, the logic and the proprietary interface of the peripheral are managed by a proxy.
 In this case, the proxy must be supplied subsequently, which can be carried out by an integrator, the FM supplier etc.
 Hereby, the proxy can manage multiple peripherals of the same type from one or different manufacturers.
-Its also possible to manage different types of peripherals.
+It is also possible to manage different types of peripherals.
 The complexity is up to the developer and supplier of the proxy.
 
 The aim of standardization should be the direct application of the standard. 
 This means that future peripherals will be directly compatible with the M2X standard.
-Hence, the manufacturer of the peripheral will implement the M2X standard themselves providing a external proxy for the peripheral or providing an all in one solution (cf. xref:m2x_application_scope_m2x_beyond[]).
+Hence, the manufacturer of the peripheral will implement the M2X standard themselves by providing an external proxy for the peripheral or an all-in-one solution (cf. xref:m2x_application_scope_m2x_beyond[]).
 To meet the requirements of Industry 4.0 and its self-management principles, each device will have its own proxy for autonomous communication and management. 
 
 [cols="a,a,a"]
@@ -123,6 +118,7 @@ To meet the requirements of Industry 4.0 and its self-management principles, eac
 |===
 |document|title
 
+|ISO 8373:2021(en)|Robotics - Vocabulary
 |VDA 5050|Interface for the communication between automated guided vehicles (AGV) and a master control
 |VDI 2510|Automated Guided Vehicle Systems (AGVS)
 |VDI 2710|Interdisciplinary design of automated guided vehicle systems (AGVS)
@@ -134,10 +130,14 @@ To meet the requirements of Industry 4.0 and its self-management principles, eac
 The following section describes the details of the communication protocol. 
 The protocol specifies the communication between the MR/FM and the environment.
 
-The different messages are presented in tables describing the contents of the fields of the JSON that is sent as an request, state, etc. 
+The different messages are presented in tables describing the contents of the fields of the JSON that is sent as a request, state, etc.
 
 In addition, JSON schemas are available for validation in the corresponding https://github.com/M2X-Project/m2x/tree/main/assets/json_schemas[ GitHub repository]. 
 The JSON schemas are updated with every release of M2X.
+If a conflict between tables/examples and schemas occurs, the JSON schemas are the normative source for implementation.
+
+The recommended transport protocol is Message Queuing Telemetry Transport (MQTT), which is to be used in conjunction with a JSON structure. MQTT is TCP (Transmission Control Protocol) based and allows the distribution of messages to subchannels, which are called "topics". Participants in the MQTT network subscribe to these topics and receive information that concerns or interests them.
+Other message protocols can also be used, for example, OPC UA (Open Platform Communications Unified Architecture) or other who are real-time capable over UDP (User Datagram Protocol).
 
 The recommended message protocol is Message Queuing Telemetry Transport (MQTT), which is to be used in conjunction with a JSON structure. MQTT is TCP (Transmission Control Protocol) based and allows the distribution of messages to subchannels, which are called "topics". Participants in the MQTT network subscribe to these topics and receive information that concerns or interests them.
 Other message protocols can also be used, for example, OPC UA (Open Platform Communications Unified Architecture) or other who are real-time capable over UDP (User Datagram Protocol).
@@ -153,28 +153,28 @@ The table contains the name of the identifier, its unit, its data type, and a de
 |*_italic and bold_*|Variable is optional and a non-elementary data type.
 |arrayName [arrayDataType]|Variable (here arrayName) is an array of the data type included in the square brackets (here the data type is arrayDataType).
 |===
-All keywords are case sensitive. 
+All keywords are case-sensitive.
 All field names are in camelCase. 
-All enumerations are in UPPERCASE without underscores.
+Enumerations for states and error types are in UPPER_SNAKE_CASE. Request names in requestType use lowerCamelCase.
 
 === Permitted characters and field lengths
-All communication is encoded in UTF-8 to enable international adaption of descriptions. 
+All communication is encoded in UTF-8 to enable international adaptation of descriptions.
 The recommendation is that IDs should only use the following characters: A-Z a-z 0-9 _ - . :
 
 A maximum message length is not defined. 
-If an entities memory is insufficient to process an incoming requests, it is to reject the request. 
+If an entity's memory is insufficient to process an incoming request, it must reject the request.
 The matching of maximum field lengths, string lengths or value ranges is up to the integrator. 
-For ease of integration, vendors must supply a factsheet that is detailed in the corresponfing section.
+For ease of integration, vendors must supply a factsheet that is detailed in the corresponding section.
 
 === Notation of enumerations
-Enumerations must be written in upper snake case. 
-This includes keywords such as the states of the actions and requests (RUNNING, COMPLETED, REQUEST_ACCESS, etc...).
+Enumerations for states and error types must be written in UPPER_SNAKE_CASE.
+This includes keywords such as request and action states (RUNNING, FINISHED, FAILED, etc.).
 
 === JSON datatypes
-Where possible, JSON data types must be used. 
+Where possible, JSON data types must be used.
 A Boolean value is thus encoded by "true / false", NOT with an enumeration (TRUE, FALSE) or magic numbers.
 
-== General topic structure ==
+== General topic structure
 
 Since M2X assumes a publish-subscribe communication, the following topic structure is used:
 
@@ -184,23 +184,59 @@ Description of the elements:
 
 * *interfaceName*: Name of the interface (e.g. lhs (load handling station), door, elv (elevator)). The detailed definition of the interface is described in the respective sections.
 * *majorVersion*: Major version of the M2X protocol.
-* *uniqueEntityName*: Unique Name of the Entity (e.g. lhs_dispatch_1, etc.). Besides a human-readable name, a unique identifier like a serial number can also be used.
+* *uniqueEntityName*: Unique name of the entity (e.g., lhs_dispatch_1, etc.). Besides a human-readable name, a unique identifier like a serial number can also be used.
 * *topic*: The topic of the message (e.g. request, status, factsheet, etc.). Possible topics are defined and described in the respective sections of the entities.
+
+== Requests
+M2X uses a request-response mechanism for interactions between MR/FM and peripheral devices.
+All requests, associated parameters and their states are predefined in the respective JSON schemas or tables. 
+A request is initiated by the MR/FM via the request topic and tracked via state messages.
+There can only be one active request per participant with a peripheral device. This applies to every peripheral device and must be actively monitored by FM or the device itself. Old requests are deleted by requestCancel. Old open requests can be read from state history after a failure.
+
+The requests run through the following states:
+|===
+|state|description
+
+|PENDING|The request is pending and has not yet been executed.
+|RUNNING|The request is currently being executed.
+|PAUSED|The request is paused. This can be either physical (safety light curtains are not yet released) or management-related.
+|FINISHED|The request has been successfully FINISHED.
+|FAILED|The request could not be FINISHED.
+|===
+
+The elements of the corresponding JSON schema are explained in the following table.
+|===
+|field|data type|description
+
+|timestamp|string|Timestamp in ISO8601 format (YYYY-MM-DDTHH:mm:ss.sssZ).
+|version|string|Version of the M2X protocol [Major].[Minor].[Patch] (e.g. 1.3.2).
+|*requests* *[request]* {|array|Describes a request that the entity can perform.
+|{nbsp}{nbsp}{nbsp}{nbsp}requestType|string|Name of the request as described in the first column of the predefined requests table for all interfaces. Identifies the function of the request. Enum: requestAccess, requestExit, requestLoadTransfer, requestRelease, requestFactsheet, requestContinueLoadTransfer, requestCancel, requestTransportOrder, requestTransit, requestSignal, requestElevator, requestChangeFloor, requestManualMode, requestStartCharge, requestStopCharge.
+|{nbsp}{nbsp}{nbsp}{nbsp}requestId|string|Unique ID to identify the request and map them to the requestState in the state. Suggestion: Use UUIDs.
+|{nbsp}{nbsp}{nbsp}{nbsp} _requestDescription_ |string|Additional information on the request.
+|{nbsp}{nbsp}{nbsp}{nbsp} *_requestParameters_* *[requestParameter]* {|array|Array of requestParameter-objects for the indicated request e. g. deviceId, loadId, external Triggers.
+|{nbsp}{nbsp}{nbsp}{nbsp}key|string|The key of the request parameter.
+|{nbsp}{nbsp}{nbsp}{nbsp}value|array, +
+ boolean, number, string, object|The value of the request parameter.
+|{nbsp}{nbsp}{nbsp}{nbsp}}||
+|}||
+|===
 
 == Load handling interface
 M2X provides communication content and communication processes for the description of load handling/transfer. 
 Communication during load handling can take place between FM and station or MR and station. 
-The MR actively transfers or receives a load to a load handling station. 
+The MR actively transfers or receives a load to a load handling station or vice versa. 
 The transfer or receipt of a load is called PICK or DROP, which only refers to the physical process and not an action as in VDA 5050.
 
 *Definition of _load handling_:* _Load handling_ refers to the handover of a load at a transfer point or point of interest (PoI). 
-A PoI uses a unique identifier.
+A PoI is referenced by a unique identifier.
 This includes the entry, the physical handover/manipulation and the exit of an MR at a station. 
 Once the physical load transfer of a MR is in progress, it should not be paused.
+The PoI can also be an MR that an MR to MR load handling is possible, where the MR acts as a load handling station or the load handling point respectively.
 
 *Definition _load handling station_:* A _load handling station_ (LHS) serves as a PoI at which the load is transferred or changed/manipulated. 
 The station can have multiple _load handling points_ which are comparable to a VDA 5050 “node”. 
-To avoid confusions regarding the VDA 5050 it is called _load handling point_.
+To avoid confusion regarding the VDA 5050, it is called _load handling point_.
 The _LHS_ will provide no traffic management.
 It is assumed that there is a traffic management that takes care of the coordination of the MRs. 
 Hence, the coordination and deadlock avoidance of the MRs at the different _load handling points_ is managed by the traffic management. Meaning that the station will only manage the interaction areas of the _load handling points_.
@@ -230,14 +266,14 @@ The outer rectangular frame indicates the station footprint.
 The black frames represent the two physical LHPs in the environment. 
 The black dots indicate the geometric handover point (see link:assets/json_schemas/load_handling_station_factsheet.schema[LHS Factsheet] .loadHandlingPoints.handoverArea). 
 The red interaction area of the MRs, which can approach the station from both sides (indicated by the arrows). 
-The station only manages itself and blocks the interaction area if necessary (state .loadHandlingPointAvailable). 
+The station only manages itself and blocks the interaction area if necessary (state .connectionStateLHP). 
 Which MR approaches the station and how is determined for example by a traffic management or another management system.
 The second xref:lhs_with_traffic_management[figure] shows a LHS with a shared traffic management area. The station has two LHPs. As already mentioned it only manages its own LHPs with the corresponding interaction areas. All other passable routes of an MR, even within the station footprint, are controlled by Traffic Management.
 If two different LHSs share the same interaction area, it is recommended to configure them as one and follow the procedure described above.
 
-image::lhs_self_managed_area.svg[title="Exemplary use case of a LHS with two LHPs", 640,480,align="center", id=load_handling_station_view,align="center"]
+image::lhs_self_managed_area.svg[title="Exemplary use case of a LHS with two LHPs.", 640,480,align="center", id=load_handling_station_view,align="center"]
 
-image::lhs_with_traffic_management.svg[title="Exemplary use case of a LHS with two LHPs and a shared traffic management area", 640,480,align="center", id=lhs_with_traffic_management,align="center"]
+image::lhs_with_traffic_management.svg[title="Exemplary use case of a LHS with two LHPs and a shared traffic management area.", 640,480,align="center", id=lhs_with_traffic_management,align="center"]
  
 
 === Requirements for a M2X load handling station
@@ -247,13 +283,13 @@ The following points are requirements that a station must fulfill:
 
 * A LHS is at least represented by a physical area and a software that can handle the status of this area and can communicate with other participants.
 * The software of the LHS manages the process and states described in xref:load_handling_sequence_diagram[xrefstyle=short] (e.g. requestAccess, requestExit, requestLoadTransfer, requestRelease ...).
-* It has an unique ID and can describe itself via a factsheet.
-* Is assigned to an unique position and represents an area in the industrial environment.
-* The LHS shall be represented in a global map in the factory coordinate system with its position and dimensions. M2X uses a right-handed coordinate system (z-Axis pointing up).
+* Every LHS has a unique ID.
+* Is assigned to a unique position and represents an area in the industrial environment.
+* The LHS shall be represented in a global map in the factory coordinate system with its position and dimensions. M2X uses a right-handed coordinate system (z-axis pointing up).
 
 === Safety considerations for load handling
 As already mentioned in the xref:objective_and_scope_of_m2x[] there will be no further safety considerations in the protocol. 
-The purpose of the interface is to provide a functional plug & play approach. 
+The purpose of the interface is to provide a functional plug-and-play approach.
 Safety regarding entries and exits can be abstracted/indirectly set via requirements for the accuracy of the position to be taken (see link:assets/json_schemas/load_handling_station_factsheet.schema[LHS Factsheet] .loadHandlingPoints.handoverArea). 
 Considerations in the communication process for mutings at stations are included and can be taken into account.
 
@@ -274,13 +310,53 @@ include::assets/diagrams/load_transfer_error.adoc[Error load handling diagram]
 
 In the event of an error, the diagram runs as follows. The first decision point is the LHS. As soon as the error occurs here, human interaction is required or the error correction is not part of M2X. If the error occurs at the MR, human interaction is required. The actual process can then be resumed with the requestContinueLoadTransfer if the states can be saved. If the error then occurs, the system queries whether the error occurs in the requestRelease. The process only ends when this request is reached.
 
-A error message can include the following information:
+An error message can include the following information:
 
 * headerId,
-* Topic,
+* topic,
 * requestId if an error was caused by the request,
 * List of parameters if error was caused by erroneous request parameters.
-If an request cannot be completed because of external factors (e.g. no load at expected position), the requestId should be referenced.
+If a request cannot be FINISHED because of external factors (e.g. no load at expected position), the requestId should be referenced.
+
+[#load_handling_unit, reftext="Section: Load Handling Unit"]
+=== Load handling unit 
+
+The load handling unit (LHU) is the object that is transferred between the MR and the LHS.
+The LHU is described in the JSON schema link:assets/json_schemas/load_handling_unit.schema[Load handling unit].
+The following assumptions are made for the definition of the coordinate system of the LHU:
+
+* M2X uses a right-handed coordinate system (z-axis pointing up).
+* The origin is in the center of the LHU.
+* The X-axis points along the longest side of the LHU.
+* The orientation of an LHU is described relative to the coordinate system in which it is currently located, e.g. on an MR or an LHP of an LHS.
+* The pose of the LHU is always in the local coordinate system, e.g. MR or LHS. With the transfer requestLoadTransfer, the station is informed that the LHU has been transferred to the station with the following orientation in the coordinate system. The FM, MR or another system is responsible for carrying out a transformation to the station's target coordinate system.
+* The load pose should always have X, Y, Z and theta.
+
+The FM or a comparable system is responsible for creating the necessary transformation chain for transferring an LHU from an MR to an LHS or vice versa. xref:load_orientation[] shows an exemplary visualization of different load orientations. 
+In this example a MR is transferring a LHU to a LHS respectively the LHP. 
+The LHU, LHS and MR are oriented in different ways. 
+The handover of the LHU must take place in a different orientation relatively to the LHP.
+As soon as the orientation has to be taken into account, the transformation must be performed by an appropriate system.
+
+image::load_orientation.svg[title="Exemplary visualization of different load orientations.", 320,480,align="center", id=load_orientation,align="center"]
+
+link:assets/json_schemas/load_handling_unit.schema[Load handling unit] describes which parameters the individual unit has and which action is carried out with it.
+
+|===
+|field|data type|description
+
+|version|string|Version of the M2X protocol [Major].[Minor].[Patch] (e.g. 1.3.2).
+|*loadHandlingUnit* {|object|Describes all properties of the load handling unit (LHU).
+|{nbsp}{nbsp}{nbsp}{nbsp} _loadUnitId_ |string|ID number of the LHU.
+|{nbsp}{nbsp}{nbsp}{nbsp} loadHandlingUnitType |string|Describes the handling unit, e.g. small load carrier, pallet, etc. Important for matching of the handling capabilities of the unit, e.g the request requestLoadTransfer in the load handling interface of a station or MR.
+|{nbsp}{nbsp}{nbsp}{nbsp} _weight_ |number|Weight of the load.
+|{nbsp}{nbsp}{nbsp}{nbsp} _height_ |number|Height of the LHU (outer dimensions).
+|{nbsp}{nbsp}{nbsp}{nbsp} _width_ |number|Width of the LHU (outer dimensions).
+|{nbsp}{nbsp}{nbsp}{nbsp} _length_ |number|Length of the LHU (outer dimensions).
+|{nbsp}{nbsp}{nbsp}{nbsp} _outerPackaging_ |string|Describes the outer packaging of the LHU, e.g. wrapping, strapping etc.
+|{nbsp}{nbsp}{nbsp}{nbsp} _symmetrical_ |boolean|Describes if the orientation of the LHU is symmetrical.
+|}||
+|===
 
 [#load_handling_unit, reftext="Section: Load Handling Unit"]
 === Load handling unit 
@@ -327,7 +403,7 @@ link:assets/json_schemas/load_handling_unit.schema[Load handling unit] describes
 The sequence diagram is shown below to describe the load handling process. 
 It is assumed that the MR is the “active” part by leading through the communication sequence with request messages. 
 The station answers accordingly by sending status messages. 
-The communication sequence does not consist of a bi-directly request or status exchange. 
+The communication sequence does not consist of a bidirectional request or state exchange.
 The states and requests are defined in the corresponding section. 
 Below is a short version of the sequence diagram:
 
@@ -362,10 +438,10 @@ The M2X load handling protocol uses the following JSON schemas and subtopics for
 |===
 
 === Requests
-The requests that the FM or MR executes for load handling are described below. 
+The requests for a load transfer are described below. 
 All requests, associated parameters and their states are predefined in the respective JSON schemas or tables. 
-If actions, requests or parameters are missing, these can be added after discussion (workshop or git issue) in the current or future version of the standard with non-breaking or breaking changes in the standard.
-There can only be one active request per participant with a peripheral device. This applies to every peripheral device and must be actively monitored by FM. Old requests are deleted by request_cancel. Old open requests can be read from the states after failure.
+There can only be one active request per participant with a peripheral device. This applies to every peripheral device and must be actively monitored by FM. Old requests are deleted by requestCancel. Old open requests can be read from the states after failure.
+
 The following requests are required for complete load handling:
 
 * requestAccess,
@@ -376,86 +452,46 @@ The following requests are required for complete load handling:
 * requestContinueLoadTransfer,
 * requestCancel.
 
-For a transport order, the following requests are required:
-
-* requestTransportOrder,
-* requestCancel.
-
-The requests cannot be executed multiple times in succession (also known as idempotent). 
-The sequence in the sequence diagram must be taken into account.
-The requests run through the following states:
-|===
-|state|description
-
-|PENDING|The request is pending and has not yet been executed.
-|RUNNING|The request is currently being executed.
-|PAUSED|The request is paused. This can be either physical (safety light curtains are not yet released) or management-related.
-|COMPLETED|The request has been successfully completed.
-|FAILED|The request could not be completed.
-|===
-
-The elements of the corresponding JSON schema are explained in the following table, which includes also the blocking types.
-|===
-|field|data type|description
-
-| _headerID_ |uint32|Header ID of the message. The headerId is defined per topic and incremented by 1 with each sent (but not necessarily received) message.
-|timestamp|string|Timestamp in ISO8601 format (YYYY-MM-DDTHH:mm:ss.sssZ).
-|version|string|Version of the M2X protocol [Major].[Minor].[Patch] (e.g. 1.3.2).
-|*requests* *[request]* {|array|Describes an request that the entity can perform.
-|{nbsp}{nbsp}{nbsp}{nbsp}requestType|string|Name of the request as described in the first column of xref:lhs_predefined_requests[]. Identifies the function of the request. Enum: requestAccess, requestExit, startLoadHandling, requestFactsheet, requestContinueLoadTransfer, requestCancel, requestTransportOrder.
-|{nbsp}{nbsp}{nbsp}{nbsp}requestId|string|Unique ID to identify the request and map them to the requestState in the state. Suggestion: Use UUIDs.
-|{nbsp}{nbsp}{nbsp}{nbsp} _requestDescription_ |string|Additional information on the request.
-|{nbsp}{nbsp}{nbsp}{nbsp} blockingType |string|Regulates if the request is allowed to be executed during movement and/or parallel to other requests.
-
-none: request can happen in parallel with others, including movement.
-
-soft: request can happen simultaneously with others, but not while moving.
-
-hard: no other requests can be performed while this request is running. Enum: NONE, SOFT, HARD.
-|{nbsp}{nbsp}{nbsp}{nbsp} *_requestParameters_* *[requestParameter]* {|array|Array of requestParameter-objects for the indicated request e. g. deviceId, loadId, external Triggers.
-|{nbsp}{nbsp}{nbsp}{nbsp}key|string|The key of the request parameter.
-|{nbsp}{nbsp}{nbsp}{nbsp}value|array, +
- boolean, number, string, object|The value of the request parameter.
-|{nbsp}{nbsp}{nbsp}{nbsp}}||
-|}||
-|===
 
 [#lhs_predefined_requests, reftext="Section: Predefined Requests (LHS)"]
 ==== Predefined requests
-The next following two tables describe the predefined requests for the load handling in their parameters and states from RUNNING to COMPLETED.
+The following two tables describe the predefined requests for the load handling in their parameters and states from RUNNING to FINISHED.
 |===
 |request|description|parameter|blocking type
 
-|requestAccess|MR requests the permission to enter the LHP of the station.|loadHandlingSessionId (string), +
+|requestAccess|MR requests the permission to enter the LHP of the station. The activeLoadTransferDevice shall be determined. Disclaimer: In case the LHS is the active load transfer device, the MR needs to prepare the load transfer after a FINISHED requestAccess (see link:assets/diagrams/load_transfer_short.adoc[Load transfer sequence diagram]). |
+  loadHandlingSessionId (string), +
   loadHandlingPointId (string), +
   vehicleType (string), +
   loadAction (enum: PICK, DROP), +
-  link:assets/json_schemas/load_handling_unit.schema[loadHandlingUnit] (object) | HARD
-|requestLoadTransfer|MR requests to exchange (pick or drop) the load with the station.| loadHandlingSessionId (string) | HARD
-|requestExit|MR requests the permission to exit the LHP.|loadHandlingSessionId (string) | HARD
-|requestRelease|MR confirms that the station has been left.|loadHandlingSessionId (string) | HARD
-|requestFactsheet|Request factsheet from a station.|- | NONE
-|requestContinueLoadTransfer|MR/Station/FM requests to continue the load transfer.|loadHandlingSessionId (string) | NONE
-|requestCancel|MR/Station/FM requests to cancel the current request.|loadHandlingSessionId (string) | NONE
+  link:assets/json_schemas/load_handling_unit.schema[loadHandlingUnit] (object), +
+  activeLoadTransferDevice (enum: MR, LHS)
+|requestLoadTransfer|MR requests to exchange (pick or drop) the load with the station. In case the MR is the active load transfer device the LHS needs to prepare the load transfer and returns a running requestLoadTransfer state. Otherwise the load transfer is FINISHED after the LHS returns a FINISHED requestLoadTransfer state. See link:assets/diagrams/load_transfer_short.adoc[Load transfer sequence diagram].| loadHandlingSessionId (string) 
+|requestExit|MR requests the permission to exit the LHP. In case the MR is the active load transfer device the load transfer shall be FINISHED.|loadHandlingSessionId (string) 
+|requestRelease|MR confirms that the station has been left.|loadHandlingSessionId (string) 
+|requestFactsheet|Request factsheet from a station.|- 
+|requestContinueLoadTransfer|MR/Station/FM requests to continue the load transfer.|loadHandlingSessionId (string) 
+|requestCancel|MR/Station/FM requests to cancel the current request.|loadHandlingSessionId (string) 
 |===
 
 |===
-|request|RUNNING|PAUSED|COMPLETED|FAILED|PENDING
+|request|RUNNING|PAUSED|FINISHED|FAILED|PENDING
 
 |requestAccess|MR/FM requests to enter the LHP of the station, e.g. the station has to mute the safety light curtains, station opens machine protection gates etc.|Request is paused e.g., if a safety light curtain is violated.
-After removing the violation, the process continues.|Station is ready for load transfer and has carried out all the safety relevant preparatory steps. MR is in the correct position and ready for the load transfer.|Entry can not be granted, e.g. failure during the preparation steps. Failed entry requests should correspond with an error.|Request is waiting to get executed.
-|requestLoadTransfer|MR requests to transfer or receives a load.|-|Load transfer is done. Load has been successfully transferred or received and station reports new load state.|Load transfer can not be done. Failed load transfers should correspond with an error.|-
+After removing the violation, the process continues.|Station is ready for load transfer and has carried out all the safety relevant preparatory steps. MR is in the correct position and ready for the load transfer.|Entry cannot be granted, e.g. failure during the preparation steps. Failed entry requests should correspond with an error.|Request is waiting to get executed.
+|requestLoadTransfer|-|-|LHS handed over load or MR shall be prepared for load transfer|Load transfer cannot be done. Failed load transfers should correspond with an error.|-
 |requestExit|MR/FM requests to exit the station, e.g. the station has to mute the safety light curtains.|Request is paused e.g., if a safety light curtain is violated.
-After removing the violation, the process continues.|The station authorizes the exit once all load transfer steps have been completed from the station's perspective.|Exit can not be granted, e.g. failure during load transfer. Failed exit requests should correspond with an error.|-
-|requestRelease|MR/FM revokes the occupancy of the station. MR has left the station.|-|Station confirms the revoke of the access and is ready for the next access.|Revoke can not be done. Failed revoke requests should correspond with an error.|-
+After removing the violation, the process continues.|The station authorizes the exit once all load transfer steps have been FINISHED from the station's perspective.|Exit cannot be granted, e.g. failure during load transfer. Failed exit requests should correspond with an error.|-
+|requestRelease|-|-|Station confirms the release of the access and is ready for the next access.|Release cannot be done. Failed release requests should correspond with an error.|-
 |requestFactsheet|-|-|-|-|-
-|requestContinueLoadTransfer|MR/Station/FM requests to continue the load transfer.|-|Load transfer is continued.|Load transfer can not continued. Failed continues should be repeated until the sequence is at request requestRelease. After that the error is ended.|-
-|requestCancel|MR/FM requests to cancel the current request.|-|Request can not be canceled.|Request can not be canceled.|-
+|requestContinueLoadTransfer|-|-|Load transfer is continued.|Load transfer cannot be continued. Failed continues should be repeated until the sequence is at request requestRelease. After that, the error is ended.|-
+|requestCancel|-|-|Request canceled.|Request cannot be canceled.|-
 |===
+
 
 === Load handling station state
 The following section describes the states of the load transfer between the LHS and the MR. 
-The status messages for running, paused, completed and failed are specified here for the requests (requestAccess, requestExit, requestLoadTransfer, requestRelease and requestFactsheet, requestContinueLoadTransfer, requestCancel). 
+The status messages for RUNNING, PAUSED, FINISHED and FAILED are specified here for the requests (requestAccess, requestExit, requestLoadTransfer, requestRelease and requestFactsheet, requestContinueLoadTransfer, requestCancel). 
 For the definitions of the content, see xref:lhs_predefined_requests[]. 
 The sequences for the load handling are described in the section load handling sequence diagram. 
 The upcoming table describes the JSON file and its contents.
@@ -463,7 +499,7 @@ It is assumed that the LHS sends a new state message at least every 30 seconds.
 A state message has to be sent on every internal state change, e.g. changing an operation state of a request from RUNNING to PAUSED.
 After sending a new state message, the message timer is reset to 30 seconds.
 The status depends on the request performed. 
-It can also be queried whether the LHP is available or not.
+It can also be queried whether the LHP is connected or not.
 
 |===
 |field|data type|description
@@ -472,27 +508,24 @@ It can also be queried whether the LHP is available or not.
 |version|string|Version of the M2X protocol [Major].[Minor].[Patch] (e.g. 1.3.2).
 |serialNumber|string|Serial number of the LHS.
 | _manufacturer_ |string|Manufacturer of the LHS.
-|loadHandlingStationAvailable|boolean|Indicates if the LHS is available for operation.
+|connectionStateLHS|string|enum: ONLINE, OFFLINE, CONNECTION_BROKEN. ONLINE: connection between load handling station and broker is active. OFFLINE: connection between load handling station and broker has gone offline in a coordinated way. CONNECTION_BROKEN: The connection between load handling station and broker has unexpectedly ended.
 |*loadHandlingPointStates* *[loadHandlingPointState]* {|array|Describes upcoming and current requests.
 |{nbsp}{nbsp}{nbsp}{nbsp}loadHandlingPointId|string|Unique identifier of the LHS.
-|{nbsp}{nbsp}{nbsp}{nbsp}operatingMode|string|Current operating mode of the LHS. Enum AUTOMATIC, MANUAL, SERVICE.
-|{nbsp}{nbsp}{nbsp}{nbsp}loadHandlingPointAvailable|boolean|SIndicates if the LHP is available for operation.
+|{nbsp}{nbsp}{nbsp}{nbsp}operationMode|string|Current operating mode of the LHS. Enum AUTOMATIC, MANUAL, SERVICE.
+|{nbsp}{nbsp}{nbsp}{nbsp}connectionStateLHP|string|enum: ONLINE, OFFLINE, CONNECTION_BROKEN. ONLINE: connection between load handling point and broker is active. OFFLINE: connection between load handling point and broker has gone offline in a coordinated way. CONNECTION_BROKEN: The connection between load handling point and broker has unexpectedly ended.
 |{nbsp}{nbsp}{nbsp}{nbsp}loadHandlingSessionId|string|Unique identifier of the complete request session in a process, e.g. the load handling.
 |{nbsp}{nbsp}{nbsp}{nbsp} *requestStates* *[requestState]* {|array|Array of upcoming and current requests.
-|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}requestId|string|Unique requestId.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} requestId|string|Unique requestId.
 |{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} _requestType_ |string|requestType of the request.
-|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}requestStatus|string|Status of the request.
-|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} _requestDescription_ |string|Description of the result, e.g., the result of a RFID-read. Errors will be transmitted in errors.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} requestStatus|string|Status of the request.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} _resultDescription_ |string|Description of the result, e.g., the result of a RFID-read. Errors will be transmitted in errors.
 |{nbsp}{nbsp}{nbsp}{nbsp}}||
 |}||
 |*errors* *[error]* {|array|Array of error-objects. All active errors of the LHS should be in the list. An empty array indicates that the LHS has no active errors.
-|{nbsp}{nbsp}{nbsp}{nbsp}errorType|string|Type of error.
-|{nbsp}{nbsp}{nbsp}{nbsp} *_errorReferences_* *_[errorReference]_* {|array|Object that holds the error reference to requests as key-value pairs.
-|{nbsp}{nbsp}{nbsp}{nbsp}referenceKey|string|References the type of reference (e.g., headerId, requestId, etc.).
-|{nbsp}{nbsp}{nbsp}{nbsp}referenceValue|string|References the value, which belongs to the reference key.
-|{nbsp}{nbsp}{nbsp}{nbsp}}||
+|{nbsp}{nbsp}{nbsp}{nbsp} errorType|string|Type of error.
+|{nbsp}{nbsp}{nbsp}{nbsp} _requestId_ |string|Id of the request that is caused by or related to the error.
 |{nbsp}{nbsp}{nbsp}{nbsp} _errorDescription_ |string|Verbose description of error.
-|{nbsp}{nbsp}{nbsp}{nbsp}errorLevel|string|Description of the error level, which is warning or fatal. WARNING: Station is ready to start (e.g., maintenance cycle expiration warning). FATAL: Station is not in running condition, user intervention required (e.g., laser scanner is contaminated).
+|{nbsp}{nbsp}{nbsp}{nbsp} errorLevel|string|Description of the error level, which is warning or fatal. WARNING: Station is ready to start (e.g., maintenance cycle expiration warning). FATAL: Station is not in running condition, user intervention required (e.g., laser scanner is contaminated).
 |}||
 |===
 
@@ -508,8 +541,8 @@ The factsheet is intended both as a human-readable document and for machine proc
 The FM or the MR can request the factsheet from the station at any time. 
 The corresponding request is described in the xref:lhs_predefined_requests[].
 
-Topic for the request: lhs/v1/stationId/requestFactsheet
-Topic for the response: lhs/v1/stationId/factsheet
+Topic for the request: lhs/v1.0.0/stationId/requestFactsheet
+Topic for the response: lhs/v1.0.0/stationId/factsheet
 
 It is also to be noted that a MR has to request all available factsheets from the stations in order to navigate without colliding or interfere with any station geometry (exclusive managed area of a LHS) of a LHS.
 
@@ -520,47 +553,33 @@ The factsheet consists of the JSON-objects listed in the following table.
 
 |timestamp|string|Timestamp in ISO8601 format (YYYY-MM-DDTHH:mm:ss.sssZ).
 |version|string|Version of the M2X protocol [Major].[Minor].[Patch] (e.g. 1.3.2).
-|_manufacturer_|string|Manufacturer of the station.
-|_serialNumber_|string|Serial number of the station.
-|*stationGeometry*|JSON-object|These parameters generally specify the geometry of the station.
-|*loadHandlingPoints[loadHandlingPoint]*|array|These parameters generally specify the class and the capabilities of the load handling points (LHPs) of a load handling station.
-|===
-
-===== stationGeometry
-
-This JSON-object describes the geometry of the station.
-|===
-|field|data type|description
-
-|*position* {|object|Position of the station in the factory-coordinate system.
-|{nbsp}{nbsp}{nbsp}{nbsp}x|number|The x-position in factory-coordinate system.
-|{nbsp}{nbsp}{nbsp}{nbsp}y|number|The y-position in factory-coordinate system.
-|{nbsp}{nbsp}{nbsp}{nbsp}z|number|Z-position in factory-coordinate system.
-|}||
-|*stationFootprint* {|object|Describes the footprint and orientation of the station in the factory-coordinate system.
-|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} x-left|number|x-left offset of the door.
-|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} x-right|number|x-right offset of the door.
-|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} y-left|number|y-left offset of the door.
-|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} y-right|number|y-right offset of the door.
-|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} theta|number|Orientation of the door in the factory coordinate system.
-|}||
+|_manufacturer_ |string|Manufacturer of the station.
+|_serialNumber_ |string|Serial number of the station.
+|_stationDescriptor_ |string|Describes the LHS for human readability.
+|*stationGeometry* {|object|Describes the geometry of the station and its position in the factory coordinate system.
+|{nbsp}{nbsp}{nbsp}{nbsp}position {|object|Position of the station in the factory-coordinate system.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}x|number|The x-position in factory-coordinate system.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}y|number|The y-position in factory-coordinate system.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}z|number|Z-position in factory-coordinate system.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}}||
+|stationFootprint {|object|Describes the footprint and orientation of the station in the factory-coordinate system.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} x-left|number|x-left offset of the station.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} x-right|number|x-right offset of the station.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} y-left|number|y-left offset of the station.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} y-right|number|y-right offset of the station.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} theta|number|Orientation of the station in the factory coordinate system.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} }||
 |numberLoadHandlingPoints|number|Total number of LHPs at the station.
-|===
-
-===== loadHandlingPoint
-
-This JSON-object describes the individual load handling point (LHP) with all its capabilities.
-|===
-|field|data type|description
-
+|}||
+|*loadHandlingPoints* *[loadHandlingPoint]* {|array|These parameters generally specify the class and the capabilities of the loadHandlingPoints. (LHP).
 |loadHandlingPointId|string|ID number of the LHP.
-|_stationClass_|string|Simplified description of station class.
+|_stationClass_ |string|Simplified description of station class.
 |isLoadHandlingActive|boolean|True: LHP can actively (independently) pick and drop goods from or to the MR.
-|doubleCycleAbility|boolean|True: It may be necessary to carry out double cycles at the LHP.
-|*loadUnitTypes* *[loadUnitType]* {|array|List of all loading units that can be handled at the LHP, for example europallet, industrypallet, GMA-pallet, mesh_box, small_load_carrier, barrel, special_load_carrier. If this parameter does not exist or is empty, the LHP is valid for all load unit types on this station.
-|{nbsp}{nbsp}{nbsp}{nbsp} unitType|string|List of all load units.
+|doubleCycleAbility|boolean|True: LHP may be able to carry out double cycles.
+|*_loadHandlingUnitTypes_* *[loadHandlingUnitType]* {|array|List of all loading units that can be handled at the LHP, for example euro pallet, industrial pallet, GMA-pallet, mesh_box, small_load_carrier, barrel, special_load_carrier. If this parameter does not exist or is empty, the LHP is valid for all load unit types on this station.
+|{nbsp}{nbsp}{nbsp}{nbsp} loadHandlingUnitType|string|List of all load units.
 |{nbsp}{nbsp}{nbsp}{nbsp} handlingAcceleration|number|Maximum allowed acceleration for this load-type and –weight.
-|{nbsp}{nbsp}{nbsp}{nbsp} _parallelSequence_ |string|Describes if the LHP can manage more than on load in the ongoing load transfer.
+|{nbsp}{nbsp}{nbsp}{nbsp} _parallelSequence_ |string|Describes if the LHP can manage more than one load in the ongoing load transfer.
 |}||
 |*maxLoadDimensions* *[maxLoadDimension]* {|array|Maximum dimensions that can be processed by the LHP.
 |{nbsp}{nbsp}{nbsp}{nbsp} length|number|Maximum loadable length of the good.
@@ -568,23 +587,24 @@ This JSON-object describes the individual load handling point (LHP) with all its
 |{nbsp}{nbsp}{nbsp}{nbsp} height|number|Maximum loadable height of the good.
 |{nbsp}{nbsp}{nbsp}{nbsp} mass|number|Maximum loadable mass of the good.
 |}||
-|positioningAids [positioningAid]|array|Simplified description of localization type.
-|*pose* {|JSON-object|Pose of the load handling point (LHP) for load handling.
-|{nbsp}{nbsp}{nbsp}{nbsp}x|number|X-position in factory-coordinate system.
-|{nbsp}{nbsp}{nbsp}{nbsp}y|number|Y-position in factory-coordinate system.
-|{nbsp}{nbsp}{nbsp}{nbsp}z|number|Z-position in factory-coordinate system.
-|{nbsp}{nbsp}{nbsp}{nbsp}theta|number|Angle for handover pose.
+|positioningAids|array|Simplified description of localization type.
+|*loadHandlingPoint* {|object|Load handling point (LHP) at which the load can be picked up or dropped off by a mobile robot. The point describes the geometric center of the load for pick-up or delivery.
+|{nbsp}{nbsp}{nbsp}{nbsp}pose {|object|Pose of the load handling point (LHP) for load handling.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}x|number|X-position in factory-coordinate system.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}y|number|Y-position in factory-coordinate system.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}z|number|Z-position in factory-coordinate system.
 |}||
-|*tolerance* {|object|Acceptable tolerance for the load handling.
-|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} x-left|number|x-left offset of the door.
-|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} x-right|number|x-right offset of the door.
-|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} y-left|number|y-left offset of the door.
-|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} y-right|number|y-right offset of the door.
-|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}theta|number|Orientation of the door in the factory coordinate system.
-|{nbsp}{nbsp}{nbsp}{nbsp}}||
+|{nbsp}{nbsp}{nbsp}{nbsp}*tolerance* {|object|Acceptable tolerance for the load handling.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} x-left|number|x-left offset of the LHP.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} x-right|number|x-right offset of the LHP.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} y-left|number|y-left offset of the LHP.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} y-right|number|y-right offset of the LHP.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}theta|number|Orientation of the LHP in the factory coordinate system.
 |}||
-|loadHandlingRequests [loadHandlingRequest]|array|Simplified description of possible load handling actions.
-|*physicalParameters* {|JSON-object|These parameters specify the basic physical properties of the LHP.
+|}||
+|}||
+|*loadHandlingRequests* *[loadHandlingRequest]* |array|Simplified description of possible load handling actions.
+|*physicalParameters* {|object|These parameters specify the basic physical properties of the LHP.
 |{nbsp}{nbsp}{nbsp}{nbsp} _speedMin_ |number|Minimal controlled continuous speed of the LHP.
 |{nbsp}{nbsp}{nbsp}{nbsp} _speedMax_ |number|Maximal controlled continuous speed of the LHP.
 |{nbsp}{nbsp}{nbsp}{nbsp} _accelerationMax_ |number|Maximum possible acceleration for this LHP.
@@ -596,10 +616,11 @@ This JSON-object describes the individual load handling point (LHP) with all its
 |{nbsp}{nbsp}{nbsp}{nbsp}pickTime|number|Approx. time for picking up the load.
 |{nbsp}{nbsp}{nbsp}{nbsp}dropTime|number|Approx. time for dropping the load.
 |}||
-|*restrictedInteractions* *[restrictedInteraction]* {|array|These parameters specify the restricted interactions with the LHP.
+|*restrictedInteraction* {|object|These parameters specify the restricted interactions with the LHP.
 |{nbsp}{nbsp}{nbsp}{nbsp}restrictedVehicles [restrictedVehicle]|array|List of all MRs that are not allowed to interact at the LHP. If this parameter does not exist or is empty, the LHP is valid for all MRs on this station.
 |{nbsp}{nbsp}{nbsp}{nbsp}restrictedLoads[restrictedLoad]|array|List of all loads that are not allowed to interact at the LHP. If this parameter does not exist or is empty, the LHP is valid for all MRs on this station.
 |}||
+|_communicationType_|string|Communication type at the load handling station.
 |===
 
 == Transport order interface 
@@ -610,11 +631,11 @@ The TO enables a MR to move goods from a designated source location to a specifi
 With the TO a MR can perform the following actions: PICK, DROP, VIA.
 PICK and DROP is the physical transfer of goods. 
 VIA is a PoI that the MR passes through to reach a desired PoI location or to wait there.
-The TO contains of a collection of objectives that can be extend during the execution of a TO. 
+The TO consists of a collection of objectives that can be extended during the execution of a TO.
 An objective is a description of an atomic transport step (WHAT and WHERE), e.g. PICK 'Pallet 1' and DROP it at 'storage location 5'.
 A TO shall contain at least one objective.
 The example above shows a transport order with two objectives.
-Orders are defined with the JSON schemas link:assets/json_schemas/examples/requests/request_transport_order.schema[request transport order].
+Orders are defined with the JSON schemas link:assets/json_schemas/examples/requests/to_interface/request_transport_order.schema[request transport order].
 State changes to the transport order are communicated via the JSON schema link:assets/json_schemas/transport_order_state.schema[transport order state].
 A TO has a unique transportOrderId and can be updated using the transportOrderUpdateId of the transport order messages. 
 With isObjectiveListComplete, the end of the TO can be marked.
@@ -644,7 +665,7 @@ This section describes the requirements for the TO interface in the M2X protocol
 * The upper layer system shall be allowed to attempt to cancel an objective.
 * The FM shall be allowed to reject updates or cancellations to objectives.
 * The upper layer system shall be able to cancel a TO.
-* A cancelled TO shall be marked as isCancelled in the transport order state.
+* A canceled TO shall be marked as isCanceled in the transport order state.
 * The request pattern shall be used for the interaction between upper layer system and FM.
 * The FM shall decide whether to accept or decline a request.
 * The LHU shall be defined for the WHAT when PICK action has to be performed.
@@ -652,17 +673,17 @@ This section describes the requirements for the TO interface in the M2X protocol
 * Every objective shall have a unique sequenceId that defines the order of execution of all objectives. The sequenceId shall be strictly sequential increasing.
 
 === Errors
-If an error occurs within the TO it shall be reported via the errors array. Errors have two levels: WARNING and FATAL. A WARNING is a self-resolving error during TO execution, e.g., a field violation at the load handling. A FATAL error needs human intervention. Errors can pass references that help with finding the cause of the error via the errorReferences array. For TO errors, the predefined enums should be used for the errors types. 
+If an error occurs within the TO it shall be reported via the errors array. Errors have two levels: WARNING and FATAL. A WARNING is a self-resolving error during TO execution, e.g., an already finished objective. A FATAL error needs human intervention. Errors can pass references that help with finding the cause of the error via the errorReferences array. For TO errors, the predefined enums should be used for the errors types. 
 
 ==== Predefined Errors
 
 |===
 |error type|error level|description|parameter
-|OBJECTIVE_ALREADY_COMPLETED|WARNING|The objective is already completed. The objectiveId was already used beforehand and is not valid for updates anymore.| objectiveId (string)
+|OBJECTIVE_ALREADY_FINISHED|WARNING|The objective is already finished. The objectiveId was already used beforehand and is not valid for updates anymore.| objectiveId (string)
 |OBJECTIVE_IN_EXECUTION|WARNING|The objective is already in execution and cannot be updated anymore.| objectiveId (string)
 |SEQUENCE_ID_NON_CONTIGUOUS|WARNING|The sequenceId is non-contiguous. A sequenceId shall be used which links directly to the previous objective or updates an already used sequenceId.| sequenceId (integer)
-|ERROR_DURING_EXECUTION|WARNING or FATAL|The objective is not executed correctly. The error can be a WARNING or FATAL. The error can be caused e.g. by the MR or the LHS. It can be caused by an external factor (e.g. no load at expected position). The error can also be caused by an error on FM site e.g. given WHAT and WHERE are unknown. In this case, its up to the FM that these changes are not allowed which results in throwing an error. The selection of the error type is up to the system and can e.g. be forwarded from previous errors.| action (string), objectiveId (string)
-|ERROR_IN_VALIDATION|WARNING or FATAL|When validating the data in the TO, inconsistent information can cause an error. The validation of information is not part of M2X, so the decision on the logic throwing an error lies with the FM. The error can e.g. be used to indicate changing resourceIds / priorities during transport order updates or different LHU Ids between a PICK and DROP action. In case this error occurs its recommended to cancel the TO with a requestCancel.| action (string), objectiveId (string)
+|ERROR_DURING_EXECUTION|WARNING or FATAL|The objective is not executed correctly. The error can be a WARNING or FATAL. The error can be caused e.g. by the MR or the LHS. It can be caused by an external factor (e.g. no load at expected position). The error can also be caused by an error on FM site e.g. given WHAT and WHERE are unknown. In this case, it is up to the FM whether these changes are allowed; otherwise, an error shall be raised. The selection of the error type is up to the system and can e.g. be forwarded from previous errors.| action (string), objectiveId (string)
+|ERROR_IN_VALIDATION|WARNING or FATAL|When validating the data in the TO, inconsistent information can cause an error. The validation of information is not part of M2X, so the decision on the logic throwing an error lies with the FM. The error can e.g. be used to indicate changing resourceIds / priorities during transport order updates or different LHU Ids between a PICK and DROP action. In case this error occurs, it is recommended to cancel the TO with a requestCancel.| action (string), objectiveId (string)
 |===
 
 === Topics
@@ -680,7 +701,6 @@ The M2X TO interface uses the following JSON schemas and subtopics for the commu
 |===
 |type |used for|schema (link)
 
-|transport_order|JSON Schema for transport order description.|link:assets/json_schemas/examples/requests/request_transport_order.schema[Schema Link]
 |transport_order_state|JSON Schema for state of a transport order.|link:assets/json_schemas/transport_order_state.schema[Schema Link]
 
 |===
@@ -688,29 +708,29 @@ The M2X TO interface uses the following JSON schemas and subtopics for the commu
 === Requests
 The requests that upper layer system executes for creating transport orders are described below. 
 All requests, associated parameters and their states are predefined in the respective JSON schemas or tables. 
-There can only be one active request per participant with a peripheral device. This applies to every peripheral device and must be actively monitored by FM. Old requests are deleted by request_cancel. Old open requests can be read from the states after failure.
+There can only be one active request per participant with a peripheral device. This applies to every peripheral device and must be actively monitored by FM. Old requests are deleted by requestCancel. Old open requests can be read from the states after failure.
 
-The following request are required for creating and updating transport orders:
+The following requests are required for creating and updating transport orders:
 
 * requestTransportOrder,
 * requestCancel.
 
 ==== Predefined requests
-The next following two tables describe the predefined requests for the load handling in their parameters and states from RUNNING to COMPLETED.
+The following two tables describe the predefined TO requests, their parameters, and their states from RUNNING to FINISHED.
 |===
-|request|description|parameter|blocking type
-|requestTransportOrder|Upper layer system creates or updates a transport order.|  | NONE
-|requestCancel|MR/Station/FM requests to cancel the current request. A request is cancelled if isCancelled (in transport_order_state.schema) is set to true.|transportOrderId (string), isCancelled (boolean) | NONE
+|request|description|parameter
+|requestTransportOrder|Upper layer system creates or updates a transport order.|  
+|requestCancel|MR/Station/FM requests to cancel the current request. A request is canceled if isCanceled (in transport_order_state.schema) is set to true.|transportOrderId (string), isCanceled (boolean) 
 |===
 
 |===
-|request|RUNNING|PAUSED|COMPLETED|FAILED|PENDING
-|requestTransportOrder|Upper layer system requests a transport order.|-|Transport order is completely and successfully executed.|Transport order can not be executed.|-
-|requestCancel|MR/FM requests to cancel the current request.|-|Request can not be canceled.|Request can not be canceled.|-
+|request|RUNNING|PAUSED|FINISHED|FAILED|PENDING
+|requestTransportOrder|Upper layer system requests a transport order.|-|Transport order is completely and successfully executed.|Transport order cannot be executed.|-
+|requestCancel|MR/FM requests to cancel the current request.|-|Request canceled.|Request cannot be canceled.|-
 |===
 
 ===== requestTransportOrder JSON structure
-The TO contains of a collection of objectives that can be extend during the execution of a TO. A TO shall contain at least one objective. An objective is a description of an atomic transport step (WHAT and WHERE), e.g. transport 'Pallet 1' to 'storage location 5'.
+The TO consists of a collection of objectives that can be extended during the execution of a TO. A TO shall contain at least one objective. An objective is a description of an atomic transport step (WHAT and WHERE), e.g. transport 'Pallet 1' to 'storage location 5'.
 
 
 Example of the transport order schema: 
@@ -732,8 +752,8 @@ Example of the transport order schema:
 |{nbsp}{nbsp}{nbsp}{nbsp}action|string|Action to be performed at the destination (WHAT). Enum: PICK, DROP, VIA.
 |{nbsp}{nbsp}{nbsp}{nbsp} _displayName_ |string|Human readable name of the objective.
 |{nbsp}{nbsp}{nbsp}{nbsp} *_loadHandlingUnit_* |object|Description of the load, e.g. id, dimensions, weight etc. For further information see load_handling_unit.schema
-|{nbsp}{nbsp}{nbsp}{nbsp} _earliestCompletionTime_ |string|Earliest completion time of the objective in ISO8601 format (YYYY-MM-DDTHH:mm:ss.sssZ). Describes when the objective can be completed at the earliest.
-|{nbsp}{nbsp}{nbsp}{nbsp} _latestCompletionTime_ |string|Latest completion time of the objective in ISO8601 format (YYYY-MM-DDTHH:mm:ss.sssZ). Describes when the objective has to be completed at the latest.
+|{nbsp}{nbsp}{nbsp}{nbsp} _earliestCompletionTime_ |string|Earliest completion time of the objective in ISO8601 format (YYYY-MM-DDTHH:mm:ss.sssZ). Describes when the objective can be FINISHED at the earliest.
+|{nbsp}{nbsp}{nbsp}{nbsp} _latestCompletionTime_ |string|Latest completion time of the objective in ISO8601 format (YYYY-MM-DDTHH:mm:ss.sssZ). Describes when the objective has to be FINISHED at the latest.
 |}||
 |===
 
@@ -753,7 +773,7 @@ The TO state consists of the JSON-objects listed in the following table.
 |lastObjectiveId|string|lastObjectiveId of last reached objective or, if MR is currently on an objective, current objective (e.g., \"objective\"). Empty string (\"\") if no lastObjectiveId is available.
 |_resourceId_ |string|Unique identifier of the resource, e.g. ID of the mobile robot, that shall execute the transport order. In case the resourceId is set, the transport order is only valid for the specified resource. If the resourceId is unknown the order receiving system shall decline the transport order. If the resourceId is not set, the transport order is valid for all resources.
 |_priority_ |string|Priority of the TO. Enum: VERY_LOW, LOW, MEDIUM, HIGH, VERY_HIGH.
-|isCancelled|boolean|Indicates whether the transport order is cancelled or not. If true, the transport order is cancelled and no further objectives are to be executed.
+|isCanceled|boolean|Indicates whether the transport order is canceled or not. If true, the transport order is canceled and no further objectives are to be executed.
 |*objectiveStates [objectiveState]* {|array|Array of objectiveStates, that need to be traversed for fulfilling the TO. Empty list if idle.
 |{nbsp}{nbsp}{nbsp}{nbsp}objectiveId|string|Unique objective identification.
 |{nbsp}{nbsp}{nbsp}{nbsp}sequenceId|integer|Number to track the sequence of objectives in an transport order and to simplify order updates. The main purpose is to distinguish between an objective which is passed more than once within one TO (same transportOrderId). The variable sequenceId runs across all objectives of the same transport order and is reset when a new transportOrderId is issued. To update an objective, the sequenceId of the objective to be updated has to be provided. The objective update replaces all following objectives starting from the sequenceId. The sequenceId shall be strictly sequential increasing.
@@ -763,14 +783,689 @@ The TO state consists of the JSON-objects listed in the following table.
 |{nbsp}{nbsp}{nbsp}{nbsp} *_loadHandlingUnit_* |object|Description of the load, e.g. id, dimensions, weight etc. For further information see load_handling_unit.schema
 |{nbsp}{nbsp}{nbsp}{nbsp} _estimatedCompletionTime_ |string|Estimated completion time of the objective in ISO8601 format (YYYY-MM-DDTHH:mm:ss.sssZ).
 |}||
+|requestStates {|array|Array of upcoming and current requests.
+|{nbsp}{nbsp}{nbsp}{nbsp} requestId|string|Id of a request to be referred to in this state.
+|{nbsp}{nbsp}{nbsp}{nbsp} _requestType_|string|requestType of the request. Optional: Only for informational or visualization purposes. 
+|{nbsp}{nbsp}{nbsp}{nbsp} requestStatus|string|State of the request. Enum: RUNNING, PAUSED, FINISHED, FAILED, PENDING.
+|{nbsp}{nbsp}{nbsp}{nbsp} _resultDescription_|string|Description of the result. Errors will be transmitted in errors.
+|}||
 |*errors* *[error]* {|array|Array of error-objects. All active errors of the order should be in the list. An empty array indicates that the LHS has no active errors.
-|{nbsp}{nbsp}{nbsp}{nbsp}errorType|string|Type of error. Enum: OBJECTIVE_ALREADY_COMPLETED, OBJECTIVE_IN_EXECUTION, SEQUENCE_ID_NON_CONTIGUOUS, ERROR_DURING_EXECUTION.
+|{nbsp}{nbsp}{nbsp}{nbsp}errorType|string|Type of error. Enum: OBJECTIVE_ALREADY_FINISHED, OBJECTIVE_IN_EXECUTION, SEQUENCE_ID_NON_CONTIGUOUS, ERROR_DURING_EXECUTION.
 |{nbsp}{nbsp}{nbsp}{nbsp} *_errorReferences_* *_[errorReference]_* {|array|Object that holds the error reference to requests as key-value pairs.
 |{nbsp}{nbsp}{nbsp}{nbsp}referenceKey|string|References cause of the error (e.g. objectiveId and sequenceId of the TO).
 |{nbsp}{nbsp}{nbsp}{nbsp}referenceValue|string|References the value, which belongs to the reference key.
 |{nbsp}{nbsp}{nbsp}{nbsp}}||
 |{nbsp}{nbsp}{nbsp}{nbsp} _errorDescription_ |string|Verbose description of error.
 |{nbsp}{nbsp}{nbsp}{nbsp}errorLevel|string|Description of the error level, which is WARNING or FATAL.
+|}||
+|===
+
+== Door interface
+M2X provides communication content and communication processes for the the transit of doors.
+In the M2X context, the generic term _door_ includes the variants/components barrier, gate, portal, hatch, exit point, and others. 
+Any structural element that allows passage through a room partition when opened is referred to as a door.
+
+*Definition of a _M2X door_:*
+A door is a self managed device that has an own factsheet.
+In front of the door is a transition area that is managed by the door itself.
+Once a MR is in front of the door, it can request to transit the door.
+Other areas around or behind the door are managed by the FM.
+The transition area is specified as a polygon in the factsheet of the door under doorFootprint.
+The following figure shows an example of a door in the M2X context:
+
+image::door.svg[title="Example use case of a M2X door.",640,480,align="center", id=door,align="center"]
+
+A door that stays open all the time is called a passive door.
+A passive door is an M2X peripheral that does not require explicit state requests to reveal its condition. 
+Instead, it publishes its current status (e.g. OPEN, CLOSED) continuously or upon change through the state channel. 
+Passive doors typically expose no active requests.
+In the minimal case, their request parameter contains only a requestFactsheet.
+
+=== Requirements for a M2X door interface
+This section describes the requirements for the door interface in the M2X protocol:
+
+* Doors and all subtypes are considered in one interface.
+* An airlock door is represented by individual doors. The doors are managed by a logic/program which covers the behavior and sequence of the doors. This logic is not part of M2X.
+* Each door requires a bounding box, i.e., the physical space it needs to open/close. This area is called transition area.
+* For crossing a door, the MR shall request the transit of the door. After the MR has passed the door, it shall send a requestRelease to the door.
+* The transition area shall not be entered until the requestTransit is FINISHED. After the MR left the transition area it sends a requestRelease.
+* Fire doors can be addressed with M2X but are treated like normal doors. All safety/fire protection details are not part of M2X.
+* The door logic is described using an enum (open, closed, closing, opening) in the doors factsheet. This enum is only for visualization purposes.
+* A door shall be able to stay open through multiple requestTransits, closing earliest when all requestRelease have been processed.
+
+
+=== Errors
+If an error occurs within the door transit it shall be reported via the errors array.
+Errors have two levels: WARNING and FATAL. A WARNING is a self-resolving error during transit, e.g., a field violation at the door. A FATAL error needs human intervention. Errors can pass references that help with finding the cause of the error via the errorReferences array. For door errors, the predefined enums should be used for the errors types.
+
+==== Predefined Errors
+
+|===
+|error type|error level|description|parameter
+|ERROR_DURING_EXECUTION|WARNING or FATAL|The door transit is not executed correctly. The error can be a WARNING or FATAL. The error can be caused e.g. by the MR or the door. It can be caused by an external factor (e.g. a blocked transition area). The error can also be caused by an error on FM site e.g. given parameters are unknown. In this case, it is up to the FM whether these changes are allowed; otherwise, an error shall be raised. The selection of the error type is up to the system and can e.g. be forwarded from previous errors.| objectiveId (string)
+|===
+
+=== Door sequence diagram
+include::assets/diagrams/door_transit.adoc[]
+
+=== Topics
+The communication with a door is done via the following topics:
+
+|===
+|Type|Topic schema|Description
+|Factsheet |door/v1.0.0/door_example/factsheet | Used for requesting the factsheet of the door.
+|Request | door/v1.0.0/door_example/request_* | Used for communication of requests for transit the door: requestTransit, requestRelease, requestFactsheet, requestCancel
+|State | door/v1.0.0/door_example/state | Topic for communicating the current state of the door and information about received request messages.
+|===
+
+
+=== Door JSON schemas and subtopics
+The M2X door interface uses the following JSON schemas and subtopics for the communication between door and MR/FM.
+|===
+|type |used for|schema (link)
+
+|door factsheet|Self-description of the door.|link:assets/json_schemas/door_factsheet.schema[Schema Link]
+|request|Communication of the requests for the transit.|link:assets/json_schemas/request.schema[Schema Link]
+|door state|Communication of the state of the door itself.|link:assets/json_schemas/door_state.schema[Schema Link]
+
+|===
+
+=== Requests
+The requests for door transit are described below.
+All requests, associated parameters and their states are predefined in the respective JSON schemas or tables. 
+There can only be one active request per participant with a peripheral device. This applies to every peripheral device and must be actively monitored by FM. Old requests are deleted by requestCancel. Old open requests can be read from the states after failure. Exception: A door may remain open across multiple requestTransit interactions.
+
+The following requests are required for the door interface:
+
+* requestTransit,
+* requestRelease,
+* requestFactsheet,
+* requestCancel.
+
+==== Predefined requests
+The following two tables describe the predefined requests for the door interface, their parameters, and their states from RUNNING to FINISHED.
+|===
+|request|description|parameter
+|requestTransit|The MR is in front of the transition area of the door and requests to transit the door. The transit is also part of the request.|doorId (string), doorStatus (string)
+|requestRelease|The MR has passed the door and releases the transit request. The door can send the state finished right after the request, as it is irrelevant whether the door closes or remains open for the next MR.|doorId (string)
+|requestFactsheet|Request factsheet from a door.|- 
+|requestCancel|MR/FM requests to cancel the current request. |doorId (string)
+|===
+
+|===
+|request|RUNNING|PAUSED|FINISHED|FAILED|PENDING
+|requestTransit|MR is in front of the transition area of the door and requests to transit the door. If the door is currently not open it starts to open itself.|-|Door is open and MR can transit/cross it.|Door cannot be opened or MR is not allowed to transit/cross it. A failed request shall correspond with an error.|Request is waiting to get executed.
+|requestRelease|MR/FM requests to release the occupancy of the door. MR has left the door transition area.|-|Door confirms the release of the access and is ready for the next request.|Release cannot be done. Failed release requests shall correspond with an error.|-
+|requestFactsheet|-|-|-|-|-
+|requestCancel|MR/FM requests to cancel the current request.|-|Request canceled.|Request cannot be canceled.|-
+|===
+
+=== Door state
+The following section describes the states of the door. 
+You can find the JSON schema for the door state here: link:assets/json_schemas/door_state.schema[Door state].
+
+==== Door state JSON structure
+The door state consists of the JSON-objects listed in the following table.
+
+|===
+|field|data type|description
+|timestamp|string|Timestamp in ISO8601 format (YYYY-MM-DDTHH:mm:ss.sssZ). The timestamp defines the point in time at which the message was sent.
+|version|string|Version of the M2X protocol [Major].[Minor].[Patch] (e.g. 1.3.2).
+|serialNumber|string|Serial number of the door.
+|_manufacturer_|string|Manufacturer of the door.
+|connectionState|string|enum: ONLINE, OFFLINE, CONNECTION_BROKEN. ONLINE: connection between door and broker is active. OFFLINE: connection between door and broker has gone offline in a coordinated way. CONNECTION_BROKEN: The connection between door and broker has unexpectedly ended.
+|*doorState* {|object|The door state contains the current status of the door, including its requests.
+|{nbsp}{nbsp}{nbsp}{nbsp} doorId|string|Unique identifier of the individual door.
+|{nbsp}{nbsp}{nbsp}{nbsp} doorStatus|string|Current status of the door. Enum: OPEN, CLOSED, OPENING, CLOSING.
+|{nbsp}{nbsp}{nbsp}{nbsp} requestStates|array|Array of upcoming and current requests.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} requestId|string|Id of a request to be referred to in this state.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} _requestType_|string|requestType of the request. Optional: Only for informational or visualization purposes. 
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} requestStatus|string|State of the request. Enum: RUNNING, PAUSED, FINISHED, FAILED, PENDING.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} _resultDescription_|string|Description of the result. Errors will be transmitted in errors..
+|}||
+|*errors* *[error]* {|array|Array of error-objects. All active errors of the door should be in the list. An empty array indicates that the door has no active errors.
+|{nbsp}{nbsp}{nbsp}{nbsp} errorType|string|Type of error.
+|{nbsp}{nbsp}{nbsp}{nbsp} _requestId_|string|Id of the request that is caused or related to the error.
+|{nbsp}{nbsp}{nbsp}{nbsp} _errorDescription_|string|Verbose description of error.
+|{nbsp}{nbsp}{nbsp}{nbsp} errorLevel|string|Description of the error level, which is warning or fatal. WARNING: Door is ready to start (e.g., maintenance cycle expiration warning). FATAL: Door is not in running condition, user intervention required.
+|}||
+|===
+
+=== Door factsheet
+A factsheet is provided for the self-description of the door. 
+It describes the door overall as well as its capabilities. 
+You can find the factsheet JSON schema here: link:assets/json_schemas/door_factsheet.schema[Door factsheet]
+
+==== Factsheet JSON structure
+The factsheet consists of the JSON-objects listed in the following table.
+
+|===
+|field|data type|description
+|timestamp|string|Timestamp in ISO8601 format (YYYY-MM-DDTHH:mm:ss.sssZ). The timestamp defines the point in time at which the message was sent.
+|version|string|Version of the M2X protocol [Major].[Minor].[Patch] (e.g. 1.3.2).
+|_manufacturer_|string|Manufacturer of the door.
+|serialNumber|string|Serial number of the door.
+|*doorGeometry* {|object|These parameters generally specify the geometry of the door.
+|{nbsp}{nbsp}{nbsp}{nbsp}position|array|Position of the door in the factory coordinate system. 
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}x|number|The x-position in factory-coordinate system.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}y|number|The y-position in factory-coordinate system.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} _z_|number|The z-position in factory-coordinate system.
+|{nbsp}{nbsp}{nbsp}{nbsp}doorFootprint|array|Describes the footprint of the door as a polygon in the factory coordinate system. The footprint includes the transition area of the door. 
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}x|number|The x-position in factory-coordinate system.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}y|number|The y-position in factory-coordinate system.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} _z_|number|The z-position in factory-coordinate system.
+|{nbsp}{nbsp}{nbsp}{nbsp}communicationType|string|Communication type at the door.
+|{nbsp}{nbsp}{nbsp}{nbsp}_restrictedVehiclesTypes_ |array|List of all MRs types that are not allowed to interact with the door. If this parameter does not exist or is empty, the door is valid for all MRs.
+|{nbsp}{nbsp}{nbsp}{nbsp}doorDescriptor|string|Describes the type of the door for human readability.
+|}||
+|*doorRequests* *[doorRequest]* |array|Simplified description of possible door requests. Enum: requestTransit, requestRelease, requestFactsheet, requestCancel.
+|*door* {|object|These parameters generally specify the door.
+|{nbsp}{nbsp}{nbsp}{nbsp}doorId|string|ID number of the door.
+|{nbsp}{nbsp}{nbsp}{nbsp} _clearanceWidth_ |number|Width of the door clearance in the door.
+|{nbsp}{nbsp}{nbsp}{nbsp} _clearanceHeight_ |number|Height of the door clearance in the door.
+|}||
+|===
+
+== Signaling device interface
+M2X provides communication content and communication processes for a signaling device interface. 
+In the M2X context, the generic term signaling device includes the variants/components traffic light, signal light, stop light and others.
+
+
+*Definition of a _M2X signaling device_:*
+A signaling device is a self managed device that has an own factsheet. 
+The device can describe itself and its properties. For example, for traffic lights that it can show red, yellow and green lights.
+
+
+=== Requirements for a M2X signaling device interface
+This section describes the requirements for the signaling device interface in the M2X protocol:
+
+* A signaling device shall be a physical or virtual entity.
+* The device shall have a distinct signal state.
+* The device shall provide a list of all possible requestable signals and a list of all possible signals. 
+* The list of requestable signals shall be a subset of all possible signals.
+* A change of the signal shall be requested with requestSignal (from the list with requestable signals).
+* The device should provide a list of upcoming signals; this list may also be empty.
+
+=== Errors
+If an error occurs within the signaling device it shall be reported via the errors array.
+Errors have two levels: WARNING and FATAL. A WARNING is a self-resolving error during signal change, e.g., a field violation at the signaling device. A FATAL error needs human intervention. Errors can pass references that help with finding the cause of the error via the errorReferences array. For signaling device errors, the predefined enums should be used for the errors types.
+
+=== Signaling device sequence diagram
+include::assets/diagrams/signaling_device_transit.adoc[]
+
+=== Topics
+The communication with a signaling device is done via the following topics:
+|===
+|Type|Topic schema|Description
+|Factsheet |signal_light/v1.0.0/signaling_device_example/factsheet | Used for requesting the factsheet of the signaling device.
+|Request | signal_light/v1.0.0/signaling_device_example/request_* | Used for communication of requests for the signaling device: requestSignal, requestFactsheet, requestCancel
+|State | signal_light/v1.0.0/signaling_device_example/state | Topic for communicating the current state of the signaling device and information about received request messages.
+|===
+
+=== Signaling device JSON schemas and subtopics
+The M2X signaling device interface uses the following JSON schemas and subtopics for the communication between station and MR/FM.
+|===
+|type |used for|schema (link) 
+|signaling device factsheet|Self-description of the signaling device.|link:assets/json_schemas/signaling_device_factsheet.schema[Schema Link]
+|request|Communication of the requests for the signaling device.|link:assets/json_schemas/request.schema[Schema Link]
+|signaling device state|Communication of the state of the signaling device itself.|link:assets/json_schemas/signaling_device_state.schema[Schema Link]
+|===
+
+=== Requests
+The requests for signaling devices are described below.
+All requests, associated parameters and their states are predefined in the respective JSON schemas or tables.
+There can only be one active request per participant with a peripheral device. 
+This applies to every peripheral device and must be actively monitored by FM. 
+Old requests are deleted by requestCancel. Old open requests can be read from the states after failure.
+The following requests are required for creating and updating signaling devices:
+
+* requestSignal,
+* requestFactsheet,
+* requestCancel.
+
+==== Predefined requests
+The following two tables describe the predefined requests for the signaling device interface, their parameters, and their states from RUNNING to FINISHED.
+|===
+|request|description|parameter
+|requestSignal|Request to change the state of a signaling device.|signalId (string)
+|requestFactsheet|Request factsheet from a signaling device.|- 
+|requestCancel|MR/FM requests to cancel the current request. |signalId (string)
+|===
+
+|===
+|request|RUNNING|PAUSED|FINISHED|FAILED|PENDING
+|requestSignal|Signaling device changes signal.|-|Signal changed successfully.|Signal cannot be changed. A failed request shall correspond with an error.|Request is waiting to get executed.
+|requestFactsheet|-|-|-|-|-
+|requestCancel|MR/FM requests to cancel the current request.|-|Request canceled.|Request cannot be canceled.|-
+|===
+
+=== Signaling device state
+The following section describes the states of the signaling device.
+You can find the JSON schema for the signaling device state here: link:assets/json_schemas/signaling_device_state.schema[Signaling device state].
+
+==== Signaling device state JSON structure
+The signaling device state consists of the JSON-objects listed in the following table.
+
+|===
+|field|data type|description
+|timestamp|string|Timestamp in ISO8601 format (YYYY-MM-DDTHH:mm:ss.sssZ). The timestamp defines the point in time at which the message was sent.
+|version|string|Version of the M2X protocol [Major].[Minor].[Patch] (e.g. 1.3.2).
+|serialNumber|string|Serial number of the signaling device.
+|_manufacturer_|string|Manufacturer of the signaling device.
+|connectionState|string|enum: ONLINE, OFFLINE, CONNECTION_BROKEN. ONLINE: connection between signaling device and broker is active. OFFLINE: connection between signaling device and broker has gone offline in a coordinated way. CONNECTION_BROKEN: The connection between signaling device and broker has unexpectedly ended.
+|*signalingDeviceState* {|object|The signaling device state contains the current status of the signaling device, including its requests.
+|{nbsp}{nbsp}{nbsp}{nbsp} signalingDeviceId|string|Unique identifier of the individual signaling device.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} globalSignal|object|Current signal state for all participants who have not requested individual signal.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} signalId|string|Unique identifier of the signal.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} descriptor|string|Description of the signal.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} individualSignals|array|Requested individual signals. If a request is FINISHED, the individual signal is listed here as long as it is active. If a signal is not listed for a requestId, the globalSignal applies.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} requestId|string|Id of a request to be referred to in this state.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} signalId|string|Unique identifier of the signal.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} _descriptor_|string|Description of the signal.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} plannedSignals|array|Ordered list of planned signals. Be aware that planned signals are not guaranteed to be executed.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} signalId|string|Unique identifier of the signal.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} plannedStart|string|Timestamp in ISO8601 Format (YYYY-MM-DDTHH:mm:ss.sssZ). The timestamp defines the point in time when the signal is planned to start.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} plannedEnd|string|Timestamp in ISO8601 Format (YYYY-MM-DDTHH:mm:ss.sssZ). The timestamp defines the point in time until the signal is planned to be executed.
+|{nbsp}{nbsp}{nbsp}{nbsp} requestStates|array|Array of upcoming and current requests.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} requestId|string|Id of a request to be referred to in this state.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} requestedSignal|object|Signal associated with the request.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} signalId|string|Unique identifier of the signal.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} _descriptor_|string|Description of the signal.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} _requestType_|string|requestType of the request. Optional: Only for informational or visualization purposes.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} requestStatus|string|State of the request. Enum: PENDING, RUNNING, PAUSED, FINISHED, FAILED.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} _resultDescription_|string|Description of the result. Errors will be transmitted in errors.
+|{nbsp}{nbsp}{nbsp}{nbsp} *errors* *[error]* {|array|Array of error-objects. All active errors of the signaling device should be in the list. An empty array indicates that the signaling device has no active errors.
+|{nbsp}{nbsp}{nbsp}{nbsp} errorType|string|Type of error.
+|{nbsp}{nbsp}{nbsp}{nbsp} _requestId_|string|Id of the request that is caused or related to the error.
+|{nbsp}{nbsp}{nbsp}{nbsp} _errorDescription_|string|Verbose description of error.
+|{nbsp}{nbsp}{nbsp}{nbsp} errorLevel|string|Description of the error level, which is warning or fatal. WARNING: signaling device is ready to start (e.g., maintenance cycle expiration warning). FATAL: signaling device is not in running condition, user intervention required.
+|{nbsp}{nbsp}{nbsp}{nbsp} }||
+|}||
+|===
+
+=== Signaling device factsheet
+A factsheet is provided for the self-description of the signaling device.
+It describes the signaling device overall as well as its capabilities.
+You can find the factsheet JSON schema here: link:assets/json_schemas/signaling_device_factsheet.schema[Signaling device factsheet].
+
+==== Factsheet JSON structure
+The factsheet consists of the JSON-objects listed in the following table.
+|===
+|field|data type|description
+|timestamp|string|Timestamp in ISO8601 format (YYYY-MM-DDTHH:mm:ss.sssZ). The timestamp defines the point in time at which the message was sent.
+|version|string|Version of the M2X protocol [Major].[Minor].[Patch] (e.g. 1.3.2).
+|_manufacturer_|string|Manufacturer of the signaling device.
+|serialNumber|string|Serial number of the signaling device.
+|signalingDeviceDescriptor|string|Describes the signaling device for human readability, e. g. traffic light, flashing light.
+|position {|object|Position of the signaling device in the factory coordinate system.
+|{nbsp}{nbsp}{nbsp}{nbsp} x |number|The x-position in factory-coordinate system.
+|{nbsp}{nbsp}{nbsp}{nbsp} y |number|The y-position in factory-coordinate system.
+|{nbsp}{nbsp}{nbsp}{nbsp} _z_|number|The z-position in factory-coordinate system.
+|}||
+|*signalingDeviceRequests* *[signalingDeviceRequest]* |array|Simplified description of possible signaling device requests. Enum: requestSignal, requestFactsheet, requestCancel.
+|communicationType|string|Used Communication type at the signaling device.
+|signals {|array|List of signals.
+|{nbsp}{nbsp}{nbsp}{nbsp} signalId |string|Unique identifier of the signal.
+|{nbsp}{nbsp}{nbsp}{nbsp} isRequestable |boolean|Indicates if the signal can be requested.
+|{nbsp}{nbsp}{nbsp}{nbsp} descriptor|string|Description of the signal.
+|}||
+|===
+
+== Elevator interface
+M2X provides communication content and communication processes for an elevator interface.
+In the M2X context, an elevator or lift is a platform that can transport MRs and/or humans between different floors/levels in a building or factory.
+
+*Definition of a _M2X elevator_:*
+An elevator is a self managed device that has an own factsheet.
+The MR has to ensure that it is positioned correctly inside the elevator platform before requesting to change the floor.
+The correct position is defined as a polygon in the factsheet of the elevator under elevatorFootprint.
+If elevator doors only open at certain levels with authorization, this must be taken into account for M2X so that the corresponding levels are not approached.
+
+Also the elevator definition in ISO 8100-20:2018, 3.17 remains valid: lifting appliance intended to transport persons with or without goods or freight by means of a power-operated load-carrying unit (LCU) (3.18) that is guided by a fixed guiding system from one landing (3.16) to another, at an angle of more than 75° to the horizontal.
+
+=== Requirements for a M2X elevator interface
+This section describes the requirements for the elevator interface in the M2X protocol:
+
+* An elevator can consist of several elevators (elevator group), in which case MR must dynamically move to the correct one.
+* The factsheet describes which/how many doors of the elevator exist, and which floors can be reached.
+* MR requests the floor and gives a release when it is outside (the door is included in the logic).
+* The request for the target floor is specified with a requestChangeFloor.
+* Which door of the elevator shall be opened is determined by the floor selection (e.g. floor 3, left door).
+* The capacity of the elevator shall be managed by the FM, also the FM is aware of the used maps of the MRs and can therefore know what MR is able to use the elevator.
+* The FM/MR shall be able to ensure for the access and exit of the elevator that the contour of the MR is suitable and completely inside the elevator.
+
+=== Errors
+If an error occurs within the elevator it shall be reported via the errors array. Errors have two levels: WARNING and FATAL. A WARNING is a self-resolving error during elevator entry, e.g., a field violation. A FATAL error needs human intervention. Errors can pass references that help with finding the cause of the error via the errorReferences array. For elevator errors, the predefined enums should be used for the errors types.
+
+==== Predefined Errors
+|===
+|error type|error level|description|parameter
+|ERROR_DURING_EXECUTION|WARNING or FATAL|The elevator floor change is not executed correctly. The error can be a WARNING or FATAL. The error can be caused e.g. by the MR or the elevator. It can be caused by an external factor (e.g. a blocked elevator, wrong floor). The error can also be caused by an error on FM site e.g. given parameters are unknown. In this case, it is up to the FM whether these changes are allowed; otherwise, an error shall be raised. The selection of the error type is up to the system and can e.g. be forwarded from previous errors.| requestId (string)
+|===  
+
+=== Elevator sequence diagram
+include::assets/diagrams/elevator_sequence.adoc[]
+
+=== Topics
+The communication with an elevator is done via the following topics:
+
+|===
+|Type|Topic schema|Description
+|Factsheet |elevator/v1.0.0/elevator_example/factsheet | Used for requesting the factsheet of the elevator.
+|Request | elevator/v1.0.0/elevator_example/request_* | Used for communication of requests for elevator transit: requestElevator, requestAccess, requestChangeFloor, requestExit, requestRelease, requestManualMode, requestFactsheet, requestCancel
+|State | elevator/v1.0.0/elevator_example/state | Topic for communicating the current state of the elevator and information about received request messages.
+|===
+
+=== Elevator JSON schemas and subtopics
+The M2X elevator interface uses the following JSON schemas and subtopics for the communication between elevator and MR/FM.
+
+|===
+|type |used for|schema (link)
+
+|elevator factsheet|Self-description of the elevator.|link:assets/json_schemas/elevator_factsheet.schema[Schema Link]
+|request|Communication of the requests for the transit.|link:assets/json_schemas/request.schema[Schema Link]
+|elevator state|Communication of the state of the elevator itself.|link:assets/json_schemas/elevator_state.schema[Schema Link]
+|===
+
+=== Requests
+The requests for an elevator are described below. 
+All requests, associated parameters and their states are predefined in the respective JSON schemas or tables. 
+There can only be one active request per participant with a peripheral device. This applies to every peripheral device and must be actively monitored by FM. Old requests are deleted by requestCancel. Old open requests can be read from the states after failure.
+
+The following requests are required for the elevator interface:
+
+* requestElevator,
+* requestAccess,
+* requestChangeFloor,
+* requestExit,
+* requestRelease,
+* requestManualMode,
+* requestFactsheet,
+* requestCancel.
+
+==== Predefined requests
+The following two tables describe the predefined elevator requests, their parameters, and their states from RUNNING to FINISHED.
+|===
+|request|description|parameter
+
+|requestElevator|MR requests the corresponding elevator or the elevatorGroup. Optional: Elevator opens doors.|elevatorSessionId (string), requestedFloor (string), intendedTargetFloor (string), vehicleType (string) 
+|requestAccess|MR requests the permission to enter the elevator. Elevator opens doors.|elevatorSessionId (string) 
+|requestChangeFloor|MR requests to change the floor.|elevatorSessionId (string), targetFloor (string) 
+|requestExit|MR requests the permission to exit the elevator.|elevatorSessionId (string) 
+|requestRelease|MR confirms that the elevator has been left.|elevatorSessionId (string) 
+|requestManualMode|Trigger requests to switch the elevator to manual mode. The elevator can only be switched to manual mode if it is no longer actively used by the automated system. |operationMode (string) 
+|requestFactsheet|Request factsheet from an elevator.|- 
+|requestCancel|MR/Station/FM requests to cancel the current request.|elevatorSessionId (string) 
+|===
+
+|===
+|request|RUNNING|PAUSED|FINISHED|FAILED|PENDING
+|requestElevator|MR requests the corresponding elevator or the elevatorGroup. Optional: Elevator opens doors.|-|Elevator is assigned to MR and is ready for access on requestedFloor.|Elevator cannot be assigned. A failed request shall correspond with an error.|Request is waiting to get executed.
+|requestAccess|MR is in front of the elevator and requests to access the elevator. If the elevator is currently not open it starts to open itself.|-|Elevator is open and MR can enter.|Elevator cannot be opened or MR is not allowed to enter. A failed request shall correspond with an error.|Request is waiting to get executed.
+|requestChangeFloor|MR requests to change the floor level.|-|Floor level is changed.|Floor cannot be changed. A failed request shall correspond with an error.|Request is waiting to get executed.
+|requestExit|MR requests the permission to exit the elevator.|-|Elevator is open and MR can exit.|Elevator cannot be opened or MR is not allowed to exit. A failed request shall correspond with an error.|Request is waiting to get executed.
+|requestRelease|MR/FM requests to release the occupancy of the elevator. MR has left the elevator area.|-|Elevator confirms the release of the access and is ready for the next request.|Release cannot be done. Failed release requests shall correspond with an error.|-
+|requestManualMode|Trigger requests to switch the elevator to manual mode. The elevator can only be switched to manual mode if it is no longer actively used by the automated system. |-|Elevator is in manual mode.|Request cannot be processed. A failed request shall correspond with an error.|-
+|requestFactsheet|-|-|-|-|-
+|requestCancel|MR/FM requests to cancel the current request.|-|Request canceled.|Request cannot be canceled.|-
+|===
+
+=== Manual mode
+The elevator may provide a manual mode for maintenance, service operations, or local operation by authorized personnel. 
+Manual mode can be activated locally at the elevator, for example by using a key switch or a similar control element. 
+When manual mode is activated, the elevator shall inform the FM that manual operation is set via the operationMode in the elevator state.
+The elevator should only be switched to manual mode when it is no longer actively used by the automated system. 
+
+=== Elevator state
+The following section describes the states of the elevator. 
+You can find the JSON schema for the elevator state here: link:assets/json_schemas/elevator_state.schema[Elevator state].
+
+==== Elevator state JSON structure
+The elevator state consists of the JSON-objects listed in the following table.
+
+|===
+|field|data type|description
+|timestamp|string|Timestamp in ISO8601 format (YYYY-MM-DDTHH:mm:ss.sssZ). The timestamp defines the point in time at which the message was sent.
+|version|string|Version of the M2X protocol [Major].[Minor].[Patch] (e.g. 1.3.2).
+|groupId|string|Id of the elevator group.
+|_groupDescription_ |string|Describes the elevator group for human readability.
+|*elevatorStates* *[elevatorState]* {|array|The elevator states contains the current status of the elevators, including its requests.
+|{nbsp}{nbsp}{nbsp}{nbsp} elevatorId|string|Unique identifier of the elevator.
+|{nbsp}{nbsp}{nbsp}{nbsp} _elevatorDescriptor_ |string|Describes the elevator for human readability.
+|{nbsp}{nbsp}{nbsp}{nbsp} serialNumber|string|Serial number of the elevator.
+|{nbsp}{nbsp}{nbsp}{nbsp} manufacturer|string|Manufacturer of the elevator.
+|{nbsp}{nbsp}{nbsp}{nbsp} connectionState|string|enum: ONLINE, OFFLINE, CONNECTION_BROKEN. ONLINE: connection between elevator and broker is active. OFFLINE: connection between elevator and broker has gone offline in a coordinated way. CONNECTION_BROKEN: The connection between elevator and broker has unexpectedly ended.
+|{nbsp}{nbsp}{nbsp}{nbsp} _operationMode_|string|enum: AUTOMATIC, MANUAL. Describes the current operation mode of the elevator. This status is used to ensure that an elevator can be used in manual mode. AUTOMATIC: The elevator is being used for an active transport. MANUAL: The elevator is in manual operation mode.
+|{nbsp}{nbsp}{nbsp}{nbsp} *currentFloor* {|object|List of all floors that can be reached with the elevator.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} floorName|string|Name of the floor (e.g. '1', '2', '3L', '3R').
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} floorLevel|number|Height position of the floor in relation to the ground level of the factory. Unit: meter.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} doorStates {|array|States of all doors that belong to the elevator.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} doorId|string|Unique identifier of the door.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} doorState|string|Describes whether the door is open or closed. Enum: OPEN, CLOSED, OPENING, CLOSING.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} _doorDescriptor_ |string|Describes the type of the door for human readability.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} }||
+|}||
+|{nbsp}{nbsp}{nbsp}{nbsp} requestStates|array|Array of upcoming and current requests.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} requestId|string|Id of a request to be referred to in this state.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} _requestType_ |string|requestType of the request. Optional: Only for informational or visualization purposes. 
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} requestStatus|string|State of the request. Enum: RUNNING, PAUSED, FINISHED, FAILED, PENDING.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} _resultDescription_|string|Description of the result. Errors will be transmitted in errors.
+|{nbsp}{nbsp}{nbsp}{nbsp} *assignedElevators* *[assignedElevators]*‚ |array|Array of assigned elevators based on requestAccess.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} requestId|string|Id of a request to be referred to in this state.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} assignedElevatorId|string|Id of the elevator that has been assigned to the request.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} _resultDescription_ string|Description of the result. Errors will be transmitted in errors.
+|}||
+|*errors* *[error]* {|array|Array of error-objects. All active errors of the door should be in the list. An empty array indicates that the door has no active errors.
+|{nbsp}{nbsp}{nbsp}{nbsp} errorType|string|Type of error.
+|{nbsp}{nbsp}{nbsp}{nbsp} _requestId_ |string|Id of the request that is caused or related to the error.
+|{nbsp}{nbsp}{nbsp}{nbsp} _errorDescription_ |string|Verbose description of error.
+|{nbsp}{nbsp}{nbsp}{nbsp} errorLevel|string|Description of the error level, which is warning or fatal. WARNING: Door is ready to start (e.g., maintenance cycle expiration warning). FATAL: Door is not in running condition, user intervention required.
+|}||
+|===
+
+=== Elevator factsheet
+A factsheet is provided for the self-description of the elevator. 
+It describes the elevator overall as well as its capabilities. 
+You can find the factsheet JSON schema here: link:assets/json_schemas/elevator_factsheet.schema[Elevator factsheet]
+
+==== Factsheet JSON structure
+The factsheet consists of the JSON-objects listed in the following table.
+
+|===
+|field|data type|description
+|timestamp|string|Timestamp in ISO8601 format (YYYY-MM-DDTHH:mm:ss.sssZ). The timestamp defines the point in time at which the message was sent.
+|version|string|Version of the M2X protocol [Major].[Minor].[Patch] (e.g. 1.3.2).
+|*elevator* {|array|Describes the elevator.
+|{nbsp}{nbsp}{nbsp}{nbsp}manufacturer|string|Manufacturer of the elevator.
+|{nbsp}{nbsp}{nbsp}{nbsp}serialNumber|string|Serial number of the elevator.
+|{nbsp}{nbsp}{nbsp}{nbsp} *availableFloors* {|array|Describes the elevator.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}floorName|string|Name of the floor (e.g. '1', '2', '3L', '3R').
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}floorLevel|string|Height position of the floor in relation to the ground level of the factory. Unit: meter.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}availableDoorsAtFloor|array|List of all doors available at the floor. Entries must correspond to door IDs.
+|{nbsp}{nbsp}{nbsp}{nbsp} }||
+|{nbsp}{nbsp}{nbsp}{nbsp} *availableDoors* {|array|List of all doors that belong to the elevator.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}doorId|string|Unique identifier of the door.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}direction|string|HDirection is described as a normalized direction vector in the factory coordinate system.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}x|number|X-component of the direction vector.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}y|number|Y-component of the direction vector.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}doorDescriptor|string|Describes the type of the door for human readability.
+|{nbsp}{nbsp}{nbsp}{nbsp} }||
+|{nbsp}{nbsp}{nbsp}{nbsp} *elevatorGeometry* {|object|These parameters generally specify the geometry of the elevator.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}position|array|Position of the elevator in the factory coordinate system. 
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}x|number|The x-position in factory-coordinate system.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}y|number|The y-position in factory-coordinate system.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} _elevatorFootprint_ |array|Describes the footprint of the elevator as a polygon. The footprint is modeled around the position of the elevator shaft at ground level. The points must be given in clockwise order.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}x|number|The x-position in factory-coordinate system.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}y|number|The y-position in factory-coordinate system.
+|{nbsp}{nbsp}{nbsp}{nbsp} }||
+|{nbsp}{nbsp}{nbsp}{nbsp}communicationType|string|Used communication type at the elevator. Enum: MQTT, OPC_UA, REST_API, WebSocket.
+|{nbsp}{nbsp}{nbsp}{nbsp} _restrictedVehiclesTypes_ |array|List of all MRs types that are not allowed to interact with the elevator. If this parameter does not exist or is empty, the elevator is valid for all MRs.
+|{nbsp}{nbsp}{nbsp}{nbsp}elevatorDescriptor|string|Describes the type of the elevator for human readability.
+|}||
+|*elevatorRequests* *[elevatorRequest]* |array|Simplified description of possible elevator requests. Enum: requestAccess, requestChangeFloor, requestRelease, requestFactsheet, requestCancel.
+|===
+
+== Charging Device Interface
+M2X provides communication content and communication processes for a charging interface.
+In the M2X context, the generic term charging device includes wired, wireless and contact-based chargers, which can be vertical, above ground or underfloor.
+
+*Definition of a _M2X charging device_:*
+A charging device is a self managed device that has an own factsheet.
+The device can describe itself and its properties.
+The charging device can charge a MR when it is positioned correctly at the charger.
+The correct charging port position is defined in the factsheet of the charging device under chargingPosition.
+
+=== Requirements for a M2X charging device interface
+This section describes the requirements for the charging device interface in the M2X protocol:
+
+* For charging, the device shall specify a target position for its charging port. The MR shall align its own charging port to this position to start charging.
+
+=== Errors
+If an error occurs within the charging device it shall be reported via the errors array.
+Errors have two levels: WARNING and FATAL. A WARNING is a self-resolving error during signal change, e.g., a field violation at the charging device. A FATAL error needs human intervention. Errors can pass references that help with finding the cause of the error via the errorReferences array. For charging device errors, the predefined enums should be used for the errors types.
+
+=== Charging device sequence diagram
+include::assets/diagrams/charging_device_transit.adoc[]
+
+=== Topics
+The communication with a charging device is done via the following topics:
+|===
+|Type|Topic schema|Description
+|Factsheet |charging_device/v1.0.0/charging_device_example/factsheet | Used for requesting the factsheet of the charging device.
+|Request | charging_device/v1.0.0/charging_device_example/request_* | Used for communication of requests for the charging device: requestAccess, requestStartCharge, requestStopCharge, requestRelease, requestFactsheet, requestCancel
+|State | charging_device/v1.0.0/charging_device_example/state | Topic for communicating the current state of the charging device and information about received request messages.
+|===
+
+=== Charging device JSON schemas and subtopics
+The M2X charging device interface uses the following JSON schemas and subtopics for the communication between station and MR/FM.
+|===
+|type |used for|schema (link) 
+|charging device factsheet|Self-description of the charging device.|link:assets/json_schemas/charging_device_factsheet.schema[Schema Link]
+|request|Communication of the requests for the charging device.|link:assets/json_schemas/request.schema[Schema Link]
+|charging device state|Communication of the state of the charging device itself.|link:assets/json_schemas/charging_device_state.schema[Schema Link]
+|===
+
+=== Requests
+The requests for charging devices are described below.
+All requests, associated parameters and their states are predefined in the respective JSON schemas or tables.
+There can only be one active request per participant with a peripheral device. 
+This applies to every peripheral device and must be actively monitored by FM. 
+Old requests are deleted by requestCancel. Old open requests can be read from the states after failure.
+The following requests are required for creating and updating charging devices:
+
+* requestAccess,
+* requestStartCharge,
+* requestStopCharge,
+* requestRelease,
+* requestFactsheet,
+* requestCancel.
+
+==== Predefined requests
+The following two tables describe the predefined requests for the charging device interface, their parameters, and their states from RUNNING to FINISHED.
+|===
+|request|description|parameter
+|requestAccess|MR/FM requests the permission to access the charging device.|chargingSessionId (string)
+|requestStartCharge|Request to start charging a MR at a charging device.|chargingSessionId (string)
+|requestStopCharge|Request to stop charging a MR at a charging device.|chargingSessionId (string)
+|requestRelease|MR/FM requests to release the charging device. MR has left the charging area.|chargingSessionId (string)
+|requestFactsheet|Request factsheet from a charging device.|- 
+|requestCancel|MR/FM requests to cancel the current request. |chargingSessionId (string)
+|===
+
+|===
+|request|RUNNING|PAUSED|FINISHED|FAILED|PENDING
+|requestAccess|-|-|Access is granted and charging device is ready for charging.|Access cannot be granted. A failed request shall correspond with an error.|Request is waiting to get executed.
+|requestStartCharge|Charger is preparing to charge the MR.|-|Charging device started charging the MR.|Charging failed. A failed request shall correspond with an error.|Request is waiting to get executed.
+|requestStopCharge|Charging device is preparing to stop the charging process.|-|Charging device stopped charging.|Stopping the charge failed. A failed request shall correspond with an error.|Request is waiting to get executed.
+|requestRelease|-|-|Charging device confirms the release of the access and is ready for the next request.|Release cannot be done. Failed release requests shall correspond with an error.|-
+|requestFactsheet|-|-|-|-|-
+|requestCancel|-|-|Request canceled.|Request cannot be canceled.|-
+|===
+
+=== Charging device state
+The following section describes the states of the charging device.
+You can find the JSON schema for the charging device state here: link:assets/json_schemas/charging_device_state.schema[Charging device state].
+
+==== Charging device state JSON structure
+The charging device state consists of the JSON-objects listed in the following table.
+
+|===
+|field|data type|description
+|timestamp|string|Timestamp in ISO8601 format (YYYY-MM-DDTHH:mm:ss.sssZ). The timestamp defines the point in time at which the message was sent.
+|version|string|Version of the M2X protocol [Major].[Minor].[Patch] (e.g. 1.3.2).
+|serialNumber|string|Serial number of the charging device.
+|_manufacturer_|string|Manufacturer of the charging device.
+|connectionState|string|enum: ONLINE, OFFLINE, CONNECTION_BROKEN. ONLINE: connection between charging device and broker is active. OFFLINE: connection between charging device and broker has gone offline in a coordinated way. CONNECTION_BROKEN: The connection between charging device and broker has unexpectedly ended.
+|*chargingDeviceState* {|object|The charging device state contains the current status of the charging device, including its requests.
+|{nbsp}{nbsp}{nbsp}{nbsp} chargingDeviceId|string|Unique identifier of the individual charging device.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} currentCharging|object|Current charging process.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} chargingSessionId|string|Unique identifier of the charging process.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} descriptor|string|Description of the charging process.
+|{nbsp}{nbsp}{nbsp}{nbsp} requestStates|array|Array of upcoming and current requests.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} requestId|string|Id of a request to be referred to in this state.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} chargingProcess|object|Charging process.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} charging|string|Current charging process (CHARGING, DONE, IDLE).
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} temperature|number|Current temperature during the charging process.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} chargingRate|number|Current charging rate during the charging process.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} derating|boolean|Indicates if the charging device is in derating mode.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} descriptor|string|Description of the charging process.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} _requestType_ |string|requestType of the request. Optional: Only for informational or visualization purposes.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} requestStatus|string|State of the request. Enum: RUNNING, PAUSED, FINISHED, FAILED, PENDING.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} _resultDescription_|string|Description of the result. Errors will be transmitted in errors.
+|{nbsp}{nbsp}{nbsp}{nbsp} operatingHours|number|Total operating hours of the charging device.
+|{nbsp}{nbsp}{nbsp}{nbsp} *errors* *[error]* {|array|Array of error-objects. All active errors of the charging device should be in the list. An empty array indicates that the charging device has no active errors.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} errorType|string|Type of error.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} _requestId_ |string|Id of the request that is caused or related to the error.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} _errorDescription_ |string|Verbose description of error.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} errorLevel|string|Description of the error level, which is warning or fatal. WARNING: charging device is ready to start (e.g., maintenance cycle expiration warning). FATAL: charging device is not in running condition, user intervention required.
+|{nbsp}{nbsp}{nbsp}{nbsp} }||
+|}||
+|===
+
+=== Charging device factsheet
+A factsheet is provided for the self-description of the charging device.
+It describes the charging device overall as well as its capabilities.
+You can find the factsheet JSON schema here: link:assets/json_schemas/charging_device_factsheet.schema[Charging device factsheet].
+
+==== Factsheet JSON structure
+The factsheet consists of the JSON-objects listed in the following table.
+|===
+|field|data type|description
+|timestamp|string|Timestamp in ISO8601 format (YYYY-MM-DDTHH:mm:ss.sssZ). The timestamp defines the point in time at which the message was sent.
+|version|string|Version of the M2X protocol [Major].[Minor].[Patch] (e.g. 1.3.2).
+|_manufacturer_|string|Manufacturer of the charging device.
+|serialNumber|string|Serial number of the charging device.
+|chargingDeviceDescriptor|string|Describes the charging device for human readability, e. g. vertical, above ground, underfloor charger.
+|*chargingDeviceGeometry* |object|Describes the geometry of the charging device.
+|{nbsp}{nbsp}{nbsp}{nbsp}position {|object|Position of the charging device in the factory-coordinate system.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}x|number|The x-position in factory-coordinate system.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}y|number|The y-position in factory-coordinate system.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}z|number|Z-position in factory-coordinate system.
+|}||
+|{nbsp}{nbsp}{nbsp}{nbsp}chargingDeviceFootprint {|object|Describes the footprint and orientation of the charging device in the factory-coordinate system.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} x-left|number|x-left offset of the charging position.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} x-right|number|x-right offset of the charging position.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} y-left|number|y-left offset of the charging position.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} y-right|number|y-right offset of the charging position.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} theta|number|Orientation of the charging position in the factory coordinate system.
+|}||
+|chargingPosition {|object|Position of the area where the MR has to drive to be charged in the factory coordinate system.
+|{nbsp}{nbsp}{nbsp}{nbsp} x |number|The x-position in factory-coordinate system.
+|{nbsp}{nbsp}{nbsp}{nbsp} y |number|The y-position in factory-coordinate system.
+|{nbsp}{nbsp}{nbsp}{nbsp} _z_|number|The z-position in factory-coordinate system.
+|{nbsp}{nbsp}{nbsp}{nbsp}tolerance {|object|Acceptable tolerance for the charging position.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}x-left|number|x-left offset of the charging position.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}x-right|number|x-right offset of the charging position.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}y-left|number|y-left offset of the charging position.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}y-right|number|y-right offset of the charging position.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}theta|number|Orientation of the charging position in the factory coordinate system.
+|}||
+|}||
+|chargingDeviceId|string|ID number of the charging device.
+|*chargingDeviceRequests* *[chargingDeviceRequest]* {|array|Simplified description of possible charging device requests. Enum: requestAccess, requestStartCharge, requestStopCharge, requestRelease, requestFactsheet, requestCancel.
+|maxChargingRate|number|Maximum charging rate of the charging device.
+|mainsVoltage|number|Mains voltage of the charging device.
+|communicationType|string|Used Communication type at the charging device.
 |}||
 |===
 
@@ -781,6 +1476,7 @@ The TO state consists of the JSON-objects listed in the following table.
 |AGV|Automated guided vehicle
 |AMR|Autonomous mobile robot
 |FM|Fleet management
+|LCU|Load-carrying unit
 |LHP|Load handling point
 |LHS|Load handling station
 |LHU|Load handling unit
@@ -798,6 +1494,7 @@ The TO state consists of the JSON-objects listed in the following table.
 |===
 |term|description
 
+|Door|A door is a self managed device that has a own factsheet. In front of the door is an transition area that is managed by the door itself. Once a MR is in front of the door, it can request to transit/cross the door. Other areas around or behind the door are managed by the FM.
 |Fleet management (FM)|Also known as master control (MC). FM describes the management, planning, control and monitoring of vehicle fleets. This involves coordinating, evaluating and optimizing vehicle routes, taking into account certain influencing parameters. A FM Service is available for every MR. It can be either centralized or decentralized. Centralized in terms of coordinating the underlying MRs, e.g. VDA 5050. In terms of decentralized planning the MR has an own FM-Service included locally.
 |Load handling|Load handling refers to the handover of a load at a transfer point or point of interest. 
 This includes the entry, the physical handover/manipulation and the exit of an MR at a station. 
@@ -807,7 +1504,7 @@ Only one MR can interact with a LHP at the same time.
 The LHP can be approached from different directions.
 |Load handling station (LHS)|A load handling station serves as a point of interest at which the load is transferred or changed/manipulated. 
 The station can have multiple LHPs which are comparable to a VDA 5050 “node”. 
-To avoid confusions regarding the VDA 5050 it is called LHP.
+To avoid confusion regarding the VDA 5050, it is called LHP.
 The LHS will provide no traffic management. 
 The station will only manage itself.
 The LHS factsheet includes the geometry of the physical station (footprint of the station). 
@@ -815,7 +1512,8 @@ The area around is managed by the FM or traffic management.
 |Load handling unit (LHU)|The load handling unit (LHU) is the object that is transferred between the MR and the LHS.
 |Mobile robot (MR)|Uniform collective term in the context of M2X for all types of vehicles/robots that use the protocol. This includes for example automated guided vehicles (AGVs) or autonomous mobile robots (AMRs).
 |Point of interest (PoI)|A point of interest is a virtual or physical space in the environment. A unique identifier is used. At the PoI, the MR can perform actions such as PICK, DROP or VIA. A PoI can also be used to provide coordinates of the location, for example. A LHS or LHP can also be a PoI. A PoI can also be a group of PoIs.
-|Transport order (TO)|The TO contains of a collection of objectives that can be extend during the execution of a TO. A TO shall contain at least one objective. An objective is a description of an atomic transport step (WHAT and WHERE), e.g. transport 'Pallet 1' to 'storage location 5'.
-|Upper layer system| The upper layer system is the next higher system to M2X in communication. This can be an ERP, a WMS, a manual order generation (for example with a button push at a station) etc.
+|Signaling device|A signaling device is a self-managed device that has its own factsheet.
+The device can describe itself and its properties. For example, for traffic lights it can show red, yellow, and green lights.
+|Transport order (TO)|The TO consists of a collection of objectives that can be extended during the execution of a TO. A TO shall contain at least one objective. An objective is a description of an atomic transport step (WHAT and WHERE), e.g. transport 'Pallet 1' to 'storage location 5'.
+|Upper layer system| The upper layer system is the next higher system to M2X in communication. This can be an ERP, a WMS, a manual order generation (for example with a button push at a station), etc.
 |===
-

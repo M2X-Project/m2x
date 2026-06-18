@@ -1,0 +1,13 @@
+ifdef::env-github[]
+[source,mermaid]
+endif::[]
+ifndef::env-github[]
+[mermaid]
+endif::[]
+....
+sequenceDiagram
+  participant I as FM/MR
+  participant S as signaling device
+ I->>S: M2X REQUEST[requestSignal]: FM/MR requests the device to change the signal
+  S->>I: M2X STATUS[requestSignal (State: FINISHED)]: Signal has been changed
+....

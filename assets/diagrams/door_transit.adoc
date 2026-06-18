@@ -1,0 +1,19 @@
+ifdef::env-github[]
+[source,mermaid]
+endif::[]
+ifndef::env-github[]
+[mermaid]
+endif::[]
+....
+sequenceDiagram
+  participant I as FM/MR
+  participant S as Door
+  I->>S: M2X REQUEST[requestTransit]: MR requests to transit the door
+  S-->>I: [OPTIONAL] M2X STATUS[requestTransit/Crossing (State: RUNNING)]: The door returns RUNNING for the request <br> since the request cannot be FINISHED immediately, e.g., the door is closed
+  S->>S: [OPTIONAL]: open door 
+  S-->>I: M2X STATUS[requestTransit (State: FINISHED)]: MR can transit
+  I->>I: MR transits the door<br> and leaves the transition area
+  I->>S: M2X REQUEST[requestRelease]: MR has left the transition area and requests to release the door
+  S-->>I: M2X STATUS[requestRelease (State: FINISHED)]: Door acknowledges the request
+    S->>S: [OPTIONAL]: closing door 
+....

@@ -1,0 +1,285 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Elevator factsheet",
+  "description": "The factsheet provides basic information about an elevator. This allows the elevator to describe itself.",
+  "required": [
+    "timestamp",
+    "version",
+    "elevatorGroup",
+    "elevators",
+    "elevatorRequests"
+  ],
+  "subtopic": "/factsheet",
+  "type": "object",
+  "properties": {
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp in ISO8601 format (YYYY-MM-DDTHH:mm:ss.sssZ). The timestamp defines the point in time at which the message was sent.",
+      "examples": [
+        "2015-10-21T16:29:00.000Z"
+      ]
+    },
+    "version": {
+      "type": "string",
+      "description": "Version of the M2X protocol [Major].[Minor].[Patch] (e.g. 1.3.2).",
+      "examples": [
+        "2.0.0"
+      ]
+    },
+    "elevatorGroup": {
+      "type": "object",
+      "required": [
+        "group"
+      ],
+      "description": "describes if more than one elevator is used in a group.",
+      "properties": {
+        "group": {
+          "type": "boolean",
+          "description": "Indicates if the elevator is part of a group of elevators."
+        },
+        "groupId": {
+          "type": "string",
+          "description": "ID of the elevator group."
+        },
+        "groupDescription": {
+          "type": "string",
+          "description": "Describes the elevator group for human readability."
+        }
+      }
+    },
+    "elevators": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "manufacturer",
+          "serialNumber",
+          "elevatorId",
+          "availableFloors",
+          "availableDoors",
+          "elevatorGeometry",
+          "communicationType"
+        ],
+        "properties": {
+          "manufacturer": {
+            "type": "string",
+            "description": "Manufacturer of the elevator."
+          },
+          "serialNumber": {
+            "type": "string",
+            "description": "Serial number of the elevator."
+          },
+          "elevatorId": {
+            "type": "string",
+            "description": "Unique identifier of the elevator."
+          },
+          "elevatorDescriptor": {
+            "type": "string",
+            "description": "Describes the elevator for human readability."
+          },
+          "availableFloors": {
+            "type": "array",
+            "description": "List of all floors that can be reached with the elevator.",
+            "items": {
+              "type": "object",
+              "required": [
+                "floorName",
+                "floorLevel"
+              ],
+              "properties": {
+                "floorName": {
+                  "type": "string",
+                  "description": "Name of the floor (e.g. '1', '2', '3L', '3R')."
+                },
+                "floorLevel": {
+                  "type": "number",
+                  "description": "Height position of the floor in relation to the ground level of the factory.",
+                  "unit": "m"
+                },
+                "availableDoorsAtFloor": {
+                  "type": "array",
+                  "description": "List of all doors available at the floor. Entries must correspond to door IDs.",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "elevatorVelocity": {
+                  "type": "number",
+                  "description": "Maximum velocity of the elevator when moving between floors.",
+                  "unit": "m/s"
+                },
+                "elevatorLoadCapacity": {
+                  "type": "number",
+                  "description": "Maximum load capacity of the elevator.",
+                  "unit": "kg"
+                }
+              }
+            }
+          },
+          "availableDoors": {
+            "type": "array",
+            "description": "List of all doors that belong to the elevator.",
+            "items": {
+              "type": "object",
+              "required": [
+                "doorId",
+                "position",
+                "direction"
+              ],
+              "properties": {
+                "doorId": {
+                  "type": "string",
+                  "description": "Unique identifier of the door."
+                },
+                "clearanceHeight": {
+                  "type": "number",
+                  "description": "Height of the door.",
+                  "unit": "m"
+                },
+                "clearanceWidth": {
+                  "type": "number",
+                  "description": "Width of the door.",
+                  "unit": "m"
+                },
+                "position": {
+                  "type": "object",
+                  "description": "Position of the door in the factory coordinate system.",
+                  "required": [
+                    "x",
+                    "y"
+                  ],
+                  "properties": {
+                    "x": {
+                      "type": "number",
+                      "description": "The x-position in factory coordinate system.",
+                      "unit": "m"
+                    },
+                    "y": {
+                      "type": "number",
+                      "description": "The y-position in factory coordinate system.",
+                      "unit": "m"
+                    }
+                  }
+                },
+                "direction": {
+                  "type": "object",
+                  "description": "Direction is described as a normalized direction vector in the factory coordinate system.",
+                  "required": [
+                    "x",
+                    "y"
+                  ],
+                  "properties": {
+                    "x": {
+                      "type": "number",
+                      "description": "X-component of the direction vector."
+                    },
+                    "y": {
+                      "type": "number",
+                      "description": "Y-component of the direction vector."
+                    }
+                  }
+                },
+                "doorDescriptor": {
+                  "type": "string",
+                  "description": "Describes the type of the door for human readability."
+                }
+              }
+            }
+          },
+          "elevatorGeometry": {
+            "type": "object",
+            "required": [
+              "position"
+            ],
+            "description": "These parameters generally specify the geometry of the elevator.",
+            "properties": {
+              "position": {
+                "type": "object",
+                "description": "Position of the elevator in the factory coordinate system. The position shall not describe the current floor of the elevator, but the position of the elevator shaft on the ground level.",
+                "required": [
+                  "x",
+                  "y"
+                ],
+                "properties": {
+                  "x": {
+                    "type": "number",
+                    "description": "The x-position in factory coordinate system.",
+                    "unit": "m"
+                  },
+                  "y": {
+                    "type": "number",
+                    "description": "The y-position in factory coordinate system.",
+                    "unit": "m"
+                  }
+                }
+              },
+              "elevatorFootprint": {
+                "type": "array",
+                "description": "Describes the footprint of the elevator as a polygon. The footprint is modeled around the position of the elevator shaft at ground level. The points must be given in clockwise order.",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "x",
+                    "y"
+                  ],
+                  "properties": {
+                    "x": {
+                      "type": "number",
+                      "description": "The x-position.",
+                      "unit": "m"
+                    },
+                    "y": {
+                      "type": "number",
+                      "description": "The y-position.",
+                      "unit": "m"
+                    }
+                  }
+                }
+              },
+              "cabinHeight": {
+                "type": "number",
+                "description": "Describes the height of the elevator cabin",
+                "unit": "m"
+              }
+            }
+          },
+          "communicationType": {
+            "type": "string",
+            "description": "Used communication type at the elevator.",
+            "enum": [
+              "MQTT",
+              "OPC_UA",
+              "REST_API",
+              "WEB_SOCKET"
+            ]
+          },
+          "restrictedVehiclesTypes": {
+            "type": "array",
+            "description": "List of all MRs types that are not allowed to interact with the elevator. If this parameter does not exist or is empty, the elevator is valid for all MRs.",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "elevatorRequests": {
+      "type": "array",
+      "description": "Simplified description of possible elevator requests.",
+      "items": {
+        "type": "string",
+        "enum": [
+          "requestElevator",
+          "requestAccess",
+          "requestChangeFloor",
+          "requestRelease",
+          "requestExit",
+          "requestManualMode",
+          "requestFactsheet",
+          "requestCancel"
+        ]
+      }
+    }
+  }
+}

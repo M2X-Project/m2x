@@ -1,0 +1,239 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Elevator state",
+  "description": "All encompassing states of an elevator.",
+  "subtopic": "/state",
+  "type": "object",
+  "required": [
+    "timestamp",
+    "version",
+    "groupId",
+    "elevatorStates"
+  ],
+  "properties": {
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp in ISO8601 Format (YYYY-MM-DDTHH:mm:ss.sssZ). The timestamp defines the point in time at which the message was sent.",
+      "examples": [
+        "2015-10-21T16:29:00.000Z"
+      ]
+    },
+    "version": {
+      "type": "string",
+      "description": "Version of the M2X protocol [Major].[Minor].[Patch] (e.g. 1.3.2)",
+      "examples": [
+        "1.0.0"
+      ]
+    },
+    "groupId": {
+      "type": "string",
+      "description": "ID of the elevator group."
+    },
+    "groupDescription": {
+      "type": "string",
+      "description": "Describes the elevator group for human readability."
+    },
+    "elevatorStates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "manufacturer",
+          "serialNumber",
+          "elevatorId",
+          "connectionState",
+          "currentFloor",
+          "requestStates",
+          "assignedElevator",
+          "errors"
+        ],
+        "properties": {
+          "manufacturer": {
+            "type": "string",
+            "description": "Manufacturer of the elevator."
+          },
+          "serialNumber": {
+            "type": "string",
+            "description": "Serial number of the elevator."
+          },
+          "elevatorId": {
+            "type": "string",
+            "description": "Unique identifier of the elevator."
+          },
+          "elevatorDescriptor": {
+            "type": "string",
+            "description": "Describes the elevator for human readability."
+          },
+          "connectionState": {
+            "type": "string",
+            "enum": [
+              "ONLINE",
+              "OFFLINE",
+              "CONNECTION_BROKEN"
+            ],
+            "description": "ONLINE: connection between elevator and broker is active. OFFLINE: connection between elevator and broker has gone offline in a coordinated way. CONNECTION_BROKEN: The connection between elevator and broker has unexpectedly ended."
+          },
+          "operationMode": {
+            "type": "string",
+            "description": "Describes the current operation mode of the elevator. This status is used to ensure that an elevator can be used in manual mode. AUTOMATIC: The elevator is being used for an active transport. MANUAL: The elevator is in manual operation mode.",
+            "enum": [
+              "AUTOMATIC",
+              "MANUAL"
+            ]
+          },
+          "currentFloor": {
+            "type": "object",
+            "description": "Current floor where the elevator is located.",
+            "required": [
+              "floorName",
+              "floorLevel",
+              "doorStates"
+            ],
+            "properties": {
+              "floorName": {
+                "type": "string",
+                "description": "Name of the floor (e.g. '1', '2', '3L', '3R')."
+              },
+              "floorLevel": {
+                "type": "number",
+                "description": "Height position of the floor in relation to the ground level of the factory.",
+                "unit": "m"
+              },
+              "doorStates": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "doorId",
+                    "doorState"
+                  ],
+                  "properties": {
+                    "doorId": {
+                      "type": "string",
+                      "description": "Unique identifier of the door."
+                    },
+                    "doorState": {
+                      "type": "string",
+                      "description": "Describes whether the door is open or closed.",
+                      "enum": [
+                        "OPEN",
+                        "OPENING",
+                        "CLOSED",
+                        "CLOSING"
+                      ]
+                    },
+                    "doorDescriptor": {
+                      "type": "string",
+                      "description": "Describes the type of the door for human readability."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "requestStates": {
+            "type": "array",
+            "description": "Array of upcoming and current requests.",
+            "items": {
+              "type": "object",
+              "required": [
+                "requestId",
+                "requestStatus"
+              ],
+              "properties": {
+                "requestId": {
+                  "type": "string",
+                  "description": "Id of a request to be referred to in this state.",
+                  "examples": [
+                    "requestAccess_1337"
+                  ]
+                },
+                "requestType": {
+                  "type": "string",
+                  "description": "requestType of the request. Optional: Only for informational or visualization purposes."
+                },
+                "requestStatus": {
+                  "type": "string",
+                  "description": "Status of the request.",
+                  "enum": [
+                    "PENDING",
+                    "RUNNING",
+                    "PAUSED",
+                    "FINISHED",
+                    "FAILED"
+                  ]
+                },
+                "resultDescription": {
+                  "type": "string",
+                  "description": "Description of the result. Errors will be transmitted in errors."
+                }
+              }
+            }
+          },
+          "assignedElevator": {
+            "type": "array",
+            "description": "Array of assigned elevators based on request access.",
+            "items": {
+              "type": "object",
+              "required": [
+                "requestId",
+                "assignedElevatorId"
+              ],
+              "properties": {
+                "requestId": {
+                  "type": "string",
+                  "description": "Id of a request to be referred to in this state.",
+                  "examples": [
+                    "requestAccess"
+                  ]
+                },
+                "assignedElevatorId": {
+                  "type": "string",
+                  "description": "Id of the elevator that has been assigned to the request."
+                },
+                "resultDescription": {
+                  "type": "string",
+                  "description": "Description of the result. Errors will be transmitted in errors."
+                }
+              }
+            }
+          },
+          "errors": {
+            "type": "array",
+            "description": "Array of error-objects. All active errors of the elevator should be in the list. An empty array indicates that the elevator has no active errors.",
+            "items": {
+              "type": "object",
+              "required": [
+                "errorType",
+                "errorLevel"
+              ],
+              "properties": {
+                "errorType": {
+                  "type": "string",
+                  "description": "Type of error."
+                },
+                "requestId": {
+                  "type": "string",
+                  "description": "Id of the request that is caused by or related to the error."
+                },
+                "errorDescription": {
+                  "type": "string",
+                  "description": "Verbose description of error."
+                },
+                "errorLevel": {
+                  "type": "string",
+                  "description": "Description of the error level, which is warning or fatal. WARNING: elevator is ready to start (e.g., maintenance cycle expiration warning). FATAL: elevator is not in running condition, user intervention required.",
+                  "enum": [
+                    "WARNING",
+                    "FATAL"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

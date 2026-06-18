@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "requests",
+  "title": "requestTransportOrder example",
   "description": "JSON Schema for publishing requests that the MR/station is to execute as soon as they arrive.",
   "subtopic": "/requests",
   "type": "object",
@@ -31,8 +31,7 @@
         "description": "Describes an request that the entity can perform.",
         "required": [
           "requestId",
-          "requestType",
-          "blockingType"
+          "requestType"
         ],
         "properties": {
           "requestType": {
@@ -46,7 +45,8 @@
               "requestFactsheet",
               "requestContinueLoadTransfer",
               "requestCancel",
-              "requestTransportOrder"
+              "requestTransportOrder",
+              "requestTransit"
             ]
           },
           "requestId": {
@@ -56,15 +56,6 @@
           "requestDescription": {
             "type": "string",
             "description": "Additional information on the request."
-          },
-          "blockingType": {
-            "type": "string",
-            "description": "Regulates if the request is allowed to be executed during movement and/or parallel to other requests.none: request can happen in parallel with others, including movement.soft: request can happen simultaneously with others, but not while moving. hard: no other requests can be performed while this request is running.",
-            "enum": [
-              "NONE",
-              "SOFT",
-              "HARD"
-            ]
           },
           "requestParameters": {
             "type": "array",
@@ -186,11 +177,11 @@
                             },
                             "earliestCompletionTime": {
                               "type": "string",
-                              "description": "Earliest completion time of the objective in ISO8601 format (YYYY-MM-DDTHH:mm:ss.sssZ). Describes when the objective can be completed at the earliest."
+                              "description": "Earliest completion time of the objective in ISO8601 format (YYYY-MM-DDTHH:mm:ss.sssZ). Describes when the objective can be FINISHED at the earliest."
                             },
                             "latestCompletionTime": {
                               "type": "string",
-                              "description": "Latest completion time of the objective in ISO8601 format (YYYY-MM-DDTHH:mm:ss.sssZ). Describes when the objective has to be completed at the latest."
+                              "description": "Latest completion time of the objective in ISO8601 format (YYYY-MM-DDTHH:mm:ss.sssZ). Describes when the objective has to be FINISHED at the latest."
                             }
                           }
                         }

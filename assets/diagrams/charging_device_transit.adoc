@@ -1,0 +1,25 @@
+ifdef::env-github[]
+[source,mermaid]
+endif::[]
+ifndef::env-github[]
+[mermaid]
+endif::[]
+....
+sequenceDiagram
+  participant I as FM/MR
+  participant C as charging device
+   I->>C: [OPTIONAL] M2X REQUEST[requestAccess]: FM/MR requests for access to the charger
+  C->>I: [OPTIONAL] M2X STATUS[requestAccess (State: FINISHED)]: Charger is ready to access
+ I->>C: [OPTIONAL] M2X REQUEST[requestStartCharge]: FM/MR requests the device to charge the MR
+  C->>I: [OPTIONAL] M2X REQUEST[requestStartCharge (State: RUNNING)]: Charger is preparing to charge the MR
+  C->>C: [OPTIONAL]: Extend charging arm and establish connection to MR
+  C->>I: [OPTIONAL] M2X STATUS[requestStartCharge (State: FINISHED)]: Charger started charging the MR
+  C->>C: [OPTIONAL]: Carry out charging process
+   I->>C: [OPTIONAL] M2X REQUEST[requestStopCharge]: FM/MR requests the device to stop charging the MR
+   C->>I: [OPTIONAL] M2X REQUEST[requestStopCharge (State: RUNNING)]: Charger is preparing to stop charging the MR
+   C->>C: [OPTIONAL]: Retract charging arm and establish connection to MR
+  C->>I: [OPTIONAL] M2X STATUS[requestStopCharge (State: FINISHED)]: Charger has stopped charging the MR
+  C->>C: [OPTIONAL]: Stop charging process
+   I->>C: [OPTIONAL] M2X REQUEST[requestRelease]: FM/MR requests the device to release the MR
+  C->>I: [OPTIONAL] M2X STATUS[requestRelease (State: FINISHED)]: Charger acknowledges the request and is ready for the next access request
+....

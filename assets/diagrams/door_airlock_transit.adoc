@@ -1,0 +1,20 @@
+ifdef::env-github[]
+[source,mermaid]
+endif::[]
+ifndef::env-github[]
+[mermaid]
+endif::[]
+....
+sequenceDiagram
+  participant I as FM/MR
+  participant S as Door
+  loop while n < number of doors
+  I->>S: M2X REQUEST[requestTransit/Crossing]: MR request for crossing the door
+  S-->>I: [OPTIONAL] M2X STATUS[requestTransit/Crossing (State: RUNNING)]: The door starts to open andreturns running for the request
+  S->>S: [OPTIONAL]: Door is open <br>(it can also be an already open door)
+  S-->>I: M2X STATUS[requestTransit/Crossing (State: FINISHED)]: Door is open and MR can cross
+  I->>I: MR crosses the door<br> and leaves the interaction area
+  I->>S: M2X REQUEST[revokeTransit/Crossing]: MR has crossed the door and requests to revoke access to the door
+  S-->>I: M2X STATUS[revokeTransit/Crossing (State: FINISHED)]: Door acknowledges the request
+  end
+....

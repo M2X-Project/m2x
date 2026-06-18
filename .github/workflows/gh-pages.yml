@@ -39,6 +39,24 @@ jobs:
           node-version: 18
       - run: npm install mermaid
       - run: npm install -g @mermaid-js/mermaid-cli
+      - name: Configure Mermaid CLI for GitHub runner sandbox
+        run: |
+          cat > puppeteer-config.json <<'EOF'
+          {
+            "args": ["--no-sandbox", "--disable-setuid-sandbox"]
+          }
+          EOF
+
+          MMDC_BIN="$(command -v mmdc)"
+          mv "$MMDC_BIN" "${MMDC_BIN}.real"
+
+          cat > "$MMDC_BIN" <<EOF
+          #!/usr/bin/env bash
+          set -euo pipefail
+          exec "${MMDC_BIN}.real" -p "${GITHUB_WORKSPACE}/puppeteer-config.json" "\$@"
+          EOF
+
+          chmod +x "$MMDC_BIN"
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
