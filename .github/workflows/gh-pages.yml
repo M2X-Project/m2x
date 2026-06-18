@@ -53,7 +53,7 @@ jobs:
           cat > "$MMDC_BIN" <<EOF
           #!/usr/bin/env bash
           set -euo pipefail
-          exec "${MMDC_BIN}.real" -p "${GITHUB_WORKSPACE}/puppeteer-config.json" "\$@"
+          exec "${MMDC_BIN}.real" -p "${GITHUB_WORKSPACE}/puppeteer-config.json" -s 2 "\$@"
           EOF
 
           chmod +x "$MMDC_BIN"

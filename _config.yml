@@ -9,6 +9,7 @@ asciidoctor:
   safe: unsafe
   attributes:
     imagesdir: assets/figures
+    mermaid-format: svg
 remote_theme: pages-themes/cayman@v0.2.0
 title: M2X
 description: An interface definition for communication between peripherals and automated guided vehicles.
