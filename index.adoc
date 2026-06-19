@@ -139,9 +139,6 @@ If a conflict between tables/examples and schemas occurs, the JSON schemas are t
 The recommended transport protocol is Message Queuing Telemetry Transport (MQTT), which is to be used in conjunction with a JSON structure. MQTT is TCP (Transmission Control Protocol) based and allows the distribution of messages to subchannels, which are called "topics". Participants in the MQTT network subscribe to these topics and receive information that concerns or interests them.
 Other message protocols can also be used, for example, OPC UA (Open Platform Communications Unified Architecture) or other who are real-time capable over UDP (User Datagram Protocol).
 
-The recommended message protocol is Message Queuing Telemetry Transport (MQTT), which is to be used in conjunction with a JSON structure. MQTT is TCP (Transmission Control Protocol) based and allows the distribution of messages to subchannels, which are called "topics". Participants in the MQTT network subscribe to these topics and receive information that concerns or interests them.
-Other message protocols can also be used, for example, OPC UA (Open Platform Communications Unified Architecture) or other who are real-time capable over UDP (User Datagram Protocol).
-
 === Symbols of the tables and meaning of formatting
 The table contains the name of the identifier, its unit, its data type, and a description, if any.
 |===
@@ -358,46 +355,6 @@ link:assets/json_schemas/load_handling_unit.schema[Load handling unit] describes
 |}||
 |===
 
-[#load_handling_unit, reftext="Section: Load Handling Unit"]
-=== Load handling unit 
-
-The load handling unit (LHU) is the object that is transferred between the MR and the LHS.
-The LHU is described in the JSON schema link:assets/json_schemas/load_handling_unit.schema[Load handling unit].
-The following assumptions are made for the definition of the coordinate system of the LHU:
-
-* M2X uses a right-handed coordinate system (z-Axis pointing up).
-* The origin is in the center of the LHU.
-* The X-axis points along the longest side of the LHU.
-* The orientation of an LHU is described relative to the coordinate system in which it is currently located, e.g. on an MR or an LHP of an LHS.
-* The pose of the LHU is always in the local coordinate system, e.g. MR or LHS. With the transfer requestLoadTransfer, the station is informed that the LHU has been transferred to the station with the following orientation in the coordinate system. The FM, MR or another system is responsible for carrying out a transformation to the station's target coordinate system.
-* The load pose should always have X,Y,Z and theta.
-
-The FM or a comparable system is responsible for creating the necessary transformation chain for transferring an LHU from an MR to an LHS or vice versa. xref:load_orientation[] shows an exemplary visualisation of different load orientations. 
-In this example a MR is transferring a LHU to a LHS respectively the LHP. 
-The LHU, LHS and MR are oriented in different ways. 
-The handover of the LHU must take place in a different orientation relatively to the LHP.
-As soon as the orientation has to be taken into account, the transformation must be performed by an appropriate system.
-
-image::load_orientation.svg[title="Exemplary visualisation of different load orientations", 320,480,align="center", id=load_orientation,align="center"]
-
-link:assets/json_schemas/load_handling_unit.schema[Load handling unit] describes which parameters the individual unit has and which action is carried out with it.
-
-|===
-|field|data type|description
-
-|version|string|Version of the M2X protocol [Major].[Minor].[Patch] (e.g. 1.3.2).
-|*loadHandlingUnit* {|object|Describes all properties of the load handling unit (LHU).
-|{nbsp}{nbsp}{nbsp}{nbsp} _loadUnitId_ |string|ID number of the LHU.
-|{nbsp}{nbsp}{nbsp}{nbsp} loadHandlingUnitType |string|Describes the handling unit, e.g. small load carrier, pallet, etc. Important for matching of the handling capabilities of the unit, e.g the request requestLoadTransfer in the load handling interface of a station or MR.
-|{nbsp}{nbsp}{nbsp}{nbsp} _weight_ |number|Weight of the load.
-|{nbsp}{nbsp}{nbsp}{nbsp} _height_ |number|Height of the LHU (outer dimensions).
-|{nbsp}{nbsp}{nbsp}{nbsp} _width_ |number|Width of the LHU (outer dimensions).
-|{nbsp}{nbsp}{nbsp}{nbsp} _length_ |number|Length of the LHU (outer dimensions).
-|{nbsp}{nbsp}{nbsp}{nbsp} _outerPackaging_ |string|Describes the outer packaging of the LHU, e.g. wrapping, strapping etc.
-|{nbsp}{nbsp}{nbsp}{nbsp} _symmetrical_ |boolean|Describes if the orientation of the LHU is symmetrical.
-|}||
-|===
-
 [#load_handling_sequence_diagram, reftext="Section: Load Handling Sequence Diagram"]
 === Load handling sequence diagram
 The sequence diagram is shown below to describe the load handling process. 
@@ -457,7 +414,7 @@ The following requests are required for complete load handling:
 ==== Predefined requests
 The following two tables describe the predefined requests for the load handling in their parameters and states from RUNNING to FINISHED.
 |===
-|request|description|parameter|blocking type
+|request|description|parameter
 
 |requestAccess|MR requests the permission to enter the LHP of the station. The activeLoadTransferDevice shall be determined. Disclaimer: In case the LHS is the active load transfer device, the MR needs to prepare the load transfer after a FINISHED requestAccess (see link:assets/diagrams/load_transfer_short.adoc[Load transfer sequence diagram]). |
   loadHandlingSessionId (string), +
@@ -467,11 +424,11 @@ The following two tables describe the predefined requests for the load handling 
   link:assets/json_schemas/load_handling_unit.schema[loadHandlingUnit] (object), +
   activeLoadTransferDevice (enum: MR, LHS)
 |requestLoadTransfer|MR requests to exchange (pick or drop) the load with the station. In case the MR is the active load transfer device the LHS needs to prepare the load transfer and returns a running requestLoadTransfer state. Otherwise the load transfer is FINISHED after the LHS returns a FINISHED requestLoadTransfer state. See link:assets/diagrams/load_transfer_short.adoc[Load transfer sequence diagram].| loadHandlingSessionId (string) 
-|requestExit|MR requests the permission to exit the LHP. In case the MR is the active load transfer device the load transfer shall be FINISHED.|loadHandlingSessionId (string) 
-|requestRelease|MR confirms that the station has been left.|loadHandlingSessionId (string) 
-|requestFactsheet|Request factsheet from a station.|- 
-|requestContinueLoadTransfer|MR/Station/FM requests to continue the load transfer.|loadHandlingSessionId (string) 
-|requestCancel|MR/Station/FM requests to cancel the current request.|loadHandlingSessionId (string) 
+|requestExit|MR requests the permission to exit the LHP. In case the MR is the active load transfer device the load transfer shall be FINISHED.|loadHandlingSessionId (string)
+|requestRelease|MR confirms that the station has been left.|loadHandlingSessionId (string)
+|requestFactsheet|Request factsheet from a station.|-
+|requestContinueLoadTransfer|MR/Station/FM requests to continue the load transfer.|loadHandlingSessionId (string)
+|requestCancel|MR/Station/FM requests to cancel the current request.|loadHandlingSessionId (string)
 |===
 
 |===
@@ -1253,7 +1210,7 @@ The elevator state consists of the JSON-objects listed in the following table.
 |{nbsp}{nbsp}{nbsp}{nbsp} *assignedElevators* *[assignedElevators]*‚ |array|Array of assigned elevators based on requestAccess.
 |{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} requestId|string|Id of a request to be referred to in this state.
 |{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} assignedElevatorId|string|Id of the elevator that has been assigned to the request.
-|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} _resultDescription_ string|Description of the result. Errors will be transmitted in errors.
+|{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp} _resultDescription_|string|Description of the result. Errors will be transmitted in errors.
 |}||
 |*errors* *[error]* {|array|Array of error-objects. All active errors of the door should be in the list. An empty array indicates that the door has no active errors.
 |{nbsp}{nbsp}{nbsp}{nbsp} errorType|string|Type of error.
