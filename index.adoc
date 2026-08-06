@@ -265,20 +265,20 @@ The black dots indicate the geometric handover point (see link:assets/json_schem
 The red interaction area of the MRs, which can approach the station from both sides (indicated by the arrows). 
 The station only manages itself and blocks the interaction area if necessary (state .connectionStateLHP). 
 Which MR approaches the station and how is determined for example by a traffic management or another management system.
-The second xref:lhs_with_traffic_management[figure] shows a LHS with a shared traffic management area. The station has two LHPs. As already mentioned it only manages its own LHPs with the corresponding interaction areas. All other passable routes of an MR, even within the station footprint, are controlled by Traffic Management.
+The second xref:lhs_with_traffic_management[figure] shows an LHS with a shared traffic management area. The station has two LHPs. As already mentioned it only manages its own LHPs with the corresponding interaction areas. All other passable routes of an MR, even within the station footprint, are controlled by Traffic Management.
 If two different LHSs share the same interaction area, it is recommended to configure them as one and follow the procedure described above.
 
-image::lhs_self_managed_area.svg[title="Exemplary use case of a LHS with two LHPs.", 640,480,align="center", id=load_handling_station_view,align="center"]
+image::lhs_self_managed_area.svg[title="Exemplary use case of an LHS with two LHPs.", 640,480,align="center", id=load_handling_station_view,align="center"]
 
-image::lhs_with_traffic_management.svg[title="Exemplary use case of a LHS with two LHPs and a shared traffic management area.", 640,480,align="center", id=lhs_with_traffic_management,align="center"]
+image::lhs_with_traffic_management.svg[title="Exemplary use case of an LHS with two LHPs and a shared traffic management area.", 640,480,align="center", id=lhs_with_traffic_management,align="center"]
  
 
 === Requirements for a M2X load handling station
-This section describes the requirements for a LHS to use the M2X protocol. 
-It is assumed that a LHS is an active participant that can actively communicate and manage its status. 
+This section describes the requirements for an LHS to use the M2X protocol. 
+It is assumed that an LHS is an active participant that can actively communicate and manage its status. 
 The following points are requirements that a station must fulfill:
 
-* A LHS is at least represented by a physical area and a software that can handle the status of this area and can communicate with other participants.
+* An LHS is at least represented by a physical area and a software that can handle the status of this area and can communicate with other participants.
 * The software of the LHS manages the process and states described in xref:load_handling_sequence_diagram[xrefstyle=short] (e.g. requestAccess, requestExit, requestLoadTransfer, requestRelease ...).
 * Every LHS has a unique ID.
 * Is assigned to a unique position and represents an area in the industrial environment.
@@ -330,7 +330,7 @@ The following assumptions are made for the definition of the coordinate system o
 * The load pose should always have X, Y, Z and theta.
 
 The FM or a comparable system is responsible for creating the necessary transformation chain for transferring an LHU from an MR to an LHS or vice versa. xref:load_orientation[] shows an exemplary visualization of different load orientations. 
-In this example a MR is transferring a LHU to a LHS respectively the LHP. 
+In this example a MR is transferring a LHU to an LHS respectively the LHP. 
 The LHU, LHS and MR are oriented in different ways. 
 The handover of the LHU must take place in a different orientation relatively to the LHP.
 As soon as the orientation has to be taken into account, the transformation must be performed by an appropriate system.
@@ -367,12 +367,10 @@ Below is a short version of the sequence diagram:
 [#load_transfer_sequence_diagram, reftext="Diagram: Load Handling Sequence"]
 include::assets/diagrams/load_transfer_short.adoc[]
 
-There is also a detailed version of the diagram in the repository, which can be found here: link:assets/diagrams/load_transfer.adoc[detailed sequence diagram]. 
-This version differs in that alternative loops are displayed for each request, which cover errors and busy.
 
 === Topics ===
 
-The communication with a LHS is done via the following topics:
+The communication with an LHS is done via the following topics:
 
 [source, adoc]
 |===
@@ -501,7 +499,7 @@ The corresponding request is described in the xref:lhs_predefined_requests[].
 Topic for the request: lhs/v1.0.0/stationId/requestFactsheet
 Topic for the response: lhs/v1.0.0/stationId/factsheet
 
-It is also to be noted that a MR has to request all available factsheets from the stations in order to navigate without colliding or interfere with any station geometry (exclusive managed area of a LHS) of a LHS.
+It is also to be noted that a MR has to request all available factsheets from the stations in order to navigate without colliding or interfere with any station geometry (exclusive managed area of an LHS) of an LHS.
 
 ==== Factsheet JSON structure
 The factsheet consists of the JSON-objects listed in the following table.
@@ -705,7 +703,7 @@ Example of the transport order schema:
 |*objectives [objective]* {|array|Defines a location where an action is to be performed by the transporting MR. The array has to contain at least one objective.
 |{nbsp}{nbsp}{nbsp}{nbsp}objectiveId|string|Unique objective identification.
 |{nbsp}{nbsp}{nbsp}{nbsp}sequenceId|integer|Number to track the sequence of objectives in an transport order and to simplify order updates. The main purpose is to distinguish between an objective which is passed more than once within one TO (same transportOrderId). The variable sequenceId runs across all objectives of the same transport order and is reset when a new transportOrderId is issued. To update an objective, the sequenceId of the objective to be updated has to be provided. The objective update replaces all following objectives starting from the sequenceId. The sequenceId shall be strictly sequential increasing. minimum: 0.
-|{nbsp}{nbsp}{nbsp}{nbsp}destination|string|Defines the position (WHERE) a defined action is to be performed. Uniquely point of interest (POI) id (e.g. of an LHP or a LHS).
+|{nbsp}{nbsp}{nbsp}{nbsp}destination|string|Defines the position (WHERE) a defined action is to be performed. Uniquely point of interest (POI) id (e.g. of an LHP or an LHS).
 |{nbsp}{nbsp}{nbsp}{nbsp}action|string|Action to be performed at the destination (WHAT). Enum: PICK, DROP, VIA.
 |{nbsp}{nbsp}{nbsp}{nbsp} _displayName_ |string|Human readable name of the objective.
 |{nbsp}{nbsp}{nbsp}{nbsp} *_loadHandlingUnit_* |object|Description of the load, e.g. id, dimensions, weight etc. For further information see load_handling_unit.schema
@@ -734,7 +732,7 @@ The TO state consists of the JSON-objects listed in the following table.
 |*objectiveStates [objectiveState]* {|array|Array of objectiveStates, that need to be traversed for fulfilling the TO. Empty list if idle.
 |{nbsp}{nbsp}{nbsp}{nbsp}objectiveId|string|Unique objective identification.
 |{nbsp}{nbsp}{nbsp}{nbsp}sequenceId|integer|Number to track the sequence of objectives in an transport order and to simplify order updates. The main purpose is to distinguish between an objective which is passed more than once within one TO (same transportOrderId). The variable sequenceId runs across all objectives of the same transport order and is reset when a new transportOrderId is issued. To update an objective, the sequenceId of the objective to be updated has to be provided. The objective update replaces all following objectives starting from the sequenceId. The sequenceId shall be strictly sequential increasing.
-|{nbsp}{nbsp}{nbsp}{nbsp}destination|string|Defines the position (WHERE) a defined action is to be performed. Uniquely point of interest (POI) id (e.g. of an LHP or a LHS).
+|{nbsp}{nbsp}{nbsp}{nbsp}destination|string|Defines the position (WHERE) a defined action is to be performed. Uniquely point of interest (POI) id (e.g. of an LHP or an LHS).
 |{nbsp}{nbsp}{nbsp}{nbsp}action|string|Action to be performed at the destination (WHAT). Enum: PICK, DROP, VIA.
 |{nbsp}{nbsp}{nbsp}{nbsp} _displayName_ |string|Human readable name of the objective.
 |{nbsp}{nbsp}{nbsp}{nbsp} *_loadHandlingUnit_* |object|Description of the load, e.g. id, dimensions, weight etc. For further information see load_handling_unit.schema
@@ -1456,7 +1454,7 @@ The factsheet consists of the JSON-objects listed in the following table.
 |Load handling|Load handling refers to the handover of a load at a transfer point or point of interest. 
 This includes the entry, the physical handover/manipulation and the exit of an MR at a station. 
 Once the physical load transfer of a MR is in progress, it should not be paused.
-|Load handling point (LHP)|A load handling point is a physical point of a LHS where the load is transferred or changed/manipulated. 
+|Load handling point (LHP)|A load handling point is a physical point of an LHS where the load is transferred or changed/manipulated. 
 Only one MR can interact with a LHP at the same time. 
 The LHP can be approached from different directions.
 |Load handling station (LHS)|A load handling station serves as a point of interest at which the load is transferred or changed/manipulated. 
@@ -1468,7 +1466,7 @@ The LHS factsheet includes the geometry of the physical station (footprint of th
 The area around is managed by the FM or traffic management.
 |Load handling unit (LHU)|The load handling unit (LHU) is the object that is transferred between the MR and the LHS.
 |Mobile robot (MR)|Uniform collective term in the context of M2X for all types of vehicles/robots that use the protocol. This includes for example automated guided vehicles (AGVs) or autonomous mobile robots (AMRs).
-|Point of interest (PoI)|A point of interest is a virtual or physical space in the environment. A unique identifier is used. At the PoI, the MR can perform actions such as PICK, DROP or VIA. A PoI can also be used to provide coordinates of the location, for example. A LHS or LHP can also be a PoI. A PoI can also be a group of PoIs.
+|Point of interest (PoI)|A point of interest is a virtual or physical space in the environment. A unique identifier is used. At the PoI, the MR can perform actions such as PICK, DROP or VIA. A PoI can also be used to provide coordinates of the location, for example. an LHS or LHP can also be a PoI. A PoI can also be a group of PoIs.
 |Signaling device|A signaling device is a self-managed device that has its own factsheet.
 The device can describe itself and its properties. For example, for traffic lights it can show red, yellow, and green lights.
 |Transport order (TO)|The TO consists of a collection of objectives that can be extended during the execution of a TO. A TO shall contain at least one objective. An objective is a description of an atomic transport step (WHAT and WHERE), e.g. transport 'Pallet 1' to 'storage location 5'.
